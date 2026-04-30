@@ -391,7 +391,9 @@
 
   const MAP_GEO_URL = 'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json';
 
-  // === 内嵌数据（避免 file:// 协议下 fetch 限制） ===
+  // === 数据加载：优先从 JSON 文件加载，回退到内嵌数据 ===
+
+  // 内嵌数据作为回退
   const EMBEDDED_POLICY_DATA = [
   {
     "title": "国务院办公厅关于促进低空经济高质量发展的指导意见",
@@ -1062,8 +1064,20 @@
   // ---- Load data ----
   async function loadAll() {
     try {
-      allPolicies = EMBEDDED_POLICY_DATA;
-      allStats = EMBEDDED_STATS;
+      // 优先从 JSON 文件加载（GitHub Pages 环境）
+      const dataResp = await fetch('policy_data.json').catch(() => null);
+      const statsResp = await fetch('stats.json').catch(() => null);
+
+      if (dataResp && dataResp.ok && statsResp && statsResp.ok) {
+        allPolicies = await dataResp.json();
+        allStats = await statsResp.json();
+        console.log('📦 从 JSON 文件加载: ' + allPolicies.length + ' 条政策');
+      } else {
+        // 回退到内嵌数据
+        allPolicies = EMBEDDED_POLICY_DATA;
+        allStats = EMBEDDED_STATS;
+        console.log('📦 使用内嵌数据: ' + allPolicies.length + ' 条政策');
+      }
 
       // Hide loading
       document.getElementById('loading-overlay').classList.add('hidden');
