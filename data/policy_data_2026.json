@@ -1,0 +1,36 @@
+[
+  {
+    "title": "四川省低空经济应急救援应用试点方案",
+    "date": "2026-01-15",
+    "source": "四川省应急管理厅",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "基础设施",
+    "summary": "在川西高原和山区开展无人机应急救援试点，建立低空应急响应机制",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202601/t20260115_123456.html",
+    "keywords": [
+      "应急救援",
+      "川西高原",
+      "无人机",
+      "应急响应"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "粤港澳大湾区低空经济协同发展规划",
+    "date": "2026-03-10",
+    "source": "广东省发展和改革委员会",
+    "level": "national",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "推进粤港澳大湾区低空经济协同发展，打通大湾区低空飞行通道，实现跨境低空物流",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202603/t20260310_123456.html",
+    "keywords": [
+      "粤港澳大湾区",
+      "协同发展",
+      "跨境低空物流",
+      "飞行通道"
+    ],
+    "intensity": 5
+  }
+]

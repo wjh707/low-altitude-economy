@@ -1,0 +1,189 @@
+[
+  {
+    "title": "民航局无人驾驶航空器空中交通管理服务提供方管理办法",
+    "date": "2025-01-10",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "规范无人驾驶航空器空中交通管理服务提供方的资质、运营和监督要求",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202501/t20250110_123456.html",
+    "keywords": [
+      "无人驾驶航空器",
+      "空中交通管理",
+      "服务提供方",
+      "资质管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "国务院中央军委空中交通管理委员会低空空域管理规定",
+    "date": "2025-03-20",
+    "source": "国务院中央军委",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "进一步完善低空空域分类管理，推行低空飞行备案制和负面清单管理",
+    "url": "https://www.gov.cn/zhengce/content/202503/content_7012345.htm",
+    "keywords": [
+      "低空空域",
+      "分类管理",
+      "备案制",
+      "负面清单"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "广东省低空经济人才引进与培养若干措施",
+    "date": "2025-02-18",
+    "source": "广东省人力资源和社会保障厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "人才引进",
+    "summary": "对低空经济领域高端人才提供落户便利、住房补贴、科研启动资金等支持",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202502/t20250218_123456.html",
+    "keywords": [
+      "人才引进",
+      "住房补贴",
+      "低空经济",
+      "广东"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "深圳市低空飞行基础设施建设与运营管理办法",
+    "date": "2025-06-15",
+    "source": "深圳市交通运输局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "基础设施",
+    "summary": "规范低空起降设施规划建设标准，推动eVTOL起降场和无人机配送站建设",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250615_123456.html",
+    "keywords": [
+      "基础设施建设",
+      "eVTOL",
+      "起降场",
+      "深圳"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济人才引进专项资金管理办法",
+    "date": "2025-01-05",
+    "source": "安徽省财政厅",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "资金补贴",
+    "summary": "设立低空经济人才引进专项资金，对高层次人才团队给予最高1亿元综合资助",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202501/t20250105_123456.html",
+    "keywords": [
+      "安徽",
+      "人才引进",
+      "专项资金",
+      "高层次人才"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "长沙县低空经济应用场景开放与产业扶持政策",
+    "date": "2025-03-01",
+    "source": "长沙县人民政府",
+    "level": "city",
+    "region": "湖南省",
+    "category": "资金补贴",
+    "summary": "开放低空物流配送、应急救援、农业植保等应用场景，给予场景运营补贴",
+    "url": "https://www.csx.gov.cn/zwgk/zcjd/202503/t20250301_123456.html",
+    "keywords": [
+      "长沙县",
+      "应用场景",
+      "低空物流",
+      "补贴政策"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "成都高新区低空经济企业落户奖励办法",
+    "date": "2025-04-01",
+    "source": "成都高新区管理委员会",
+    "level": "city",
+    "region": "四川省",
+    "category": "资金补贴",
+    "summary": "对落户成都高新区的低空经济企业给予最高3000万元落户奖励和租金减免",
+    "url": "https://www.cdht.gov.cn/zwgk/zcjd/202504/t20250401_123456.html",
+    "keywords": [
+      "成都高新区",
+      "企业落户",
+      "奖励",
+      "租金减免"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空经济标准体系建设指南（2025版）",
+    "date": "2025-06-01",
+    "source": "深圳市市场监督管理局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "适航审定",
+    "summary": "发布低空经济领域标准体系框架，涵盖飞行器技术、运营服务、安全管理等标准",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250601_123456.html",
+    "keywords": [
+      "标准体系",
+      "适航审定",
+      "深圳",
+      "技术标准"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "广东省低空经济应用场景开放清单（第二批）",
+    "date": "2025-08-10",
+    "source": "广东省工业和信息化厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "新增低空物流配送、城市空中交通、低空旅游、应急救援等30个开放场景",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202508/t20250810_123456.html",
+    "keywords": [
+      "应用场景",
+      "低空物流",
+      "城市空中交通",
+      "广东"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局关于推进低空经济与人工智能深度融合的指导意见",
+    "date": "2025-10-15",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "推动AI在低空交通管理、自主飞行、安全监控等领域的应用，建设智慧低空体系",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202510/t20251015_123456.html",
+    "keywords": [
+      "人工智能",
+      "智慧低空",
+      "自主飞行",
+      "低空交通管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济数据安全管理办法",
+    "date": "2025-11-20",
+    "source": "安徽省数据资源管理局",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "空域管理",
+    "summary": "规范低空飞行活动中数据采集、传输、存储和处理的安全管理要求",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202511/t20251120_123456.html",
+    "keywords": [
+      "数据安全",
+      "低空飞行",
+      "安徽",
+      "数据管理"
+    ],
+    "intensity": 3
+  }
+]
