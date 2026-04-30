@@ -196,6 +196,8 @@
   tbody tr:hover { background: #f8f9ff; }
   .policy-title { font-weight: 500; color: #1a73e8; cursor: pointer; }
   .policy-title:hover { text-decoration: underline; }
+  .policy-title.no-link { color: #666; cursor: default; }
+  .policy-title.no-link:hover { text-decoration: none; }
   .tool-tag {
     display: inline-block;
     background: #e8f0fe;
@@ -1598,9 +1600,18 @@
         const icon = TOOL_ICONS[t] || '📌';
         return '<span class="tool-tag">' + icon + ' ' + t + '</span>';
       }).join(' ');
+      // URL策略：优先外部链接，其次是本地页面，最后无链接
+      let linkHtml;
+      if (p.url) {
+        linkHtml = '<a class="policy-title" href="' + p.url + '" target="_blank" title="' + escHtml(p.summary || '') + '">' + escHtml(p.title) + '</a>';
+      } else if (p.local_page) {
+        linkHtml = '<a class="policy-title" href="' + p.local_page + '" title="查看全文">' + escHtml(p.title) + '</a>';
+      } else {
+        linkHtml = '<span class="policy-title no-link" title="暂无原文">' + escHtml(p.title) + '</span>';
+      }
       return '<tr>' +
         '<td style="white-space:nowrap;">' + (p.date || '--') + '</td>' +
-        '<td><a class="policy-title" href="' + (p.url || '#') + '" target="_blank" title="' + escHtml(p.summary || '') + '">' + escHtml(p.title) + '</a></td>' +
+        '<td>' + linkHtml + '</td>' +
         '<td>' + escHtml(p.source || '--') + '</td>' +
         '<td><span class="badge ' + badgeClass + '">' + levelLabel + '</span></td>' +
         '<td>' + escHtml(p.region || '--') + '</td>' +
