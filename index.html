@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>低空经济政策情报看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="china_map_data.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+  }
+  a { color: #1a73e8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Loading overlay */
+  #loading-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(240, 244, 248, 0.95);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+  }
+  #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loader {
+    width: 48px; height: 48px;
+    border: 4px solid #e0e6ed;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { margin-top: 16px; color: #5f6368; font-size: 14px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+    color: #fff;
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .header-title { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+  .header-subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .header-update {
+    font-size: 13px; opacity: 0.9;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* Main container */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  /* Stats cards */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-left: 4px solid #1a73e8;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .stat-card .label { font-size: 13px; color: #5f6368; margin-bottom: 6px; }
+  .stat-card .value { font-size: 32px; font-weight: 700; }
+  .stat-card .desc { font-size: 12px; color: #80868b; margin-top: 4px; }
+  .stat-card.card-blue { border-left-color: #1a73e8; }
+  .stat-card.card-blue .value { color: #1a73e8; }
+  .stat-card.card-green { border-left-color: #34a853; }
+  .stat-card.card-green .value { color: #34a853; }
+  .stat-card.card-orange { border-left-color: #f9ab00; }
+  .stat-card.card-orange .value { color: #f9ab00; }
+  .stat-card.card-purple { border-left-color: #9334e6; }
+  .stat-card.card-purple .value { color: #9334e6; }
+
+  /* Chart rows */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .chart-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .chart-box .chart-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  .chart-box .chart-container {
+    width: 100%;
+    height: 380px;
+  }
+  .chart-box .chart-container.map-container {
+    height: 480px;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .filter-bar label {
+    font-size: 13px;
+    color: #5f6368;
+    font-weight: 500;
+  }
+  .filter-bar select {
+    padding: 6px 12px;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+  }
+  .filter-bar select:focus { border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,0.2); }
+
+  /* Policy table */
+  .policy-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+  .policy-section .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  .table-wrap {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #5f6368;
+    border-bottom: 2px solid #e8eaed;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+  }
+  tbody tr:hover { background: #f8f9ff; }
+  .policy-title { font-weight: 500; color: #1a73e8; cursor: pointer; }
+  .policy-title:hover { text-decoration: underline; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .badge-national { background: #e8f0fe; color: #1a73e8; }
+  .badge-provincial { background: #e6f4ea; color: #34a853; }
+  .badge-city { background: #fef7e0; color: #f9ab00; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px 16px;
+    color: #80868b;
+    font-size: 12px;
+    border-top: 1px solid #e8eaed;
+    margin-top: 8px;
+  }
+  .footer p { margin: 4px 0; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #80868b;
+  }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* Error state */
+  .error-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #d93025;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .chart-row { grid-template-columns: 1fr; }
+    .header-title { font-size: 18px; }
+    .stat-card .value { font-size: 26px; }
+    .chart-box .chart-container { height: 320px; }
+    .chart-box .chart-container.map-container { height: 400px; }
+  }
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .header { padding: 14px 16px; }
+    .header-inner { flex-direction: column; align-items: flex-start; }
+    .header-update { align-self: flex-start; margin-top: 4px; }
+    .container { padding: 12px 10px; }
+    .stat-card { padding: 14px; }
+    .stat-card .value { font-size: 22px; }
+    .chart-box .chart-container { height: 280px; }
+    .chart-box .chart-container.map-container { height: 340px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="loader"></div>
+  <div class="loader-text">正在加载政策数据...</div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div>
+      <div class="header-title">🚁 低空经济政策情报看板</div>
+      <div class="header-subtitle">实时追踪 · 智能分析 · 决策支持</div>
+    </div>
+    <div style="text-align:right">
+      <div class="header-update" id="updateTime">更新中...</div>
+      <div class="header-nav" style="margin-top:6px">
+        <a href="index.html" class="active">📜政策看板</a>
+        <a href="talent.html">👥人才看板</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+
+  <!-- Stats Cards -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card card-blue">
+      <div class="label">📋 累计追踪政策数</div>
+      <div class="value" id="statTotal">--</div>
+      <div class="desc">覆盖国家级与地方级政策</div>
+    </div>
+    <div class="stat-card card-green">
+      <div class="label">📍 覆盖省市</div>
+      <div class="value" id="statRegions">--</div>
+      <div class="desc">含省、市及全国性政策</div>
+    </div>
+    <div class="stat-card card-orange">
+      <div class="label">📅 本月新增</div>
+      <div class="value" id="statMonthly">--</div>
+      <div class="desc">当月新增政策数量</div>
+    </div>
+    <div class="stat-card card-purple">
+      <div class="label">🔥 近30天活跃</div>
+      <div class="value" id="statActive">--</div>
+      <div class="desc">近期活跃省市数</div>
+    </div>
+  </div>
+
+  <!-- Chart Row 1 -->
+  <div class="chart-row">
+    <div class="chart-box">
+      <div class="chart-title">📈 政策时间趋势</div>
+      <div class="chart-container" id="trendChart"></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🎯 政策类别分布</div>
+      <div class="chart-container" id="categoryChart"></div>
+    </div>
+  </div>
+
+  <!-- Chart Row 2 -->
+  <div class="chart-row">
+    <div class="chart-box">
+      <div class="chart-title">🗺️ 各地政策力度热力图</div>
+      <div class="chart-container map-container" id="mapChart"></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🔍 热门关键词</div>
+      <div class="chart-container" id="wordcloudChart"></div>
+    </div>
+  </div>
+
+  <!-- Policy Table -->
+  <div class="policy-section">
+    <div class="section-title">📄 最新政策列表</div>
+    <div class="filter-bar">
+      <label>按级别：</label>
+      <select id="filterLevel">
+        <option value="all">全部</option>
+        <option value="national">国家级</option>
+        <option value="provincial">省级</option>
+        <option value="city">市级</option>
+      </select>
+      <label>按地区：</label>
+      <select id="filterRegion">
+        <option value="all">全部</option>
+      </select>
+      <label>按类别：</label>
+      <select id="filterCategory">
+        <option value="all">全部</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>标题</th>
+            <th>来源</th>
+            <th>级别</th>
+            <th>地区</th>
+            <th>类别</th>
+          </tr>
+        </thead>
+        <tbody id="policyTableBody">
+        </tbody>
+      </table>
+    </div>
+    <div id="tableEmpty" class="empty-state" style="display:none;">
+      <div class="icon">📭</div>
+      <p>暂无符合条件的政策数据</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>📊 数据来源：民航局、国务院、各省市政府公开政策文件</p>
+  <p>🔄 更新频率：每24小时自动同步更新 | 数据为示例展示，仅供参考</p>
+  <p style="margin-top:6px;color:#aaa;">低空经济政策情报看板 v1.0</p>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  const MAP_GEO_URL = 'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json';
+
+  // === 内嵌数据（避免 file:// 协议下 fetch 限制） ===
+  const EMBEDDED_POLICY_DATA = [
+  {
+    "title": "国务院办公厅关于促进低空经济高质量发展的指导意见",
+    "date": "2024-03-27",
+    "source": "国务院办公厅",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "提出到2030年低空经济市场规模突破万亿，明确空域管理改革、基础设施建设、产业培育等重点任务",
+    "url": "https://www.gov.cn/zhengce/content/202403/content_6941234.htm",
+    "keywords": [
+      "低空经济",
+      "高质量发展",
+      "万亿市场",
+      "空域管理"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "民航局民用无人驾驶航空器运行安全管理规则（CCAR-92）",
+    "date": "2024-01-17",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "适航审定",
+    "summary": "全面规范民用无人驾驶航空器运行安全管理，包括适航管理、人员资质、运营管理和空中交通管理等",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202401/t20240117_222222.html",
+    "keywords": [
+      "无人驾驶航空器",
+      "CCAR-92",
+      "适航管理",
+      "运行安全"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "工业和信息化部等四部门通用航空装备创新应用实施方案（2024-2030年）",
+    "date": "2024-03-21",
+    "source": "工业和信息化部",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "推动通用航空装备创新应用，重点发展eVTOL、无人机物流配送、应急救援等场景",
+    "url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/202403/t20240321_123456.html",
+    "keywords": [
+      "通用航空",
+      "eVTOL",
+      "无人机物流",
+      "装备创新"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "国家空中交通管理委员会关于低空空域管理改革的指导意见",
+    "date": "2024-05-15",
+    "source": "国家空中交通管理委员会",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "推进低空空域管理改革，划分管制、监视、报告三类空域，简化飞行审批流程",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202405/t20240515_123456.html",
+    "keywords": [
+      "空域改革",
+      "飞行审批",
+      "三类空域",
+      "空域管理"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "交通运输部低空飞行服务保障体系建设指南",
+    "date": "2024-07-01",
+    "source": "交通运输部",
+    "level": "national",
+    "region": "全国",
+    "category": "基础设施",
+    "summary": "构建低空飞行服务保障体系，包括通航机场、临时起降点、通信导航监视设施等",
+    "url": "https://www.mot.gov.cn/2024/07/123456.html",
+    "keywords": [
+      "飞行服务",
+      "保障体系",
+      "通航机场",
+      "通信导航"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局关于促进低空经济人才队伍建设的指导意见",
+    "date": "2024-09-10",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "人才引进",
+    "summary": "加强低空经济领域人才培养和引进，支持高校开设无人机应用、低空管理等专业",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202409/t20240910_123456.html",
+    "keywords": [
+      "人才培养",
+      "专业建设",
+      "低空管理",
+      "人才引进"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "财政部关于低空经济产业发展的税收优惠与资金支持政策",
+    "date": "2024-11-05",
+    "source": "财政部",
+    "level": "national",
+    "region": "全国",
+    "category": "资金补贴",
+    "summary": "对低空经济企业给予税收减免、研发补贴、贷款贴息等财政支持",
+    "url": "https://www.mof.gov.cn/zhengce/202411/t20241105_123456.html",
+    "keywords": [
+      "税收优惠",
+      "资金补贴",
+      "研发支持",
+      "财政政策"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局无人驾驶航空器空中交通管理服务提供方管理办法",
+    "date": "2025-01-10",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "规范无人驾驶航空器空中交通管理服务提供方的资质、运营和监督要求",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202501/t20250110_123456.html",
+    "keywords": [
+      "无人驾驶航空器",
+      "空中交通管理",
+      "服务提供方",
+      "资质管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "国务院中央军委空中交通管理委员会低空空域管理规定",
+    "date": "2025-03-20",
+    "source": "国务院中央军委",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "进一步完善低空空域分类管理，推行低空飞行备案制和负面清单管理",
+    "url": "https://www.gov.cn/zhengce/content/202503/content_7012345.htm",
+    "keywords": [
+      "低空空域",
+      "分类管理",
+      "备案制",
+      "负面清单"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "广东省低空经济高质量发展行动方案（2024-2026年）",
+    "date": "2024-05-22",
+    "source": "广东省人民政府",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "打造世界级低空经济高地，建设广深珠低空飞行网络，培育千亿级产业集群",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202405/t20240522_123456.html",
+    "keywords": [
+      "广东",
+      "低空经济",
+      "产业集群",
+      "广深珠"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "广东省低空基础设施建设实施方案",
+    "date": "2024-08-15",
+    "source": "广东省发展和改革委员会",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "基础设施",
+    "summary": "规划建设低空飞行起降点、通信导航监视设施、低空数字孪生平台等基础设施",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202408/t20240815_123456.html",
+    "keywords": [
+      "基础设施",
+      "起降点",
+      "低空数字孪生",
+      "广东"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "广东省低空经济人才引进与培养若干措施",
+    "date": "2025-02-18",
+    "source": "广东省人力资源和社会保障厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "人才引进",
+    "summary": "对低空经济领域高端人才提供落户便利、住房补贴、科研启动资金等支持",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202502/t20250218_123456.html",
+    "keywords": [
+      "人才引进",
+      "住房补贴",
+      "低空经济",
+      "广东"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "深圳市低空经济产业促进条例",
+    "date": "2024-02-01",
+    "source": "深圳市人民代表大会常务委员会",
+    "level": "city",
+    "region": "深圳市",
+    "category": "产业促进",
+    "summary": "全国首部低空经济产业促进地方性法规，建立低空经济产业发展协调机制",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202402/t20240201_123456.html",
+    "keywords": [
+      "深圳",
+      "低空经济",
+      "立法",
+      "产业促进"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "深圳市龙华区低空经济产业创新发展实施方案（2024-2026年）",
+    "date": "2024-04-10",
+    "source": "深圳市龙华区人民政府",
+    "level": "city",
+    "region": "深圳市",
+    "category": "产业促进",
+    "summary": "聚焦无人机研发制造、低空物流配送、低空旅游等业态，建设低空经济先行示范区",
+    "url": "https://www.szlhq.gov.cn/zwgk/zcjd/202404/t20240410_123456.html",
+    "keywords": [
+      "龙华区",
+      "低空经济",
+      "先行示范区",
+      "无人机"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空经济企业认定与资金补贴办法",
+    "date": "2024-06-20",
+    "source": "深圳市工业和信息化局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "资金补贴",
+    "summary": "对低空经济企业按资质等级给予最高5000万元补贴，支持研发和产业化",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202406/t20240620_123456.html",
+    "keywords": [
+      "资金补贴",
+      "企业认定",
+      "深圳",
+      "产业化"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空飞行基础设施建设与运营管理办法",
+    "date": "2025-06-15",
+    "source": "深圳市交通运输局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "基础设施",
+    "summary": "规范低空起降设施规划建设标准，推动eVTOL起降场和无人机配送站建设",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250615_123456.html",
+    "keywords": [
+      "基础设施建设",
+      "eVTOL",
+      "起降场",
+      "深圳"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济产业高质量发展行动计划（2024-2027年）",
+    "date": "2024-04-28",
+    "source": "安徽省人民政府",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "产业促进",
+    "summary": "发挥合肥综合性国家科学中心优势，打造低空经济创新策源地，建设芜湖通用航空产业基地",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202404/t20240428_123456.html",
+    "keywords": [
+      "安徽",
+      "合肥",
+      "芜湖",
+      "通用航空",
+      "低空经济"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "合肥市低空经济空域管理实施细则",
+    "date": "2024-07-30",
+    "source": "合肥市人民政府",
+    "level": "city",
+    "region": "安徽省",
+    "category": "空域管理",
+    "summary": "在合肥骆岗公园等区域开展低空飞行试点，简化空域申请流程",
+    "url": "https://www.hefei.gov.cn/zwgk/zcjd/202407/t20240730_123456.html",
+    "keywords": [
+      "合肥",
+      "空域管理",
+      "低空试点",
+      "骆岗公园"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济人才引进专项资金管理办法",
+    "date": "2025-01-05",
+    "source": "安徽省财政厅",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "资金补贴",
+    "summary": "设立低空经济人才引进专项资金，对高层次人才团队给予最高1亿元综合资助",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202501/t20250105_123456.html",
+    "keywords": [
+      "安徽",
+      "人才引进",
+      "专项资金",
+      "高层次人才"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "湖南省低空经济发展三年行动计划（2024-2026年）",
+    "date": "2024-06-05",
+    "source": "湖南省人民政府",
+    "level": "provincial",
+    "region": "湖南省",
+    "category": "产业促进",
+    "summary": "依托株洲航空城和长沙自贸区，重点发展中小航空发动机、无人机整机和低空旅游",
+    "url": "https://www.hunan.gov.cn/zwgk/zcjd/202406/t20240605_123456.html",
+    "keywords": [
+      "湖南",
+      "株洲航空城",
+      "中小航空发动机",
+      "低空旅游"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "湖南省低空空域协同运行管理办法",
+    "date": "2024-09-20",
+    "source": "湖南省低空空域协同运行管理委员会",
+    "level": "provincial",
+    "region": "湖南省",
+    "category": "空域管理",
+    "summary": "作为全国低空空域管理改革试点省份，建立军民航协同运行机制",
+    "url": "https://www.hunan.gov.cn/zwgk/zcjd/202409/t20240920_123456.html",
+    "keywords": [
+      "湖南",
+      "空域改革",
+      "试点",
+      "军民航协同"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "长沙县低空经济应用场景开放与产业扶持政策",
+    "date": "2025-03-01",
+    "source": "长沙县人民政府",
+    "level": "city",
+    "region": "湖南省",
+    "category": "资金补贴",
+    "summary": "开放低空物流配送、应急救援、农业植保等应用场景，给予场景运营补贴",
+    "url": "https://www.csx.gov.cn/zwgk/zcjd/202503/t20250301_123456.html",
+    "keywords": [
+      "长沙县",
+      "应用场景",
+      "低空物流",
+      "补贴政策"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "四川省低空经济产业发展规划（2024-2030年）",
+    "date": "2024-08-01",
+    "source": "四川省人民政府",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "产业促进",
+    "summary": "依托成都航空工业基础和自贡无人机产业基地，打造西部低空经济高地",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202408/t20240801_123456.html",
+    "keywords": [
+      "四川",
+      "成都",
+      "自贡",
+      "无人机",
+      "西部低空经济"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "四川省低空经济基础设施建设三年行动方案",
+    "date": "2024-10-15",
+    "source": "四川省发展和改革委员会",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "基础设施",
+    "summary": "规划建设覆盖全省的低空飞行网络，包括30个以上通用机场和200个以上临时起降点",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202410/t20241015_123456.html",
+    "keywords": [
+      "四川",
+      "通用机场",
+      "起降点",
+      "低空网络"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "成都高新区低空经济企业落户奖励办法",
+    "date": "2025-04-01",
+    "source": "成都高新区管理委员会",
+    "level": "city",
+    "region": "四川省",
+    "category": "资金补贴",
+    "summary": "对落户成都高新区的低空经济企业给予最高3000万元落户奖励和租金减免",
+    "url": "https://www.cdht.gov.cn/zwgk/zcjd/202504/t20250401_123456.html",
+    "keywords": [
+      "成都高新区",
+      "企业落户",
+      "奖励",
+      "租金减免"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空经济标准体系建设指南（2025版）",
+    "date": "2025-06-01",
+    "source": "深圳市市场监督管理局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "适航审定",
+    "summary": "发布低空经济领域标准体系框架，涵盖飞行器技术、运营服务、安全管理等标准",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250601_123456.html",
+    "keywords": [
+      "标准体系",
+      "适航审定",
+      "深圳",
+      "技术标准"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "广东省低空经济应用场景开放清单（第二批）",
+    "date": "2025-08-10",
+    "source": "广东省工业和信息化厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "新增低空物流配送、城市空中交通、低空旅游、应急救援等30个开放场景",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202508/t20250810_123456.html",
+    "keywords": [
+      "应用场景",
+      "低空物流",
+      "城市空中交通",
+      "广东"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局关于推进低空经济与人工智能深度融合的指导意见",
+    "date": "2025-10-15",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "推动AI在低空交通管理、自主飞行、安全监控等领域的应用，建设智慧低空体系",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202510/t20251015_123456.html",
+    "keywords": [
+      "人工智能",
+      "智慧低空",
+      "自主飞行",
+      "低空交通管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济数据安全管理办法",
+    "date": "2025-11-20",
+    "source": "安徽省数据资源管理局",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "空域管理",
+    "summary": "规范低空飞行活动中数据采集、传输、存储和处理的安全管理要求",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202511/t20251120_123456.html",
+    "keywords": [
+      "数据安全",
+      "低空飞行",
+      "安徽",
+      "数据管理"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "四川省低空经济应急救援应用试点方案",
+    "date": "2026-01-15",
+    "source": "四川省应急管理厅",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "基础设施",
+    "summary": "在川西高原和山区开展无人机应急救援试点，建立低空应急响应机制",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202601/t20260115_123456.html",
+    "keywords": [
+      "应急救援",
+      "川西高原",
+      "无人机",
+      "应急响应"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "粤港澳大湾区低空经济协同发展规划",
+    "date": "2026-03-10",
+    "source": "广东省发展和改革委员会",
+    "level": "national",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "推进粤港澳大湾区低空经济协同发展，打通大湾区低空飞行通道，实现跨境低空物流",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202603/t20260310_123456.html",
+    "keywords": [
+      "粤港澳大湾区",
+      "协同发展",
+      "跨境低空物流",
+      "飞行通道"
+    ],
+    "intensity": 5
+  }
+];
+  const EMBEDDED_STATS = {
+  "update_time": "2026-04-30 00:23:20",
+  "total_policies": 31,
+  "time_span": {
+    "start": "2024-01-17",
+    "end": "2026-03-10"
+  },
+  "by_level": {
+    "provincial": 12,
+    "national": 11,
+    "city": 8
+  },
+  "by_region": {
+    "全国": 10,
+    "广东省": 5,
+    "深圳市": 5,
+    "安徽省": 4,
+    "四川省": 4,
+    "湖南省": 3
+  },
+  "by_month": {
+    "2024-01": 1,
+    "2024-02": 1,
+    "2024-03": 2,
+    "2024-04": 2,
+    "2024-05": 2,
+    "2024-06": 2,
+    "2024-07": 2,
+    "2024-08": 2,
+    "2024-09": 2,
+    "2024-10": 1,
+    "2024-11": 1,
+    "2025-01": 2,
+    "2025-02": 1,
+    "2025-03": 2,
+    "2025-04": 1,
+    "2025-06": 2,
+    "2025-08": 1,
+    "2025-10": 1,
+    "2025-11": 1,
+    "2026-01": 1,
+    "2026-03": 1
+  },
+  "by_category": {
+    "产业促进": 11,
+    "空域管理": 6,
+    "基础设施": 5,
+    "资金补贴": 5,
+    "适航审定": 2,
+    "人才引进": 2
+  },
+  "recent_additions": [],
+  "hot_keywords": [
+    {
+      "keyword": "低空经济",
+      "count": 6
+    },
+    {
+      "keyword": "广东",
+      "count": 4
+    },
+    {
+      "keyword": "深圳",
+      "count": 4
+    },
+    {
+      "keyword": "空域管理",
+      "count": 3
+    },
+    {
+      "keyword": "人才引进",
+      "count": 3
+    },
+    {
+      "keyword": "无人机",
+      "count": 3
+    },
+    {
+      "keyword": "安徽",
+      "count": 3
+    },
+    {
+      "keyword": "无人驾驶航空器",
+      "count": 2
+    },
+    {
+      "keyword": "通用航空",
+      "count": 2
+    },
+    {
+      "keyword": "eVTOL",
+      "count": 2
+    },
+    {
+      "keyword": "空域改革",
+      "count": 2
+    },
+    {
+      "keyword": "资金补贴",
+      "count": 2
+    },
+    {
+      "keyword": "起降点",
+      "count": 2
+    },
+    {
+      "keyword": "合肥",
+      "count": 2
+    },
+    {
+      "keyword": "湖南",
+      "count": 2
+    }
+  ]
+};
+
+  let allPolicies = [];
+  let allStats = null;
+  let mapDataLoaded = false;
+
+  // Name mapping for map regions
+  const NAME_MAP = {
+    '广东省': '广东省', '安徽省': '安徽省', '四川省': '四川省', '湖南省': '湖南省',
+    '深圳市': '广东省', // Shenzhen maps to Guangdong on the map
+    '全国': '全国'
+  };
+
+  // Intensity -> numeric for map
+  function getRegionIntensity(region) {
+    let total = 0;
+    allPolicies.forEach(p => {
+      if (p.region === region) total += (p.intensity || 1);
+    });
+    return total;
+  }
+
+  // ---- Load data ----
+  async function loadAll() {
+    try {
+      allPolicies = EMBEDDED_POLICY_DATA;
+      allStats = EMBEDDED_STATS;
+
+      // Hide loading
+      document.getElementById('loading-overlay').classList.add('hidden');
+
+      renderAll();
+    } catch (e) {
+      document.getElementById('loading-overlay').classList.add('hidden');
+      showError('数据加载失败: ' + e.message);
+    }
+  }
+
+  function buildStats(policies) {
+    const byRegion = {};
+    const byMonth = {};
+    const byCategory = {};
+    const byLevel = {};
+    const regions = new Set();
+
+    policies.forEach(p => {
+      // Region
+      if (!byRegion[p.region]) byRegion[p.region] = 0;
+      byRegion[p.region]++;
+      if (p.region !== '全国') regions.add(p.region);
+      // Month
+      const month = p.date.substring(0, 7);
+      if (!byMonth[month]) byMonth[month] = 0;
+      byMonth[month]++;
+      // Category
+      if (!byCategory[p.category]) byCategory[p.category] = 0;
+      byCategory[p.category]++;
+      // Level
+      if (!byLevel[p.level]) byLevel[p.level] = 0;
+      byLevel[p.level]++;
+    });
+
+    return {
+      total_policies: policies.length,
+      by_region: byRegion,
+      by_month: byMonth,
+      by_category: byCategory,
+      by_level: byLevel,
+      regions_count: regions.size
+    };
+  }
+
+  function showError(msg) {
+    document.querySelectorAll('.stat-card .value').forEach(el => el.textContent = '--');
+    const container = document.querySelector('.container');
+    const errDiv = document.createElement('div');
+    errDiv.className = 'error-state';
+    errDiv.innerHTML = '<div class="icon">⚠️</div><p>数据加载失败：' + msg + '</p>';
+    container.prepend(errDiv);
+  }
+
+  // ---- Render all ----
+  function renderAll() {
+    if (!allPolicies.length) {
+      document.querySelectorAll('.stat-card .value').forEach(el => el.textContent = '0');
+      return;
+    }
+
+    renderStats();
+    renderTrendChart();
+    renderCategoryChart();
+    renderMapChart();
+    renderWordcloud();
+    renderPolicyTable();
+    initFilters();
+  }
+
+  // ---- Stats ----
+  function renderStats() {
+    const total = allStats.total_policies || allPolicies.length;
+    document.getElementById('statTotal').textContent = total;
+
+    // Count unique regions (excluding '全国')
+    const uniqueRegions = new Set();
+    allPolicies.forEach(p => { if (p.region !== '全国') uniqueRegions.add(p.region); });
+    document.getElementById('statRegions').textContent = uniqueRegions.size;
+
+    // This month
+    const now = new Date();
+    const thisMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    let monthlyCount = 0;
+    allPolicies.forEach(p => {
+      if (p.date && p.date.substring(0, 7) === thisMonth) monthlyCount++;
+    });
+    document.getElementById('statMonthly').textContent = monthlyCount;
+
+    // Active regions in last 30 days (based on policy dates, not today)
+    // Use the latest policy date as reference
+    let latestDate = '2000-01-01';
+    allPolicies.forEach(p => { if (p.date > latestDate) latestDate = p.date; });
+    const latest = new Date(latestDate);
+    const thirtyDaysAgo = new Date(latest);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const activeRegions = new Set();
+    allPolicies.forEach(p => {
+      if (p.date && p.region !== '全国') {
+        const d = new Date(p.date);
+        if (d >= thirtyDaysAgo && d <= latest) activeRegions.add(p.region);
+      }
+    });
+    document.getElementById('statActive').textContent = activeRegions.size || '--';
+
+    // Update time
+    if (allStats && allStats.update_time) {
+      document.getElementById('updateTime').textContent = '更新于：' + allStats.update_time;
+    } else {
+      document.getElementById('updateTime').textContent = '更新于：' + latestDate;
+    }
+  }
+
+  // ---- Trend Chart ----
+  function renderTrendChart() {
+    const chart = echarts.init(document.getElementById('trendChart'));
+
+    // Build monthly data from 2024-01 to 2026-04
+    const months = [];
+    const monthlyData = {};
+    for (let y = 2024; y <= 2026; y++) {
+      const endM = (y === 2026) ? 4 : 12;
+      for (let m = 1; m <= endM; m++) {
+        const key = y + '-' + String(m).padStart(2, '0');
+        months.push(key);
+        monthlyData[key] = 0;
+      }
+    }
+
+    allPolicies.forEach(p => {
+      if (p.date) {
+        const m = p.date.substring(0, 7);
+        if (monthlyData[m] !== undefined) monthlyData[m]++;
+      }
+    });
+
+    // Cumulative
+    let cum = 0;
+    const cumulative = months.map(m => { cum += monthlyData[m]; return cum; });
+    const monthly = months.map(m => monthlyData[m]);
+
+    chart.setOption({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'cross' }
+      },
+      legend: {
+        data: ['累计政策数', '每月新增'],
+        bottom: 0,
+        textStyle: { fontSize: 12 }
+      },
+      grid: { left: 50, right: 20, top: 20, bottom: 36 },
+      xAxis: {
+        type: 'category',
+        data: months,
+        axisLabel: { fontSize: 10, rotate: 45, interval: 2 },
+        boundaryGap: false
+      },
+      yAxis: [
+        { type: 'value', name: '累计', nameTextStyle: { fontSize: 11 } },
+        { type: 'value', name: '新增', nameTextStyle: { fontSize: 11 } }
+      ],
+      series: [
+        {
+          name: '累计政策数',
+          type: 'line',
+          smooth: true,
+          data: cumulative,
+          lineStyle: { color: '#1a73e8', width: 2 },
+          itemStyle: { color: '#1a73e8' },
+          areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(26,115,232,0.3)' },
+            { offset: 1, color: 'rgba(26,115,232,0.02)' }
+          ])}
+        },
+        {
+          name: '每月新增',
+          type: 'bar',
+          yAxisIndex: 1,
+          data: monthly,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#f9ab00' },
+              { offset: 1, color: '#fdd663' }
+            ]),
+            barBorderRadius: [3,3,0,0]
+          }
+        }
+      ]
+    });
+
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  // ---- Category Chart ----
+  function renderCategoryChart() {
+    const chart = echarts.init(document.getElementById('categoryChart'));
+    const catData = allStats.by_category || {};
+    const items = Object.entries(catData).sort((a,b) => b[1]-a[1]);
+    const colors = ['#1a73e8','#34a853','#f9ab00','#9334e6','#ea4335','#4285f4','#06d6a0','#ff6d01'];
+
+    chart.setOption({
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b}: {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        right: 10,
+        top: 'center',
+        textStyle: { fontSize: 12 }
+      },
+      series: [{
+        type: 'pie',
+        radius: ['40%', '68%'],
+        avoidLabelOverlap: true,
+        label: { show: false },
+        emphasis: {
+          label: { show: true, fontSize: 13, fontWeight: 'bold' }
+        },
+        data: items.map((item, i) => ({
+          name: item[0],
+          value: item[1],
+          itemStyle: { color: colors[i % colors.length] }
+        }))
+      }]
+    });
+
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  // ---- Map Chart ----
+  function renderMapChart() {
+    const chart = echarts.init(document.getElementById('mapChart'));
+
+    // Check if map already registered by china_map_data.js
+    try {
+      const test = echarts.getMap('china');
+      if (test) {
+        drawMap(chart);
+        return;
+      }
+    } catch(e) {}
+
+    // Show loading
+    chart.showLoading();
+
+    // Try loading from external JS first (china_map_data.js auto-registers)
+    let waited = 0;
+    const checkMap = setInterval(() => {
+      waited += 200;
+      try {
+        const test = echarts.getMap('china');
+        if (test) {
+          clearInterval(checkMap);
+          chart.hideLoading();
+          drawMap(chart);
+          return;
+        }
+      } catch(e) {}
+      if (waited >= 3000) {
+        clearInterval(checkMap);
+        // Fallback: fetch from CDN
+        fetch(MAP_GEO_URL)
+          .then(r => r.json())
+          .then(geoJson => {
+            echarts.registerMap('china', geoJson);
+            chart.hideLoading();
+            drawMap(chart);
+          })
+          .catch(() => {
+            chart.hideLoading();
+            chart.setOption({
+              title: { text: '地图加载失败', left: 'center', top: 'center', textStyle: { color: '#999', fontSize: 14 } }
+            });
+          });
+      }
+    }, 200);
+
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  function drawMap(chart) {
+    // Build province data from policies
+    const provData = {};
+    const allRegions = new Set();
+
+    allPolicies.forEach(p => {
+      const region = p.region;
+      if (region === '全国') return;
+      allRegions.add(region);
+      
+      // Map city names to province names for the map
+      let provName = region;
+      if (region === '深圳市') provName = '广东省';
+      else if (region === '合肥市') provName = '安徽省';
+      // Add more mappings if needed
+
+      if (!provData[provName]) provData[provName] = 0;
+      provData[provName] += (p.intensity || 1);
+    });
+
+    // Add some provinces with zero for reference (optional)
+    // Convert to map data format
+    const mapData = Object.entries(provData).map(([name, value]) => ({ name, value }));
+
+    // Find max for color scale
+    const maxVal = mapData.reduce((max, d) => Math.max(max, d.value), 1);
+
+    chart.setOption({
+      tooltip: {
+        trigger: 'item',
+        formatter: function(params) {
+          if (!params.data || params.data.value === undefined) {
+            return params.name + '<br/>暂无数据';
+          }
+          return params.name + '<br/>政策力度指数：<strong>' + params.data.value + '</strong>';
+        }
+      },
+      visualMap: {
+        min: 0,
+        max: maxVal,
+        text: ['高', '低'],
+        realtime: false,
+        calculable: true,
+        inRange: {
+          color: ['#e8f0fe', '#b3caf5', '#7aa3e8', '#4285f4', '#1a73e8', '#1557b0']
+        },
+        textStyle: { fontSize: 11 },
+        left: 10,
+        bottom: 20
+      },
+      series: [{
+        type: 'map',
+        map: 'china',
+        roam: true,
+        label: {
+          show: true,
+          fontSize: 10,
+          color: '#333'
+        },
+        emphasis: {
+          label: { show: true, fontSize: 12, fontWeight: 'bold' },
+          itemStyle: { areaColor: '#f9ab00' }
+        },
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 1
+        },
+        data: mapData
+      }]
+    });
+  }
+
+  // ---- Wordcloud (bubble chart substitute) ----
+  function renderWordcloud() {
+    const chart = echarts.init(document.getElementById('wordcloudChart'));
+
+    const keywords = (allStats && allStats.hot_keywords) || [];
+    if (!keywords.length) {
+      // Extract from policies
+      const kwMap = {};
+      allPolicies.forEach(p => {
+        if (p.keywords) {
+          p.keywords.forEach(k => {
+            kwMap[k] = (kwMap[k] || 0) + 1;
+          });
+        }
+      });
+      const sorted = Object.entries(kwMap).sort((a,b) => b[1]-a[1]).slice(0, 30);
+      keywords.push(...sorted.map(([keyword, count]) => ({ keyword, count })));
+    }
+
+    if (!keywords.length) {
+      chart.setOption({
+        title: { text: '暂无关键词数据', left: 'center', top: 'center', textStyle: { color: '#999', fontSize: 14 } }
+      });
+      return;
+    }
+
+    const maxCount = Math.max(...keywords.map(k => k.count), 1);
+    const minCount = Math.min(...keywords.map(k => k.count), 1);
+
+    // Create scatter data for bubble chart
+    const data = keywords.map((k, i) => {
+      // Position in a rough grid pattern
+      const cols = 5;
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const size = (k.count / maxCount) * 40 + 12;
+      return {
+        name: k.keyword,
+        value: [col * 22 + Math.random() * 8, row * 22 + Math.random() * 8, k.count],
+        symbolSize: size,
+        itemStyle: {
+          color: getWordColor(k.count, minCount, maxCount)
+        }
+      };
+    });
+
+    chart.setOption({
+      tooltip: {
+        formatter: function(params) {
+          return params.data.name + '<br/>出现次数：<strong>' + params.data.value[2] + '</strong>';
+        }
+      },
+      grid: { left: 0, right: 0, top: 0, bottom: 0, containLabel: false },
+      xAxis: { show: false, min: -5, max: 115 },
+      yAxis: { show: false, min: -5, max: 115 },
+      series: [{
+        type: 'scatter',
+        symbol: 'circle',
+        data: data,
+        label: {
+          show: true,
+          formatter: function(params) { return params.data.name; },
+          fontSize: 11,
+          fontWeight: '500',
+          color: '#333'
+        },
+        emphasis: {
+          label: { show: true, fontSize: 14, fontWeight: 'bold' }
+        }
+      }]
+    });
+
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  function getWordColor(val, min, max) {
+    const ratio = (val - min) / (max - min || 1);
+    const colors = [
+      '#e8f0fe', '#b3caf5', '#7aa3e8', '#4285f4', '#1a73e8', '#1557b0'
+    ];
+    const idx = Math.min(Math.floor(ratio * colors.length), colors.length - 1);
+    return colors[idx];
+  }
+
+  // ---- Policy Table ----
+  function renderPolicyTable(filterLevel, filterRegion, filterCategory) {
+    const tbody = document.getElementById('policyTableBody');
+    const emptyDiv = document.getElementById('tableEmpty');
+
+    let filtered = [...allPolicies];
+
+    if (filterLevel && filterLevel !== 'all') {
+      filtered = filtered.filter(p => p.level === filterLevel);
+    }
+    if (filterRegion && filterRegion !== 'all') {
+      filtered = filtered.filter(p => p.region === filterRegion);
+    }
+    if (filterCategory && filterCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === filterCategory);
+    }
+
+    // Sort by date descending, limit to 20
+    filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const display = filtered.slice(0, 20);
+
+    if (!display.length) {
+      tbody.innerHTML = '';
+      emptyDiv.style.display = 'block';
+      return;
+    }
+    emptyDiv.style.display = 'none';
+
+    const levelMap = { national: '国家级', provincial: '省级', city: '市级' };
+    const badgeMap = { national: 'badge-national', provincial: 'badge-provincial', city: 'badge-city' };
+
+    tbody.innerHTML = display.map(p => {
+      const levelLabel = levelMap[p.level] || p.level;
+      const badgeClass = badgeMap[p.level] || 'badge-national';
+      return '<tr>' +
+        '<td style="white-space:nowrap;">' + (p.date || '--') + '</td>' +
+        '<td><a class="policy-title" href="' + (p.url || '#') + '" target="_blank" title="' + escHtml(p.summary || '') + '">' + escHtml(p.title) + '</a></td>' +
+        '<td>' + escHtml(p.source || '--') + '</td>' +
+        '<td><span class="badge ' + badgeClass + '">' + levelLabel + '</span></td>' +
+        '<td>' + escHtml(p.region || '--') + '</td>' +
+        '<td>' + escHtml(p.category || '--') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ---- Filters ----
+  function initFilters() {
+    // Populate region filter
+    const regionSet = new Set();
+    const catSet = new Set();
+    allPolicies.forEach(p => {
+      if (p.region) regionSet.add(p.region);
+      if (p.category) catSet.add(p.category);
+    });
+
+    const regionSel = document.getElementById('filterRegion');
+    regionSet.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r;
+      opt.textContent = r;
+      regionSel.appendChild(opt);
+    });
+
+    const catSel = document.getElementById('filterCategory');
+    catSet.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      catSel.appendChild(opt);
+    });
+
+    // Bind filter events
+    document.getElementById('filterLevel').addEventListener('change', applyFilters);
+    document.getElementById('filterRegion').addEventListener('change', applyFilters);
+    document.getElementById('filterCategory').addEventListener('change', applyFilters);
+  }
+
+  function applyFilters() {
+    const level = document.getElementById('filterLevel').value;
+    const region = document.getElementById('filterRegion').value;
+    const cat = document.getElementById('filterCategory').value;
+    renderPolicyTable(level, region, cat);
+  }
+
+  // ---- Start ----
+  loadAll();
+})();
+</script>
+
+</body>
+</html>
