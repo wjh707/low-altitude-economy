@@ -325,5 +325,20 @@
     "policy_tools": [
       "产业促进"
     ]
+  },
+  {
+    "title": "市场监管总局等部门关于印发《低空经济标准体系建设指南（2025年版）》的通知",
+    "date": "2025-12-11",
+    "region": "全国",
+    "source": "市场监管总局网站",
+    "category": "政策文件",
+    "level": "national",
+    "url": "https://www.gov.cn/zhengce/zhengceku/202602/content_7056835.htm",
+    "url_note": "有效",
+    "policy_tools": [
+      "技术创新",
+      "标准规范"
+    ],
+    "issuer": "市场监管总局、中央空管办、国家发展改革委、工业和信息化部等10部门"
   }
 ]
