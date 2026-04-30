@@ -1,0 +1,30 @@
+[
+  {
+    "time": "2026-04-30T09:39:26.561808",
+    "module": "policy",
+    "before": 31,
+    "after": 31,
+    "new_records": 0
+  },
+  {
+    "time": "2026-04-30T09:52:04.029907",
+    "module": "policy",
+    "before": 31,
+    "after": 31,
+    "new_records": 0
+  },
+  {
+    "time": "2026-04-30T10:19:18.829954",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-04-30T12:12:02.614642",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  }
+]

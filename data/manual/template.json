@@ -1,0 +1,21 @@
+{
+  "source_note": "将此文件放在 data/manual/ 目录下，运行 manual_import.py 自动导入",
+  "import_time": "2026-04-30T10:01:12.234877",
+  "policies": [
+    {
+      "title": "示例：XX市低空经济促进政策",
+      "date": "2026-04-30",
+      "source": "XX市人民政府",
+      "level": "city",
+      "region": "XX市",
+      "category": "产业促进",
+      "summary": "政策主要内容摘要",
+      "url": "https://example.gov.cn/policy/xxx",
+      "keywords": [
+        "低空经济",
+        "产业促进"
+      ],
+      "intensity": 4
+    }
+  ]
+}
