@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>低空经济企业动态看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+  }
+  a { color: #1a73e8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Loading overlay */
+  #loading-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(240, 244, 248, 0.95);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+  }
+  #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loader {
+    width: 48px; height: 48px;
+    border: 4px solid #e0e6ed;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { margin-top: 16px; color: #5f6368; font-size: 14px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+    color: #fff;
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
+  .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+  .header-right { text-align: right; font-size: 12px; opacity: 0.8; }
+  .header-nav { display: flex; gap: 16px; margin-top: 8px; }
+  .header-nav a {
+    color: rgba(255,255,255,0.8);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .header-nav a:hover { background: rgba(255,255,255,0.15); text-decoration: none; }
+  .header-nav a.active { background: rgba(255,255,255,0.2); color: #fff; font-weight: 600; }
+
+  /* Container */
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+
+  /* Stats cards */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-left: 4px solid #1a73e8;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .stat-card .label { font-size: 13px; color: #5f6368; margin-bottom: 6px; }
+  .stat-card .value { font-size: 28px; font-weight: 700; }
+  .stat-card .sublabel { font-size: 12px; color: #5f6368; margin-top: 4px; }
+  .stat-card.card-blue { border-left-color: #1a73e8; }
+  .stat-card.card-blue .value { color: #1a73e8; }
+  .stat-card.card-green { border-left-color: #34a853; }
+  .stat-card.card-green .value { color: #34a853; }
+  .stat-card.card-orange { border-left-color: #f9ab00; }
+  .stat-card.card-orange .value { color: #f9ab00; }
+  .stat-card.card-purple { border-left-color: #9334e6; }
+  .stat-card.card-purple .value { color: #9334e6; }
+
+  /* Chain cards */
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .chain-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border-top: 4px solid #1a73e8;
+    transition: transform 0.2s;
+  }
+  .chain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .chain-card .chain-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .chain-card .chain-count { font-size: 24px; font-weight: 700; }
+  .chain-card .chain-companies {
+    font-size: 12px;
+    color: #5f6368;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* Chart rows */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .chart-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .chart-box h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e8eaed;
+  }
+  .chart-box .chart { width: 100%; height: 340px; }
+  .chart-full {
+    grid-column: 1 / -1;
+  }
+  .chart-full .chart { height: 300px; }
+
+  /* Error */
+  .error-msg {
+    background: #fce8e6;
+    color: #c5221f;
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  /* Table */
+  .table-section { margin-top: 20px; }
+  .table-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .table-controls select, .table-controls input {
+    padding: 8px 14px;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+  }
+  .table-controls select:focus, .table-controls input:focus { border-color: #1a73e8; }
+  .table-controls .filter-label { font-size: 13px; color: #5f6368; font-weight: 500; }
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  th {
+    background: #f8f9fa;
+    color: #5f6368;
+    font-weight: 600;
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 2px solid #e8eaed;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    vertical-align: top;
+  }
+  tr:hover td { background: #f8f9ff; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-重大项目 { background: #e8f0fe; color: #1a73e8; }
+  .badge-融资 { background: #e6f4ea; color: #137333; }
+  .badge-产品发布 { background: #fef7e0; color: #e37400; }
+  .badge-战略合作 { background: #f3e8fd; color: #7c3aed; }
+  .badge-企业经营 { background: #e6f4ea; color: #1a73e8; }
+  .badge-适航取证 { background: #fce8e6; color: #c5221f; }
+  .badge-政策响应 { background: #e8f0fe; color: #1967d2; }
+
+  .chain-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: #5f6368;
+    font-size: 12px;
+    border-top: 1px solid #e8eaed;
+    margin-top: 40px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .chain-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-row { grid-template-columns: 1fr; }
+    .header h1 { font-size: 18px; }
+  }
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .chain-grid { grid-template-columns: 1fr; }
+    .header-inner { flex-direction: column; text-align: center; }
+    .header-right { text-align: center; }
+    .header-nav { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading-overlay">
+  <div class="loader"></div>
+  <div class="loader-text">正在加载企业动态数据...</div>
+</div>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <h1>🚁 低空经济企业动态看板</h1>
+      <div class="subtitle">企业动态 · 产业链全景 · 智能追踪</div>
+    </div>
+    <div style="text-align:right">
+      <div class="header-nav">
+        <a href="index.html">📜政策看板</a>
+        <a href="talent.html">👥人才看板</a>
+        <a href="companies.html" class="active">🏢企业动态</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Stats Cards -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card card-blue">
+      <div class="label">🏢 跟踪企业数</div>
+      <div class="value" id="statCompanies">-</div>
+      <div class="sublabel">低空经济核心企业</div>
+    </div>
+    <div class="stat-card card-green">
+      <div class="label">📰 动态总数</div>
+      <div class="value" id="statNews">-</div>
+      <div class="sublabel">累计追踪报道</div>
+    </div>
+    <div class="stat-card card-orange">
+      <div class="label">📍 覆盖城市</div>
+      <div class="value" id="statCities">-</div>
+      <div class="sublabel">全国重点城市</div>
+    </div>
+    <div class="stat-card card-purple">
+      <div class="label">🔗 产业链环节数</div>
+      <div class="value" id="statChain">-</div>
+      <div class="sublabel">全产业链覆盖</div>
+    </div>
+  </div>
+
+  <!-- Industry Chain Panorama -->
+  <div class="chart-box" style="margin-bottom:20px">
+    <h3>🔗 产业链全景 · 各环节企业分布</h3>
+    <div class="chain-grid" id="chainGrid"></div>
+  </div>
+
+  <!-- Charts Row 1: Timeline + Pie -->
+  <div class="chart-row">
+    <div class="chart-box">
+      <h3>📈 动态发布量月度趋势</h3>
+      <div id="chartTimeline" class="chart"></div>
+    </div>
+    <div class="chart-box">
+      <h3>🎯 动态分类占比</h3>
+      <div id="chartCategory" class="chart"></div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2: Company Activity Bar -->
+  <div class="chart-box" style="margin-bottom:20px">
+    <h3>🔥 企业活跃度 TOP10</h3>
+    <div id="chartCompanyActivity" class="chart" style="height:340px"></div>
+  </div>
+
+  <!-- Dynamic List with Filters -->
+  <div class="chart-box table-section">
+    <h3>📋 动态列表</h3>
+    <div class="table-controls">
+      <span class="filter-label">筛选：</span>
+      <select id="filterCompany">
+        <option value="">全部企业</option>
+      </select>
+      <select id="filterChain">
+        <option value="">全产业链环节</option>
+      </select>
+      <select id="filterCategory">
+        <option value="">全部分类</option>
+        <option value="重大项目">重大项目</option>
+        <option value="融资">融资</option>
+        <option value="产品发布">产品发布</option>
+        <option value="战略合作">战略合作</option>
+        <option value="适航取证">适航取证</option>
+        <option value="企业经营">企业经营</option>
+        <option value="政策响应">政策响应</option>
+      </select>
+      <input type="date" id="filterDateFrom" title="起始日期">
+      <input type="date" id="filterDateTo" title="截止日期">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>标题</th>
+            <th>企业</th>
+            <th>分类</th>
+            <th>产业链环节</th>
+            <th>城市</th>
+            <th>摘要</th>
+          </tr>
+        </thead>
+        <tbody id="newsTableBody"></tbody>
+      </table>
+    </div>
+    <div id="tableEmpty" style="text-align:center;padding:40px 20px;color:#80868b;display:none;">
+      <div style="font-size:36px;margin-bottom:8px;">📭</div>
+      <p>暂无符合条件的动态数据</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  数据来源：企业官网 · 公开新闻报道 · 行业研究 &nbsp;|&nbsp; 更新频率：每日 &nbsp;|&nbsp; 低空经济企业动态看板 v1.0
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  let allNews = [];
+
+  // ---- Chain link display names ----
+  const CHAIN_DISPLAY = {
+    '材料/零部件': '材料/零部件',
+    '整机制造': '整机制造',
+    '空域基建/通信': '空域基建/通信',
+    '运营服务': '运营服务',
+    '应用场景': '应用场景',
+    '综合保障': '综合保障'
+  };
+
+  const CHAIN_ICONS = {
+    '材料/零部件': '🧪',
+    '整机制造': '🏭',
+    '空域基建/通信': '📡',
+    '运营服务': '✈️',
+    '应用场景': '🌐',
+    '综合保障': '🛡️'
+  };
+
+  const CHAIN_COLORS = [
+    ['#1a73e8', '#e8f0fe'],
+    ['#34a853', '#e6f4ea'],
+    ['#f9ab00', '#fef7e0'],
+    ['#ea4335', '#fce8e6'],
+    ['#9334e6', '#f3e8fd'],
+    ['#e37400', '#fef3e0']
+  ];
+
+  // ---- Data loading ----
+  async function loadAll() {
+    try {
+      // Try loading company_news.json first
+      const resp = await fetch('company_news.json').catch(() => null);
+      if (resp && resp.ok) {
+        allNews = await resp.json();
+      } else {
+        throw new Error('文件加载失败');
+      }
+
+      // Try to also load companies data for enrichment
+      let companiesMap = {};
+      try {
+        const compResp = await fetch('../data/companies.json').catch(() => null);
+        if (compResp && compResp.ok) {
+          const companies = await compResp.json();
+          companies.forEach(c => { companiesMap[c.name] = c; });
+        }
+      } catch(e) { /* optional */ }
+
+      if (!allNews || !Array.isArray(allNews) || allNews.length === 0) {
+        throw new Error('数据为空');
+      }
+
+      document.getElementById('loading-overlay').classList.add('hidden');
+      renderAll(companiesMap);
+    } catch (e) {
+      document.getElementById('loading-overlay').classList.add('hidden');
+      // Show embedded fallback data as hint for backend import
+      const fallback = [
+        {"date":"2025-07-18","company":"航天电器","headline":"航天电器中标低空经济航空连接器批量采购项目","category":"重大项目","summary":"中标某eVTOL企业连接器批量采购项目，合同金额超5000万元。","id":"news_001","chain_link":"材料/零部件","city":"贵阳"},
+        {"date":"2025-07-02","company":"沃兰特航空","headline":"沃兰特航空完成B+轮融资加速适航取证","category":"融资","summary":"完成B+轮融资超亿元，资金将用于VE25-100的适航取证和扩大试飞测试规模。","id":"news_002","chain_link":"整机制造","city":"上海"},
+        {"date":"2025-06-30","company":"中无人机","headline":"中无人机签署「翼龙」系列无人机海外出口大单","category":"重大项目","summary":"签署翼龙系列无人机海外出口合同，合同金额约5亿美元。","id":"news_003","chain_link":"整机制造","city":"成都"},
+        {"date":"2025-06-20","company":"零重力飞机工业","headline":"零重力飞机工业与黄山旅游合作低空旅游示范","category":"战略合作","summary":"与黄山旅游集团签署合作，共同打造黄山低空旅游观光示范项目。","id":"news_005","chain_link":"整机制造","city":"合肥"},
+        {"date":"2025-06-10","company":"中通无人机","headline":"中通无人机在长三角开通5条常态化配送航线","category":"重大项目","summary":"在长三角地区开通5条常态化无人机快递配送航线。","id":"news_006","chain_link":"运营服务","city":"上海"},
+        {"date":"2025-04-22","company":"小鹏汇天","headline":"小鹏汇天获广东省低空经济产业基金20亿元投资","category":"融资","summary":"广东省低空经济产业基金联合多家机构向小鹏汇天投资20亿元。","id":"news_014","chain_link":"整机制造","city":"广州"}
+      ];
+      allNews = fallback;
+      renderAll({});
+      document.querySelector('.container').insertAdjacentHTML('afterbegin',
+        '<div class="error-msg">⚠️ 数据加载失败: ' + escHtml(e.message) + '，已使用示例数据展示。请确保 company_news.json 文件存在于同目录。</div>');
+    }
+  }
+
+  function escHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function getBadge(cat) {
+    const map = {
+      '重大项目':'badge-重大项目','融资':'badge-融资','产品发布':'badge-产品发布',
+      '战略合作':'badge-战略合作','企业经营':'badge-企业经营','适航取证':'badge-适航取证',
+      '政策响应':'badge-政策响应'
+    };
+    return map[cat] || '';
+  }
+
+  function renderAll(companiesMap) {
+    renderStats();
+    renderChainCards();
+    renderTimelineChart();
+    renderCategoryPieChart();
+    renderCompanyActivityChart();
+    initFilters();
+    renderTable();
+  }
+
+  function renderStats() {
+    const companies = new Set(allNews.map(n => n.company));
+    const cities = new Set(allNews.map(n => n.city));
+    const chains = new Set(allNews.map(n => n.chain_link));
+
+    document.getElementById('statCompanies').textContent = companies.size;
+    document.getElementById('statNews').textContent = allNews.length;
+    document.getElementById('statCities').textContent = cities.size;
+    document.getElementById('statChain').textContent = chains.size;
+  }
+
+  function renderChainCards() {
+    const grid = document.getElementById('chainGrid');
+    const chainData = {};
+    allNews.forEach(n => {
+      if (!chainData[n.chain_link]) {
+        chainData[n.chain_link] = { companies: new Set(), count: 0 };
+      }
+      chainData[n.chain_link].companies.add(n.company);
+      chainData[n.chain_link].count++;
+    });
+
+    const chainOrder = ['材料/零部件','整机制造','空域基建/通信','运营服务','应用场景','综合保障'];
+    let idx = 0;
+    let html = '';
+    chainOrder.forEach(link => {
+      const data = chainData[link];
+      if (!data) return;
+      const color = CHAIN_COLORS[idx % CHAIN_COLORS.length];
+      const icon = CHAIN_ICONS[link] || '🔗';
+      const name = CHAIN_DISPLAY[link] || link;
+      const companyList = [...data.companies].slice(0, 5).join('、');
+      const more = data.companies.size > 5 ? `等${data.companies.size}家` : '';
+      html += `
+        <div class="chain-card" style="border-top-color:${color[0]};background:${color[1]}">
+          <div class="chain-name" style="color:${color[0]}">${icon} ${name}</div>
+          <div class="chain-count" style="color:${color[0]}">${data.companies.size}<span style="font-size:13px;font-weight:400;color:#5f6368"> 家企业 · ${data.count} 条动态</span></div>
+          <div class="chain-companies">代表企业：${companyList}${more}</div>
+        </div>
+      `;
+      idx++;
+    });
+    grid.innerHTML = html;
+  }
+
+  function renderTimelineChart() {
+    const chart = echarts.init(document.getElementById('chartTimeline'));
+    const monthData = {};
+    allNews.forEach(n => {
+      const month = n.date.substring(0, 7);
+      monthData[month] = (monthData[month] || 0) + 1;
+    });
+    const sorted = Object.entries(monthData).sort((a,b) => a[0].localeCompare(b[0]));
+    const months = sorted.map(e => e[0]);
+    const counts = sorted.map(e => e[1]);
+
+    chart.setOption({
+      tooltip: { trigger: 'axis' },
+      grid: { left: 60, right: 30, top: 30, bottom: 40 },
+      xAxis: {
+        type: 'category',
+        data: months,
+        axisLabel: { fontSize: 11 }
+      },
+      yAxis: {
+        type: 'value',
+        name: '动态数',
+        nameTextStyle: { fontSize: 11 }
+      },
+      series: [{
+        type: 'line',
+        data: counts,
+        smooth: true,
+        lineStyle: { color: '#1a73e8', width: 3 },
+        itemStyle: { color: '#1a73e8' },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0,0,0,1, [
+            { offset: 0, color: 'rgba(26,115,232,0.3)' },
+            { offset: 1, color: 'rgba(26,115,232,0.05)' }
+          ])
+        },
+        symbol: 'circle',
+        symbolSize: 8,
+        label: { show: true, fontSize: 11, fontWeight: 600 }
+      }]
+    });
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  function renderCategoryPieChart() {
+    const chart = echarts.init(document.getElementById('chartCategory'));
+    const catData = {};
+    allNews.forEach(n => {
+      catData[n.category] = (catData[n.category] || 0) + 1;
+    });
+    const catOrder = ['重大项目','融资','产品发布','战略合作','企业经营','适航取证','政策响应'];
+    const colorMap = {
+      '重大项目': '#1a73e8',
+      '融资': '#34a853',
+      '产品发布': '#f9ab00',
+      '战略合作': '#9334e6',
+      '企业经营': '#0d8043',
+      '适航取证': '#ea4335',
+      '政策响应': '#e37400'
+    };
+    const items = catOrder.filter(c => catData[c]).map(c => ({
+      name: c,
+      value: catData[c],
+      itemStyle: { color: colorMap[c] || '#aaa' }
+    }));
+
+    chart.setOption({
+      tooltip: { trigger: 'item', formatter: '{b}: {c}条 ({d}%)' },
+      series: [{
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['50%', '50%'],
+        label: {
+          formatter: '{b}\n{c}条',
+          fontSize: 12
+        },
+        labelLine: { length: 15, length2: 10 },
+        data: items
+      }]
+    });
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  function renderCompanyActivityChart() {
+    const chart = echarts.init(document.getElementById('chartCompanyActivity'));
+    const compData = {};
+    allNews.forEach(n => {
+      compData[n.company] = (compData[n.company] || 0) + 1;
+    });
+    const entries = Object.entries(compData).sort((a,b) => b[1] - a[1]).slice(0, 10);
+    const names = entries.map(e => e[0]).reverse();
+    const vals = entries.map(e => e[1]).reverse();
+
+    chart.setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      grid: { left: 100, right: 50, top: 20, bottom: 40 },
+      xAxis: { type: 'value' },
+      yAxis: {
+        type: 'category',
+        data: names,
+        axisLabel: { fontSize: 11 }
+      },
+      series: [{
+        type: 'bar',
+        data: vals.map((v, i) => ({
+          value: v,
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0,0,1,0, [
+              { offset: 0, color: '#1a73e8' },
+              { offset: 1, color: '#6ab7ff' }
+            ]),
+            borderRadius: [0, 4, 4, 0]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'right',
+          fontSize: 12,
+          fontWeight: 600,
+          formatter: '{c}条'
+        }
+      }]
+    });
+    window.addEventListener('resize', () => chart.resize());
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('newsTableBody');
+    const emptyEl = document.getElementById('tableEmpty');
+    const companyFilter = document.getElementById('filterCompany').value;
+    const chainFilter = document.getElementById('filterChain').value;
+    const catFilter = document.getElementById('filterCategory').value;
+    const dateFrom = document.getElementById('filterDateFrom').value;
+    const dateTo = document.getElementById('filterDateTo').value;
+
+    let filtered = allNews;
+    if (companyFilter) filtered = filtered.filter(n => n.company === companyFilter);
+    if (chainFilter) filtered = filtered.filter(n => n.chain_link === chainFilter);
+    if (catFilter) filtered = filtered.filter(n => n.category === catFilter);
+    if (dateFrom) filtered = filtered.filter(n => n.date >= dateFrom);
+    if (dateTo) filtered = filtered.filter(n => n.date <= dateTo);
+
+    filtered = filtered.sort((a,b) => b.date.localeCompare(a.date));
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    tbody.innerHTML = filtered.map(n => `
+      <tr>
+        <td style="white-space:nowrap">${escHtml(n.date)}</td>
+        <td><strong>${escHtml(n.headline)}</strong></td>
+        <td>${escHtml(n.company)}</td>
+        <td><span class="badge ${getBadge(n.category)}">${escHtml(n.category)}</span></td>
+        <td><span class="chain-tag" style="background:#e8f0fe;color:#1a73e8">${escHtml(n.chain_link)}</span></td>
+        <td>${escHtml(n.city)}</td>
+        <td style="max-width:300px;font-size:12px;color:#5f6368">${escHtml(n.summary)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function initFilters() {
+    const companies = new Set(allNews.map(n => n.company));
+    const chains = new Set(allNews.map(n => n.chain_link));
+
+    const compSelect = document.getElementById('filterCompany');
+    const chainSelect = document.getElementById('filterChain');
+
+    [...companies].sort().forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      compSelect.appendChild(opt);
+    });
+    [...chains].sort().forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      chainSelect.appendChild(opt);
+    });
+
+    document.querySelectorAll('.table-controls select, .table-controls input').forEach(el => {
+      el.addEventListener('change', renderTable);
+    });
+  }
+
+  loadAll();
+})();
+</script>
+</body>
+</html>

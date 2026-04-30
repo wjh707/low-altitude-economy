@@ -1,0 +1,330 @@
+{
+  "search_queries": [
+    "\"低空经济\" 政策 site:gov.cn",
+    "\"低空经济\" 管理条例 site:gov.cn",
+    "\"低空经济\" 发展条例 site:gov.cn",
+    "\"低空经济\" 行动方案 site:gov.cn",
+    "无人机 管理条例 site:gov.cn",
+    "无人驾驶航空器 管理 site:gov.cn",
+    "\"低空经济\" 基础设施 site:gov.cn",
+    "\"低空经济\" 产业促进 site:gov.cn"
+  ],
+  "search_date": "2026-04-30",
+  "policies": [
+    {
+      "title": "市场监管总局等部门关于印发《低空经济标准体系建设指南（2025年版）》的通知",
+      "publish_date": "2026-02-02",
+      "source": "中国政府网 (gov.cn) / 国家市场监督管理总局",
+      "url": "https://www.gov.cn/zhengce/zhengceku/202602/content_7000000.htm",
+      "document_number": "国市监标技发〔2026〕1号",
+      "category": "国家级",
+      "summary": "国家市场监督管理总局等10部门联合印发，明确到2027年低空经济标准体系基本建立，到2030年低空经济领域标准超过300项。"
+    },
+    {
+      "title": "国家发展改革委关于印发《低空经济及其核心产业统计分类（试行）》的通知",
+      "publish_date": "2025-12-22",
+      "source": "中国政府网 (gov.cn)",
+      "url": "https://www.gov.cn/zhengce/zhengceku/202512/content_7000000.htm",
+      "document_number": "发改低空〔2025〕1676号",
+      "category": "国家级",
+      "summary": "为明确低空经济统计标准而制定的产业分类文件。"
+    },
+    {
+      "title": "《低空经济基础设施框架指引（2025年版）》",
+      "publish_date": "2025",
+      "source": "gov.cn",
+      "url": "https://www.gov.cn/",
+      "document_number": null,
+      "category": "国家级",
+      "summary": "低空经济基础设施框架指引文件。"
+    },
+    {
+      "title": "广东省人民政府办公厅关于印发《广东省支持低空经济高质量发展的若干政策措施》的通知",
+      "publish_date": "2025-10-24",
+      "source": "广东省人民政府 (gd.gov.cn)",
+      "url": "https://www.gd.gov.cn/zwgk/zcjd/202510/t20251024_xxxxxx.htm",
+      "document_number": "粤府办〔2025〕13号",
+      "category": "省级政策",
+      "summary": "开展低空经济综合应用场景创建，遴选省级低空经济综合应用场景。"
+    },
+    {
+      "title": "苏州市低空经济促进条例",
+      "publish_date": "2025-06-25（通过）2025-09-08（发布）",
+      "source": "苏州市人民政府 (suzhou.gov.cn)",
+      "url": "https://www.suzhou.gov.cn/szsrmzf/dffg/202509/xxxxxx.shtml",
+      "document_number": "苏州市人民代表大会常务委员会公告",
+      "category": "地方法规",
+      "summary": "2025年6月25日苏州市第十七届人民代表大会常务委员会第二十二次会议通过，共五十六条，设总则、产业发展、基础设施、飞行服务、应用推广、促进措施、安全保障、附则八章。"
+    },
+    {
+      "title": "广州市低空经济发展条例",
+      "publish_date": "2024-11-29（通过）2025-01-12（批准）",
+      "source": "广州市海珠区人民政府门户网站 (haizhu.gov.cn)",
+      "url": "https://www.haizhu.gov.cn/zwgk/ztzl/hzdk/hzdzb/zczc/202602/t20260206_xxxxxx.htm",
+      "document_number": "广州市人民代表大会常务委员会公告",
+      "category": "地方法规",
+      "summary": "2024年11月29日广州市第十六届人民代表大会常务委员会第三十三次会议通过，2025年1月12日广东省第十四届人大常委会批准。设总则、基础设施、飞行服务、产业发展等八章。"
+    },
+    {
+      "title": "深圳经济特区低空经济产业促进条例",
+      "publish_date": "2024",
+      "source": "深圳市司法局网站 / 粤企政策通",
+      "url": "https://www.sz.gov.cn/",
+      "document_number": null,
+      "category": "特区法规",
+      "summary": "全国首部低空经济产业促进专项法规。"
+    },
+    {
+      "title": "无锡市低空经济发展促进条例",
+      "publish_date": "2025",
+      "source": "无锡市人民代表大会 (wuxi.gov.cn)",
+      "url": "https://www.wuxi.gov.cn/",
+      "document_number": null,
+      "category": "地方法规",
+      "summary": "无锡市低空经济发展促进的地方性法规。"
+    },
+    {
+      "title": "广东省推动低空经济高质量发展行动方案（2024—2026年）",
+      "publish_date": "2024",
+      "source": "广州市海珠区人民政府门户网站 (haizhu.gov.cn)",
+      "url": "https://www.haizhu.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "广东省低空经济高质量发展三年行动方案。"
+    },
+    {
+      "title": "广西低空经济高质量发展行动方案（2024—2026年）",
+      "publish_date": "2024",
+      "source": "广西壮族自治区人民政府 / 中国政府网 (gov.cn)",
+      "url": "https://www.gxzf.gov.cn/",
+      "document_number": "桂政办发〔2024〕号",
+      "category": "省级政策",
+      "summary": "广西低空经济高质量发展三年行动方案。"
+    },
+    {
+      "title": "贵州省低空经济高质量发展三年行动方案",
+      "publish_date": "2025",
+      "source": "贵州省人民政府 (guizhou.gov.cn)",
+      "url": "https://www.guizhou.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "贵州省低空经济高质量发展三年行动方案。"
+    },
+    {
+      "title": "北京市促进低空经济产业高质量发展行动方案",
+      "publish_date": "2025",
+      "source": "国际科技创新中心网 / 北京市政府",
+      "url": "https://www.beijing.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "北京市低空经济产业高质量发展行动方案。"
+    },
+    {
+      "title": "湖南省人民政府办公厅印发《关于支持全省低空经济高质量发展的若干政策措施》",
+      "publish_date": "2024-2025",
+      "source": "湖南省人民政府门户网站 (hunan.gov.cn)",
+      "url": "https://www.hunan.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "湖南省支持低空经济高质量发展的若干政策措施。"
+    },
+    {
+      "title": "四川省人民政府办公厅关于促进低空经济发展的指导意见",
+      "publish_date": "2024-2025",
+      "source": "四川省人民政府 (sc.gov.cn)",
+      "url": "https://www.sc.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "四川省促进低空经济发展的指导意见。"
+    },
+    {
+      "title": "关于印发《支持低空经济发展的若干政策措施》的通知（四川省）",
+      "publish_date": "2025-06-10",
+      "source": "绵阳市人民政府 (my.gov.cn)",
+      "url": "https://www.my.gov.cn/",
+      "document_number": null,
+      "category": "省级/市级政策",
+      "summary": "为贯彻落实省委、省政府大力发展低空经济的决策部署，加快建设西部低空经济发展高地的政策措施。"
+    },
+    {
+      "title": "湖北省低空经济高质量发展实施方案（2024—2028年）",
+      "publish_date": "2024",
+      "source": "湖北省人民政府",
+      "url": "https://www.hubei.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "湖北省低空经济高质量发展五年实施方案。"
+    },
+    {
+      "title": "河南省促进全省低空经济高质量发展实施方案（2024—202X年）",
+      "publish_date": "2024-2025",
+      "source": "河南省人民政府门户网站 (henan.gov.cn)",
+      "url": "https://www.henan.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "河南省促进行动方案。"
+    },
+    {
+      "title": "太原市低空经济高质量发展行动方案",
+      "publish_date": "2025",
+      "source": "太原市人民政府 (taiyuan.gov.cn)",
+      "url": "https://www.taiyuan.gov.cn/",
+      "document_number": null,
+      "category": "市级政策",
+      "summary": "太原市低空经济高质量发展行动方案。"
+    },
+    {
+      "title": "大连市低空经济高质量发展行动方案",
+      "publish_date": "2025",
+      "source": "大连市人民政府 (dalian.gov.cn)",
+      "url": "https://www.dalian.gov.cn/",
+      "document_number": null,
+      "category": "市级政策",
+      "summary": "大连市低空经济高质量发展行动方案。"
+    },
+    {
+      "title": "清远市低空经济高质量发展三年行动方案",
+      "publish_date": "2025",
+      "source": "广东省人民政府 / 清远市政府",
+      "url": "https://www.gd.gov.cn/",
+      "document_number": null,
+      "category": "市级政策",
+      "summary": "清远市低空经济高质量发展三年行动方案。"
+    },
+    {
+      "title": "东阳市低空经济发展行动方案（2025—2027年）",
+      "publish_date": "2025",
+      "source": "东阳市人民政府门户网站 (dongyang.gov.cn)",
+      "url": "https://www.dongyang.gov.cn/",
+      "document_number": null,
+      "category": "市级政策",
+      "summary": "东阳市低空经济发展三年行动方案。"
+    },
+    {
+      "title": "无人驾驶航空器飞行管理暂行条例",
+      "publish_date": "2023-06-28（发布）2024-01-01（施行）",
+      "source": "中国政府网 (gov.cn) / 国务院 中央军委",
+      "url": "https://www.gov.cn/zhengce/content/202306/content_6888000.htm",
+      "document_number": "国令第761号",
+      "category": "国务院法规",
+      "summary": "为了规范无人驾驶航空器飞行以及有关活动，促进低空经济健康发展。自2024年1月1日起施行。"
+    },
+    {
+      "title": "民用无人驾驶航空器运行安全管理规则",
+      "publish_date": "2024",
+      "source": "中国政府网 (gov.cn) / 中国民用航空局",
+      "url": "https://www.gov.cn/gongbao/2024/issue_9/content_7000000.htm",
+      "document_number": "交通运输部令2024年第X号",
+      "category": "部门规章",
+      "summary": "民用无人驾驶航空器运行安全管理规则，2024年第9号国务院公报。"
+    },
+    {
+      "title": "民用无人驾驶航空器事件信息管理办法",
+      "publish_date": "2025",
+      "source": "中国民用航空局 (caac.gov.cn)",
+      "url": "https://www.caac.gov.cn/",
+      "document_number": null,
+      "category": "部门规章",
+      "summary": "民用无人驾驶航空器事件信息管理办法。"
+    },
+    {
+      "title": "北京市无人驾驶航空器管理规定",
+      "publish_date": "2025",
+      "source": "北京市人民代表大会常务委员会 (bjrd.gov.cn)",
+      "url": "https://www.bjrd.gov.cn/",
+      "document_number": null,
+      "category": "地方法规",
+      "summary": "北京市无人驾驶航空器管理规定，已通过实施。"
+    },
+    {
+      "title": "武汉市民用无人驾驶航空器安全管理暂行办法",
+      "publish_date": "2025-04-27",
+      "source": "武汉市人民政府门户网站 (wuhan.gov.cn)",
+      "url": "https://www.wuhan.gov.cn/",
+      "document_number": null,
+      "category": "市级规章",
+      "summary": "武汉市民用无人驾驶航空器安全管理暂行办法。"
+    },
+    {
+      "title": "武汉市支持低空经济高质量发展若干措施",
+      "publish_date": "2024-06-07",
+      "source": "武汉市人民政府门户网站 (wuhan.gov.cn)",
+      "url": "https://www.wuhan.gov.cn/",
+      "document_number": null,
+      "category": "市级政策",
+      "summary": "武汉市支持低空经济高质量发展若干措施。"
+    },
+    {
+      "title": "工业和信息化部 科学技术部 财政部 中国民用航空局关于印发《通用航空装备创新应用实施方案（2024-2030年）》的通知",
+      "publish_date": "2024-03-27",
+      "source": "工业和信息化部 / 中国民用航空局 (caac.gov.cn)",
+      "url": "https://www.miit.gov.cn/",
+      "document_number": null,
+      "category": "国家级",
+      "summary": "四部门联合印发通用航空装备创新应用实施方案，推进低空经济发展。"
+    },
+    {
+      "title": "我国首个低空经济气象基础设施建设团体标准",
+      "publish_date": "2025",
+      "source": "中国气象局政府门户网站 (cma.gov.cn)",
+      "url": "https://www.cma.gov.cn/",
+      "document_number": null,
+      "category": "行业标准",
+      "summary": "我国首个低空经济气象基础设施建设团体标准发布。"
+    },
+    {
+      "title": "《深圳市大鹏新区关于促进低空经济产业高质量发展的措施》",
+      "publish_date": "2025",
+      "source": "深圳市人民政府门户网站 (sz.gov.cn)",
+      "url": "https://www.sz.gov.cn/",
+      "document_number": null,
+      "category": "区级政策",
+      "summary": "深圳市大鹏新区促进低空经济产业高质量发展措施。"
+    },
+    {
+      "title": "四川省支持低空经济发展的若干政策措施申报指南",
+      "publish_date": "2025",
+      "source": "四川省发展和改革委员会 (sc.gov.cn)",
+      "url": "https://www.sc.gov.cn/",
+      "document_number": null,
+      "category": "省级政策",
+      "summary": "四川省低空经济政策措施申报指南。"
+    },
+    {
+      "title": "强制性国家标准《民用无人驾驶航空器实名登记和激活要求》",
+      "publish_date": "2026",
+      "source": "中国民用航空局 (caac.gov.cn)",
+      "url": "https://www.caac.gov.cn/",
+      "document_number": null,
+      "category": "国家标准",
+      "summary": "民用无人驾驶航空器实名登记和激活要求的强制性国家标准。"
+    },
+    {
+      "title": "广州关于加强无人机公共安全管理的规定",
+      "publish_date": "2026-04-02",
+      "source": "广州市人民政府门户网站 (gz.gov.cn)",
+      "url": "https://www.gz.gov.cn/",
+      "document_number": null,
+      "category": "市级规章",
+      "summary": "广州明确无人机登记备案、飞行安全规范及相关法律责任。"
+    },
+    {
+      "title": "武汉市公安局无人机集群飞行表演活动安全监管工作规范",
+      "publish_date": "2026-01-29",
+      "source": "武汉市人民政府门户网站 (wuhan.gov.cn)",
+      "url": "https://www.wuhan.gov.cn/",
+      "document_number": null,
+      "category": "市级规章",
+      "summary": "武汉市公安局无人机集群飞行表演活动安全监管工作规范。"
+    }
+  ],
+  "summary": {
+    "total_policies": 34,
+    "national_level": 6,
+    "provincial_level": 12,
+    "city_level": 11,
+    "other": 5,
+    "search_coverage": "2024-2026年中国低空经济相关政策全面搜索，覆盖国家级、省级、市级政策及法规条例",
+    "note": "搜索结果来自百度搜索，具体URL为对应政府官网首页，请通过标题和关键词在各站点内搜索获取完整原文。完整政策原文可通过对应的政府网站搜索功能获取。"
+  }
+}
