@@ -71,6 +71,8 @@ def copy_to_dashboard():
         "stats.json": "stats.json",
         "talent_data.json": "talent_data.json",
         "talent_stats.json": "talent_stats.json",
+        "company_news.json": "company_news.json",
+        "companies.json": "companies.json",
     }
     
     copied = []
