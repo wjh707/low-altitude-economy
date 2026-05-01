@@ -13,6 +13,7 @@ import sys
 import json
 import base64
 import datetime
+import subprocess
 import urllib.request
 import urllib.error
 
@@ -90,60 +91,55 @@ def copy_to_dashboard():
 # ============================================================
 # 步骤 3: 推送到 GitHub
 # ============================================================
-def upload_to_github(file_paths):
-    """上传文件列表到 GitHub"""
+def upload_to_github(file_pairs):
+    """使用 git 推送 dashboard 目录文件到 GitHub"""
     if not TOKEN:
         log("❌ GITHUB_TOKEN 未设置，跳过上传")
         return False
     
-    log("☁️  推送到 GitHub...")
+    log("☁️  推送到 GitHub (git push)...")
     
-    all_ok = True
-    for local_path, github_path in file_paths:
-        if not os.path.exists(local_path):
-            log(f"  ⚠️  {local_path} 不存在，跳过")
-            continue
-        
-        with open(local_path, 'rb') as f:
-            raw = f.read()
-        b64 = base64.b64encode(raw).decode('ascii')
-        
-        # 检查文件是否已存在
-        url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{github_path}"
-        req = urllib.request.Request(url, headers={"Authorization": f"token {TOKEN}"})
-        try:
-            resp = urllib.request.urlopen(req)
-            existing = json.loads(resp.read())
-            sha = existing.get('sha', '')
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                sha = None
-            else:
-                log(f"  ❌ {github_path}: HTTP {e.code}")
-                all_ok = False
-                continue
-        
-        # 构建请求
-        payload = {"message": f"🔄 自动更新: {github_path}", "content": b64}
-        if sha:
-            payload["sha"] = sha
-        
-        body = json.dumps(payload).encode('utf-8')
-        req = urllib.request.Request(
-            url, data=body,
-            headers={"Authorization": f"token {TOKEN}", "Content-Type": "application/json"}
-        )
-        req.method = "PUT"
-        
-        try:
-            resp = urllib.request.urlopen(req)
-            log(f"  ✅ {github_path}")
-        except urllib.error.HTTPError as e:
-            err = e.read().decode()[:150]
-            log(f"  ❌ {github_path}: HTTP {e.code} - {err}")
-            all_ok = False
+    # git add dashboard 目录下的所有更新文件
+    dashboard_dir = os.path.join(BASE_DIR, "dashboard")
+    os.chdir(BASE_DIR)
     
-    return all_ok
+    # 只 add 需要推送的 dashboard 文件
+    add_files = []
+    for local_path, github_path in file_pairs:
+        if os.path.exists(local_path):
+            add_files.append(github_path)
+    
+    add_cmd = ["git", "add"] + [os.path.join("dashboard", f) for f in add_files]
+    result = subprocess.run(add_cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        log(f"  ❌ git add 失败: {result.stderr[:200]}")
+        return False
+    
+    # 检查是否有变更
+    result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+    if not result.stdout.strip():
+        log("  ℹ️  无变更，跳过推送")
+        return True
+    
+    # commit
+    today = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    result = subprocess.run(
+        ["git", "commit", "-m", f"🤖 自动更新: {today} 低空经济数据"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0 and "nothing to commit" not in result.stderr:
+        log(f"  ⚠️  commit 可能失败: {result.stderr[:200]}")
+    
+    # push
+    result = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True, timeout=60)
+    if result.returncode == 0:
+        log("  ✅ 推送成功")
+        for f in add_files:
+            log(f"  ✅ {f}")
+        return True
+    else:
+        log(f"  ❌ git push 失败: {result.stderr[:200]}")
+        return False
 
 
 # ============================================================
