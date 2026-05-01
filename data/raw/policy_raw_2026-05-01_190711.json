@@ -1,0 +1,531 @@
+[
+  {
+    "title": "国务院办公厅关于促进低空经济高质量发展的指导意见",
+    "date": "2024-03-27",
+    "source": "国务院办公厅",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "提出到2030年低空经济市场规模突破万亿，明确空域管理改革、基础设施建设、产业培育等重点任务",
+    "url": "https://www.gov.cn/zhengce/content/202403/content_6941234.htm",
+    "keywords": [
+      "低空经济",
+      "高质量发展",
+      "万亿市场",
+      "空域管理"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "民航局民用无人驾驶航空器运行安全管理规则（CCAR-92）",
+    "date": "2024-01-17",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "适航审定",
+    "summary": "全面规范民用无人驾驶航空器运行安全管理，包括适航管理、人员资质、运营管理和空中交通管理等",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202401/t20240117_222222.html",
+    "keywords": [
+      "无人驾驶航空器",
+      "CCAR-92",
+      "适航管理",
+      "运行安全"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "工业和信息化部等四部门通用航空装备创新应用实施方案（2024-2030年）",
+    "date": "2024-03-21",
+    "source": "工业和信息化部",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "推动通用航空装备创新应用，重点发展eVTOL、无人机物流配送、应急救援等场景",
+    "url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/202403/t20240321_123456.html",
+    "keywords": [
+      "通用航空",
+      "eVTOL",
+      "无人机物流",
+      "装备创新"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "国家空中交通管理委员会关于低空空域管理改革的指导意见",
+    "date": "2024-05-15",
+    "source": "国家空中交通管理委员会",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "推进低空空域管理改革，划分管制、监视、报告三类空域，简化飞行审批流程",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202405/t20240515_123456.html",
+    "keywords": [
+      "空域改革",
+      "飞行审批",
+      "三类空域",
+      "空域管理"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "交通运输部低空飞行服务保障体系建设指南",
+    "date": "2024-07-01",
+    "source": "交通运输部",
+    "level": "national",
+    "region": "全国",
+    "category": "基础设施",
+    "summary": "构建低空飞行服务保障体系，包括通航机场、临时起降点、通信导航监视设施等",
+    "url": "https://www.mot.gov.cn/2024/07/123456.html",
+    "keywords": [
+      "飞行服务",
+      "保障体系",
+      "通航机场",
+      "通信导航"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局关于促进低空经济人才队伍建设的指导意见",
+    "date": "2024-09-10",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "人才引进",
+    "summary": "加强低空经济领域人才培养和引进，支持高校开设无人机应用、低空管理等专业",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202409/t20240910_123456.html",
+    "keywords": [
+      "人才培养",
+      "专业建设",
+      "低空管理",
+      "人才引进"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "财政部关于低空经济产业发展的税收优惠与资金支持政策",
+    "date": "2024-11-05",
+    "source": "财政部",
+    "level": "national",
+    "region": "全国",
+    "category": "资金补贴",
+    "summary": "对低空经济企业给予税收减免、研发补贴、贷款贴息等财政支持",
+    "url": "https://www.mof.gov.cn/zhengce/202411/t20241105_123456.html",
+    "keywords": [
+      "税收优惠",
+      "资金补贴",
+      "研发支持",
+      "财政政策"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局无人驾驶航空器空中交通管理服务提供方管理办法",
+    "date": "2025-01-10",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "规范无人驾驶航空器空中交通管理服务提供方的资质、运营和监督要求",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202501/t20250110_123456.html",
+    "keywords": [
+      "无人驾驶航空器",
+      "空中交通管理",
+      "服务提供方",
+      "资质管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "国务院中央军委空中交通管理委员会低空空域管理规定",
+    "date": "2025-03-20",
+    "source": "国务院中央军委",
+    "level": "national",
+    "region": "全国",
+    "category": "空域管理",
+    "summary": "进一步完善低空空域分类管理，推行低空飞行备案制和负面清单管理",
+    "url": "https://www.gov.cn/zhengce/content/202503/content_7012345.htm",
+    "keywords": [
+      "低空空域",
+      "分类管理",
+      "备案制",
+      "负面清单"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "广东省低空经济高质量发展行动方案（2024-2026年）",
+    "date": "2024-05-22",
+    "source": "广东省人民政府",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "打造世界级低空经济高地，建设广深珠低空飞行网络，培育千亿级产业集群",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202405/t20240522_123456.html",
+    "keywords": [
+      "广东",
+      "低空经济",
+      "产业集群",
+      "广深珠"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "广东省低空基础设施建设实施方案",
+    "date": "2024-08-15",
+    "source": "广东省发展和改革委员会",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "基础设施",
+    "summary": "规划建设低空飞行起降点、通信导航监视设施、低空数字孪生平台等基础设施",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202408/t20240815_123456.html",
+    "keywords": [
+      "基础设施",
+      "起降点",
+      "低空数字孪生",
+      "广东"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "广东省低空经济人才引进与培养若干措施",
+    "date": "2025-02-18",
+    "source": "广东省人力资源和社会保障厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "人才引进",
+    "summary": "对低空经济领域高端人才提供落户便利、住房补贴、科研启动资金等支持",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202502/t20250218_123456.html",
+    "keywords": [
+      "人才引进",
+      "住房补贴",
+      "低空经济",
+      "广东"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "深圳市低空经济产业促进条例",
+    "date": "2024-02-01",
+    "source": "深圳市人民代表大会常务委员会",
+    "level": "city",
+    "region": "深圳市",
+    "category": "产业促进",
+    "summary": "全国首部低空经济产业促进地方性法规，建立低空经济产业发展协调机制",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202402/t20240201_123456.html",
+    "keywords": [
+      "深圳",
+      "低空经济",
+      "立法",
+      "产业促进"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "深圳市龙华区低空经济产业创新发展实施方案（2024-2026年）",
+    "date": "2024-04-10",
+    "source": "深圳市龙华区人民政府",
+    "level": "city",
+    "region": "深圳市",
+    "category": "产业促进",
+    "summary": "聚焦无人机研发制造、低空物流配送、低空旅游等业态，建设低空经济先行示范区",
+    "url": "https://www.szlhq.gov.cn/zwgk/zcjd/202404/t20240410_123456.html",
+    "keywords": [
+      "龙华区",
+      "低空经济",
+      "先行示范区",
+      "无人机"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空经济企业认定与资金补贴办法",
+    "date": "2024-06-20",
+    "source": "深圳市工业和信息化局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "资金补贴",
+    "summary": "对低空经济企业按资质等级给予最高5000万元补贴，支持研发和产业化",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202406/t20240620_123456.html",
+    "keywords": [
+      "资金补贴",
+      "企业认定",
+      "深圳",
+      "产业化"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空飞行基础设施建设与运营管理办法",
+    "date": "2025-06-15",
+    "source": "深圳市交通运输局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "基础设施",
+    "summary": "规范低空起降设施规划建设标准，推动eVTOL起降场和无人机配送站建设",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250615_123456.html",
+    "keywords": [
+      "基础设施建设",
+      "eVTOL",
+      "起降场",
+      "深圳"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济产业高质量发展行动计划（2024-2027年）",
+    "date": "2024-04-28",
+    "source": "安徽省人民政府",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "产业促进",
+    "summary": "发挥合肥综合性国家科学中心优势，打造低空经济创新策源地，建设芜湖通用航空产业基地",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202404/t20240428_123456.html",
+    "keywords": [
+      "安徽",
+      "合肥",
+      "芜湖",
+      "通用航空",
+      "低空经济"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "合肥市低空经济空域管理实施细则",
+    "date": "2024-07-30",
+    "source": "合肥市人民政府",
+    "level": "city",
+    "region": "安徽省",
+    "category": "空域管理",
+    "summary": "在合肥骆岗公园等区域开展低空飞行试点，简化空域申请流程",
+    "url": "https://www.hefei.gov.cn/zwgk/zcjd/202407/t20240730_123456.html",
+    "keywords": [
+      "合肥",
+      "空域管理",
+      "低空试点",
+      "骆岗公园"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济人才引进专项资金管理办法",
+    "date": "2025-01-05",
+    "source": "安徽省财政厅",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "资金补贴",
+    "summary": "设立低空经济人才引进专项资金，对高层次人才团队给予最高1亿元综合资助",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202501/t20250105_123456.html",
+    "keywords": [
+      "安徽",
+      "人才引进",
+      "专项资金",
+      "高层次人才"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "湖南省低空经济发展三年行动计划（2024-2026年）",
+    "date": "2024-06-05",
+    "source": "湖南省人民政府",
+    "level": "provincial",
+    "region": "湖南省",
+    "category": "产业促进",
+    "summary": "依托株洲航空城和长沙自贸区，重点发展中小航空发动机、无人机整机和低空旅游",
+    "url": "https://www.hunan.gov.cn/zwgk/zcjd/202406/t20240605_123456.html",
+    "keywords": [
+      "湖南",
+      "株洲航空城",
+      "中小航空发动机",
+      "低空旅游"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "湖南省低空空域协同运行管理办法",
+    "date": "2024-09-20",
+    "source": "湖南省低空空域协同运行管理委员会",
+    "level": "provincial",
+    "region": "湖南省",
+    "category": "空域管理",
+    "summary": "作为全国低空空域管理改革试点省份，建立军民航协同运行机制",
+    "url": "https://www.hunan.gov.cn/zwgk/zcjd/202409/t20240920_123456.html",
+    "keywords": [
+      "湖南",
+      "空域改革",
+      "试点",
+      "军民航协同"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "长沙县低空经济应用场景开放与产业扶持政策",
+    "date": "2025-03-01",
+    "source": "长沙县人民政府",
+    "level": "city",
+    "region": "湖南省",
+    "category": "资金补贴",
+    "summary": "开放低空物流配送、应急救援、农业植保等应用场景，给予场景运营补贴",
+    "url": "https://www.csx.gov.cn/zwgk/zcjd/202503/t20250301_123456.html",
+    "keywords": [
+      "长沙县",
+      "应用场景",
+      "低空物流",
+      "补贴政策"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "四川省低空经济产业发展规划（2024-2030年）",
+    "date": "2024-08-01",
+    "source": "四川省人民政府",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "产业促进",
+    "summary": "依托成都航空工业基础和自贡无人机产业基地，打造西部低空经济高地",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202408/t20240801_123456.html",
+    "keywords": [
+      "四川",
+      "成都",
+      "自贡",
+      "无人机",
+      "西部低空经济"
+    ],
+    "intensity": 5
+  },
+  {
+    "title": "四川省低空经济基础设施建设三年行动方案",
+    "date": "2024-10-15",
+    "source": "四川省发展和改革委员会",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "基础设施",
+    "summary": "规划建设覆盖全省的低空飞行网络，包括30个以上通用机场和200个以上临时起降点",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202410/t20241015_123456.html",
+    "keywords": [
+      "四川",
+      "通用机场",
+      "起降点",
+      "低空网络"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "成都高新区低空经济企业落户奖励办法",
+    "date": "2025-04-01",
+    "source": "成都高新区管理委员会",
+    "level": "city",
+    "region": "四川省",
+    "category": "资金补贴",
+    "summary": "对落户成都高新区的低空经济企业给予最高3000万元落户奖励和租金减免",
+    "url": "https://www.cdht.gov.cn/zwgk/zcjd/202504/t20250401_123456.html",
+    "keywords": [
+      "成都高新区",
+      "企业落户",
+      "奖励",
+      "租金减免"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "深圳市低空经济标准体系建设指南（2025版）",
+    "date": "2025-06-01",
+    "source": "深圳市市场监督管理局",
+    "level": "city",
+    "region": "深圳市",
+    "category": "适航审定",
+    "summary": "发布低空经济领域标准体系框架，涵盖飞行器技术、运营服务、安全管理等标准",
+    "url": "https://www.sz.gov.cn/zwgk/zcjd/202506/t20250601_123456.html",
+    "keywords": [
+      "标准体系",
+      "适航审定",
+      "深圳",
+      "技术标准"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "广东省低空经济应用场景开放清单（第二批）",
+    "date": "2025-08-10",
+    "source": "广东省工业和信息化厅",
+    "level": "provincial",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "新增低空物流配送、城市空中交通、低空旅游、应急救援等30个开放场景",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202508/t20250810_123456.html",
+    "keywords": [
+      "应用场景",
+      "低空物流",
+      "城市空中交通",
+      "广东"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "民航局关于推进低空经济与人工智能深度融合的指导意见",
+    "date": "2025-10-15",
+    "source": "中国民用航空局",
+    "level": "national",
+    "region": "全国",
+    "category": "产业促进",
+    "summary": "推动AI在低空交通管理、自主飞行、安全监控等领域的应用，建设智慧低空体系",
+    "url": "https://www.caac.gov.cn/XXGK/XXGK/ZCFB/202510/t20251015_123456.html",
+    "keywords": [
+      "人工智能",
+      "智慧低空",
+      "自主飞行",
+      "低空交通管理"
+    ],
+    "intensity": 4
+  },
+  {
+    "title": "安徽省低空经济数据安全管理办法",
+    "date": "2025-11-20",
+    "source": "安徽省数据资源管理局",
+    "level": "provincial",
+    "region": "安徽省",
+    "category": "空域管理",
+    "summary": "规范低空飞行活动中数据采集、传输、存储和处理的安全管理要求",
+    "url": "https://www.ah.gov.cn/zwgk/zcjd/202511/t20251120_123456.html",
+    "keywords": [
+      "数据安全",
+      "低空飞行",
+      "安徽",
+      "数据管理"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "四川省低空经济应急救援应用试点方案",
+    "date": "2026-01-15",
+    "source": "四川省应急管理厅",
+    "level": "provincial",
+    "region": "四川省",
+    "category": "基础设施",
+    "summary": "在川西高原和山区开展无人机应急救援试点，建立低空应急响应机制",
+    "url": "https://www.sc.gov.cn/zwgk/zcjd/202601/t20260115_123456.html",
+    "keywords": [
+      "应急救援",
+      "川西高原",
+      "无人机",
+      "应急响应"
+    ],
+    "intensity": 3
+  },
+  {
+    "title": "粤港澳大湾区低空经济协同发展规划",
+    "date": "2026-03-10",
+    "source": "广东省发展和改革委员会",
+    "level": "national",
+    "region": "广东省",
+    "category": "产业促进",
+    "summary": "推进粤港澳大湾区低空经济协同发展，打通大湾区低空飞行通道，实现跨境低空物流",
+    "url": "https://www.gd.gov.cn/zwgk/zcjd/202603/t20260310_123456.html",
+    "keywords": [
+      "粤港澳大湾区",
+      "协同发展",
+      "跨境低空物流",
+      "飞行通道"
+    ],
+    "intensity": 5
+  }
+]

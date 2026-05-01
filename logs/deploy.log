@@ -47,3 +47,59 @@
 [2026-04-30 12:12:02] [DEPLOY] ==================================================
 [2026-04-30 12:12:02] [DEPLOY] 📋 更新模块: policy, talent
 [2026-04-30 12:12:02] [DEPLOY] 🚀 运行 ETL 管道...
+[2026-05-01 09:00:30] [DEPLOY] ==================================================
+[2026-05-01 09:00:30] [DEPLOY] 🚀 低空经济情报系统 - 一键更新开始
+[2026-05-01 09:00:30] [DEPLOY] ==================================================
+[2026-05-01 09:00:30] [DEPLOY] 📋 更新模块: policy, talent
+[2026-05-01 09:00:30] [DEPLOY] 🚀 运行 ETL 管道...
+[2026-05-01 09:01:02] [DEPLOY] ==================================================
+[2026-05-01 09:01:02] [DEPLOY] 🚀 低空经济情报系统 - 一键更新开始
+[2026-05-01 09:01:02] [DEPLOY] ==================================================
+[2026-05-01 09:01:02] [DEPLOY] 📋 更新模块: policy, talent
+[2026-05-01 09:01:02] [DEPLOY] 🚀 运行 ETL 管道...
+[2026-05-01 09:01:02] [DEPLOY] 📋 ETL 结果: {'policy': '✅ 成功', 'talent': '✅ 成功'}
+[2026-05-01 09:01:02] [DEPLOY] 📂 复制数据文件到 dashboard...
+[2026-05-01 09:01:02] [DEPLOY]   ✅ policy_data.json
+[2026-05-01 09:01:02] [DEPLOY]   ✅ stats.json
+[2026-05-01 09:01:02] [DEPLOY]   ✅ talent_data.json
+[2026-05-01 09:01:02] [DEPLOY]   ✅ talent_stats.json
+[2026-05-01 09:01:02] [DEPLOY] ☁️  推送到 GitHub...
+[2026-05-01 09:01:05] [DEPLOY]   ❌ policy_data.json: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:08] [DEPLOY]   ❌ stats.json: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:12] [DEPLOY]   ❌ talent_data.json: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:14] [DEPLOY]   ❌ talent_stats.json: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:17] [DEPLOY]   ❌ index.html: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:20] [DEPLOY]   ❌ talent.html: HTTP 403 - {"message":"Resource not accessible by personal access token","documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-c
+[2026-05-01 09:01:20] [DEPLOY] ==================================================
+[2026-05-01 09:01:20] [DEPLOY] ⚠️  更新完成，但部分文件上传失败
+[2026-05-01 09:01:20] [DEPLOY] ==================================================
+[2026-05-01 19:07:11] [DEPLOY] ==================================================
+[2026-05-01 19:07:11] [DEPLOY] 🚀 低空经济情报系统 - 一键更新开始
+[2026-05-01 19:07:11] [DEPLOY] ==================================================
+[2026-05-01 19:07:11] [DEPLOY] 📋 更新模块: policy, talent
+[2026-05-01 19:07:11] [DEPLOY] 🚀 运行 ETL 管道...
+[2026-05-01 19:07:11] [DEPLOY] 📋 ETL 结果: {'policy': '✅ 成功', 'talent': '✅ 成功'}
+[2026-05-01 19:07:11] [DEPLOY] 📂 复制数据文件到 dashboard...
+[2026-05-01 19:07:11] [DEPLOY]   ✅ policy_data.json
+[2026-05-01 19:07:11] [DEPLOY]   ✅ stats.json
+[2026-05-01 19:07:11] [DEPLOY]   ✅ talent_data.json
+[2026-05-01 19:07:11] [DEPLOY]   ✅ talent_stats.json
+[2026-05-01 19:07:11] [DEPLOY] ❌ GITHUB_TOKEN 未设置，跳过上传
+[2026-05-01 19:07:11] [DEPLOY] ==================================================
+[2026-05-01 19:07:11] [DEPLOY] ⚠️  更新完成，但部分文件上传失败
+[2026-05-01 19:07:11] [DEPLOY] ==================================================
+[2026-05-01 19:08:00] [DEPLOY] ==================================================
+[2026-05-01 19:08:00] [DEPLOY] 🚀 低空经济情报系统 - 一键更新开始
+[2026-05-01 19:08:00] [DEPLOY] ==================================================
+[2026-05-01 19:08:00] [DEPLOY] 📋 更新模块: policy, talent
+[2026-05-01 19:08:00] [DEPLOY] 🚀 运行 ETL 管道...
+[2026-05-01 19:08:00] [DEPLOY] 📋 ETL 结果: {'policy': '✅ 成功', 'talent': '✅ 成功'}
+[2026-05-01 19:08:00] [DEPLOY] 📂 复制数据文件到 dashboard...
+[2026-05-01 19:08:00] [DEPLOY]   ✅ policy_data.json
+[2026-05-01 19:08:00] [DEPLOY]   ✅ stats.json
+[2026-05-01 19:08:00] [DEPLOY]   ✅ talent_data.json
+[2026-05-01 19:08:00] [DEPLOY]   ✅ talent_stats.json
+[2026-05-01 19:08:00] [DEPLOY] ❌ GITHUB_TOKEN 未设置，跳过上传
+[2026-05-01 19:08:00] [DEPLOY] ==================================================
+[2026-05-01 19:08:00] [DEPLOY] ⚠️  更新完成，但部分文件上传失败
+[2026-05-01 19:08:00] [DEPLOY] ==================================================
