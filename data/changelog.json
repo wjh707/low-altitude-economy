@@ -26,5 +26,26 @@
     "before": 71,
     "after": 71,
     "new_records": 0
+  },
+  {
+    "time": "2026-05-01T09:00:30.882111",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-01T09:01:02.512269",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-01T09:01:02.520320",
+    "module": "talent",
+    "before": 210,
+    "after": 176,
+    "new_records": 0
   }
 ]

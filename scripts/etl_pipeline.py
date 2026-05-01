@@ -391,7 +391,7 @@ def main(modules=None):
         elif mod == "talent":
             success = run_etl(
                 module="talent",
-                fetch_func=fetch_mod.generate_mock_jobs,
+                fetch_func=fetch_mod.generate_mock_talent_data,
                 clean_func=clean_talent,
                 id_fields=["title", "company", "city"],
                 output_file=os.path.join(DATA_DIR, "talent_data.json"),
