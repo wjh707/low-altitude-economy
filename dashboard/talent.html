@@ -640,7 +640,7 @@
     if (eduFilter) filtered = filtered.filter(j => j.education === eduFilter);
 
     // Sort by newest first
-    filtered = filtered.sort((a,b) => b.publish_date.localeCompare(a.publish_date));
+    filtered = filtered.sort((a,b) => (b.date || '').localeCompare(a.date || ''));
 
     tbody.innerHTML = filtered.map(j => `
       <tr>

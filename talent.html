@@ -239,6 +239,7 @@
       <div class="header-nav">
         <a href="index.html">📜政策看板</a>
         <a href="talent.html" class="active">👥人才看板</a>
+        <a href="companies.html">🏢企业动态</a>
       </div>
     </div>
   </div>
@@ -639,7 +640,7 @@
     if (eduFilter) filtered = filtered.filter(j => j.education === eduFilter);
 
     // Sort by newest first
-    filtered = filtered.sort((a,b) => b.publish_date.localeCompare(a.publish_date));
+    filtered = filtered.sort((a,b) => (b.date || '').localeCompare(a.date || ''));
 
     tbody.innerHTML = filtered.map(j => `
       <tr>

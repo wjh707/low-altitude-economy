@@ -100,6 +100,9 @@ def clean_policy(policy):
     cleaned["category"] = (policy.get("category") or "其他").strip()
     cleaned["summary"] = (policy.get("summary") or "").strip()
     cleaned["url"] = (policy.get("url") or "").strip()
+    # 清理占位符URL（如PDF提取时生成的含123456的假链接）
+    if "123456" in cleaned["url"] or "example" in cleaned["url"] or len(cleaned["url"]) < 10:
+        cleaned["url"] = ""
     cleaned["keywords"] = policy.get("keywords", [])
     cleaned["intensity"] = int(policy.get("intensity") or 1)
     # 添加元数据

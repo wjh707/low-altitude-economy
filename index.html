@@ -290,7 +290,8 @@
       <div class="header-update" id="updateTime">更新中...</div>
       <div class="header-nav" style="margin-top:6px">
         <a href="index.html" class="active">📜政策看板</a>
-        <a href="dashboard/talent.html">👥人才看板</a>
+        <a href="talent.html">👥人才看板</a>
+        <a href="companies.html">🏢企业动态</a>
       </div>
     </div>
   </div>
@@ -1600,9 +1601,9 @@
         const icon = TOOL_ICONS[t] || '📌';
         return '<span class="tool-tag">' + icon + ' ' + t + '</span>';
       }).join(' ');
-      // URL策略：优先外部链接，其次是本地页面，最后无链接
+      // URL策略：优先外部链接（跳过含123456的占位符），其次是本地页面，最后无链接
       let linkHtml;
-      if (p.url) {
+      if (p.url && p.url.indexOf('123456') === -1 && p.url.indexOf('example') === -1) {
         linkHtml = '<a class="policy-title" href="' + p.url + '" target="_blank" title="' + escHtml(p.summary || '') + '">' + escHtml(p.title) + '</a>';
       } else if (p.local_page) {
         linkHtml = '<a class="policy-title" href="' + p.local_page + '" title="查看全文">' + escHtml(p.title) + '</a>';
