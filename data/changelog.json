@@ -75,5 +75,33 @@
     "before": 193,
     "after": 199,
     "new_records": 6
+  },
+  {
+    "time": "2026-05-02T09:04:41.223308",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-02T09:04:41.229415",
+    "module": "talent",
+    "before": 199,
+    "after": 199,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-02T09:04:43.953650",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-02T09:04:43.961106",
+    "module": "talent",
+    "before": 199,
+    "after": 200,
+    "new_records": 1
   }
 ]
