@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>低空经济科研动态看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2/dist/echarts-wordcloud.min.js" defer></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a1628;
+  color: #c8d6e5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  min-height: 100vh;
+}
+.loading-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #0a1628; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 9999;
+  transition: opacity 0.5s;
+}
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+.spinner {
+  width: 50px; height: 50px; border: 3px solid #1a2d52;
+  border-top-color: #3b82f6; border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { margin-top: 20px; color: #6b8cbe; font-size: 14px; }
+
+.navbar {
+  background: linear-gradient(135deg, #0f1d3a, #162a52);
+  padding: 20px 30px; border-bottom: 1px solid #1a2d52;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-title h1 { color: #e8edf5; font-size: 24px; font-weight: 700; }
+.nav-title span { color: #6b8cbe; font-size: 13px; display: block; margin-top: 4px; }
+.nav-info { text-align: right; font-size: 12px; color: #4a6a8e; }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 24px 20px; }
+
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: linear-gradient(135deg, #111d38, #162a52);
+  border: 1px solid #1a2d52; border-radius: 12px; padding: 20px;
+  text-align: center; transition: transform 0.2s, border-color 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); border-color: #3b82f6; }
+.stat-icon { font-size: 28px; margin-bottom: 8px; }
+.stat-value { font-size: 32px; font-weight: 700; color: #e8edf5; }
+.stat-label { font-size: 13px; color: #6b8cbe; margin-top: 4px; }
+
+.chart-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
+}
+.chart-card {
+  background: #111d38; border: 1px solid #1a2d52; border-radius: 12px; padding: 20px;
+}
+.chart-card h3 { color: #8aade0; font-size: 15px; margin-bottom: 12px; }
+.chart-box { width: 100%; height: 360px; }
+
+.section { margin-bottom: 24px; }
+.section-title {
+  font-size: 18px; font-weight: 600; color: #e8edf5;
+  margin-bottom: 16px; padding-left: 12px;
+  border-left: 3px solid #3b82f6;
+}
+
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.section-header .section-title { margin-bottom: 0; }
+.tab-btns { display: flex; gap: 8px; }
+.tab-btn {
+  background: #1a2d52; border: none; color: #6b8cbe;
+  padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: all 0.2s;
+}
+.tab-btn.active { background: #3b82f6; color: #fff; }
+
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+th {
+  background: #0f1d3a; color: #8aade0; padding: 10px 12px;
+  text-align: left; font-weight: 600; white-space: nowrap;
+  border-bottom: 1px solid #1a2d52;
+}
+td { padding: 10px 12px; border-bottom: 1px solid #152240; }
+tr:hover td { background: rgba(59,130,246,0.05); }
+.rank-cell { font-weight: 700; width: 40px; text-align: center; }
+.rank-1 { color: #fbbf24; }
+.rank-2 { color: #94a3b8; }
+.rank-3 { color: #d97706; }
+.cite-badge {
+  display: inline-block; background: rgba(59,130,246,0.15);
+  color: #60a5fa; padding: 2px 10px; border-radius: 10px;
+  font-weight: 600; font-size: 12px;
+}
+.author-cell { max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.author-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.author-card {
+  background: #111d38; border: 1px solid #1a2d52; border-radius: 12px; padding: 16px;
+}
+.author-card h4 { color: #8aade0; font-size: 13px; margin-bottom: 10px; }
+.author-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid #152240; font-size: 13px;
+}
+.author-item:last-child { border-bottom: none; }
+.author-name { color: #e8edf5; font-weight: 500; }
+.author-stat { color: #60a5fa; font-weight: 600; font-size: 12px; }
+
+.theme-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+}
+.theme-card {
+  background: #111d38; border: 1px solid #1a2d52; border-radius: 10px;
+  padding: 14px; cursor: default; transition: border-color 0.2s;
+}
+.theme-card:hover { border-color: #3b82f6; }
+.theme-emoji { font-size: 22px; }
+.theme-name { font-size: 13px; font-weight: 600; color: #e8edf5; margin: 6px 0 4px; }
+.theme-meta { font-size: 11px; color: #6b8cbe; }
+.theme-bar {
+  height: 4px; background: #1a2d52; border-radius: 2px; margin-top: 8px;
+  overflow: hidden;
+}
+.theme-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+
+.paper-cards { display: grid; gap: 12px; }
+.paper-card {
+  background: #111d38; border: 1px solid #1a2d52; border-radius: 10px;
+  padding: 16px; transition: border-color 0.2s;
+}
+.paper-card:hover { border-color: #3b82f6; }
+.paper-title { font-size: 14px; font-weight: 600; color: #e8edf5; margin-bottom: 6px; }
+.paper-meta { font-size: 12px; color: #6b8cbe; }
+.paper-meta span { margin-right: 12px; }
+.paper-meta .cite { color: #60a5fa; font-weight: 600; }
+.paper-doi { font-size: 11px; }
+.paper-doi a { color: #3b82f6; text-decoration: none; }
+.paper-doi a:hover { text-decoration: underline; }
+.paper-abstract { font-size: 12px; color: #5a7a9e; margin-top: 6px; line-height: 1.5; }
+
+.footer {
+  border-top: 1px solid #1a2d52; padding: 20px 0; margin-top: 32px;
+  text-align: center; font-size: 12px; color: #4a6a8e;
+}
+
+@media (max-width: 1200px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .author-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .chart-row { grid-template-columns: 1fr; }
+  .navbar { flex-direction: column; text-align: center; }
+  .nav-info { margin-top: 8px; text-align: center; }
+  .nav-title h1 { font-size: 20px; }
+  .stat-value { font-size: 24px; }
+  .container { padding: 16px 12px; }
+  .nav-info { font-size: 10px; }
+  .theme-grid { grid-template-columns: repeat(2, 1fr); }
+  .section-header { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">加载科研数据中...</div>
+</div>
+
+<nav class="navbar">
+  <div class="nav-title">
+    <h1>🚁 低空经济科研动态看板</h1>
+    <span>Low Altitude Economy Research Intelligence</span>
+  </div>
+  <div class="nav-info">
+    <div id="updateTime">加载中...</div>
+    <div>数据源: OpenAlex 学术API</div>
+  </div>
+</nav>
+
+<div class="container" id="mainContent">
+
+  <!-- Stats -->
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- Charts: Trend + Theme -->
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>📈 年度发文趋势</h3>
+      <div class="chart-box" id="trendChart"></div>
+    </div>
+    <div class="chart-card">
+      <h3>🧩 研究主题分布</h3>
+      <div class="chart-box" id="themeChart"></div>
+    </div>
+  </div>
+
+  <!-- TOP 10 Papers -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">🏆 高被引论文 TOP 10</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>论文标题</th><th>第一作者</th><th>年份</th><th>期刊</th><th>被引</th>
+        </tr></thead>
+        <tbody id="topPapersBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Core Authors -->
+  <div class="section">
+    <div class="section-title">👨‍🔬 核心研究者</div>
+    <div class="author-grid">
+      <div class="author-card">
+        <h4>🏅 被引次数 TOP 10</h4>
+        <div id="authorByCitation"></div>
+      </div>
+      <div class="author-card">
+        <h4>📝 发文量 TOP 10</h4>
+        <div id="authorByCount"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyword Word Cloud -->
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>🔑 关键词云图</h3>
+      <div class="chart-box" id="wordcloudChart"></div>
+    </div>
+    <div class="chart-card">
+      <h3>🏛️ 期刊分布 TOP 20</h3>
+      <div class="chart-box" id="journalChart"></div>
+    </div>
+  </div>
+
+  <!-- Theme Clusters -->
+  <div class="section">
+    <div class="section-title">🧩 研究主题聚类</div>
+    <div class="theme-grid" id="themeGrid"></div>
+  </div>
+
+  <!-- Latest 5 Papers -->
+  <div class="section">
+    <div class="section-title">🆕 最新研究论文</div>
+    <div class="paper-cards" id="latestPapers"></div>
+  </div>
+
+  <div class="footer">
+    <p>数据来源: OpenAlex 学术API · 每周自动更新 · 收录 1,001 篇论文</p>
+    <p>数据分析日期: <span id="footerDate">—</span></p>
+  </div>
+</div>
+
+<script>
+// ===== EMBEDDED DATA (file:// fallback) =====
+const EMBEDDED_ANALYSIS_DATA = {
+"total_papers": 1001,
+"total_citations": 43917,
+"year_range": "1960 - 2026",
+"updated_at": "2026-05-06",
+"year_distribution": [
+{
+"year": 2016,
+"count": 19
+},
+{
+"year": 2017,
+"count": 32
+},
+{
+"year": 2018,
+"count": 37
+},
+{
+"year": 2019,
+"count": 56
+},
+{
+"year": 2020,
+"count": 59
+},
+{
+"year": 2021,
+"count": 79
+},
+{
+"year": 2022,
+"count": 81
+},
+{
+"year": 2023,
+"count": 79
+},
+{
+"year": 2024,
+"count": 89
+},
+{
+"year": 2025,
+"count": 285
+},
+{
+"year": 2026,
+"count": 111
+}
+],
+"top10_papers": [
+{
+"rank": 1,
+"title": "Integrated Sensing and Communications: Toward Dual-Functional Wireless Networks for 6G and Beyond",
+"authors": [
+"Fan Liu",
+"Yuanhao Cui",
+"Christos Masouros",
+"Jie Xu",
+"Tony Xiao Han",
+"Yonina C. Eldar",
+"Stefano Buzzi"
+],
+"year": 2022,
+"journal": "IEEE Journal on Selected Areas in Communications",
+"cited_by_count": 2998,
+"doi": "10.1109/jsac.2022.3156632",
+"keywords": [
+"Computer science",
+"Standardization",
+"Physical layer",
+"Telecommunications",
+"Key (lock)",
+"Wireless",
+"Wireless network",
+"Computer security"
+]
+},
+{
+"rank": 2,
+"title": "Unmanned Aerial Vehicles (UAVs): A Survey on Civil Applications and Key Research Challenges",
+"authors": [
+"Hazim Shakhatreh",
+"Ahmad Sawalmeh",
+"Ala Al‐Fuqaha",
+"Zuochao Dou",
+"Eyad Almaita",
+"Issa Khalil",
+"Noor Shamsiah Othman",
+"Abdallah Khreishah",
+"Mohsen Guizani"
+],
+"year": 2019,
+"journal": "IEEE Access",
+"cited_by_count": 2188,
+"doi": "10.1109/access.2019.2909530",
+"keywords": [
+"Drone",
+"Computer science",
+"Key (lock)",
+"Open research",
+"Search and rescue",
+"Internet of Things",
+"Computer security",
+"Software deployment",
+"Wireless",
+"Telecommunications"
+]
+},
+{
+"rank": 3,
+"title": "Satellite Communications in the New Space Era: A Survey and Future Challenges",
+"authors": [
+"Oltjon Kodheli",
+"Eva Lagunas",
+"Nicola Maturo",
+"Shree Krishna Sharma",
+"Bhavani Shankar",
+"Jesús Fabián Mendoza Montoya",
+"Juan Carlos Merlano Duncán",
+"Danilo Spano",
+"Symeon Chatzinotas",
+"Steven Kisseleff",
+"Jorge Querol",
+"Lei Lei",
+"Thang X. Vu",
+"George Goussetis"
+],
+"year": 2020,
+"journal": "IEEE Communications Surveys & Tutorials",
+"cited_by_count": 1290,
+"doi": "10.1109/comst.2020.3028247",
+"keywords": [
+"Constellation",
+"Telecommunications",
+"Communications satellite",
+"Space (punctuation)",
+"Satellite",
+"Computer science",
+"Open research",
+"Earth observation",
+"Systems engineering",
+"Engineering",
+"World Wide Web",
+"Aerospace engineering"
+]
+},
+{
+"rank": 4,
+"title": "Optimization approaches for civil applications of unmanned aerial vehicles (UAVs) or aerial drones: A survey",
+"authors": [
+"Alena Otto",
+"Niels Agatz",
+"James F. Campbell",
+"Bruce Golden",
+"Erwin Pesch"
+],
+"year": 2018,
+"journal": "Networks",
+"cited_by_count": 899,
+"doi": "10.1002/net.21818",
+"keywords": [
+"Drone",
+"Aerial survey",
+"Computer science",
+"Aerial imagery",
+"Aeronautics",
+"Operations research",
+"Artificial intelligence",
+"Engineering",
+"Remote sensing",
+"Geography"
+]
+},
+{
+"rank": 5,
+"title": "Unmanned aerial vehicles (UAVs): practical aspects, applications, open challenges, security issues, and future trends",
+"authors": [
+"Syed Agha Hassnain Mohsan",
+"Nawaf Qasem Hamood Othman",
+"Yanlong Li",
+"Mohammed H. Alsharif",
+"Muhammad Asghar Khan"
+],
+"year": 2023,
+"journal": "Intelligent Service Robotics",
+"cited_by_count": 891,
+"doi": "10.1007/s11370-022-00452-4",
+"keywords": [
+"Drone",
+"Computer science",
+"Payload (computing)",
+"Operability",
+"Risk analysis (engineering)",
+"Adversary",
+"Computer security",
+"Systems engineering",
+"Engineering",
+"Business"
+]
+},
+{
+"rank": 6,
+"title": "Unmanned Aerial Vehicle Remote Sensing for Field-Based Crop Phenotyping: Current Status and Perspectives",
+"authors": [
+"Guijun Yang",
+"Jiangang Liu",
+"Chunjiang Zhao",
+"Zhenhong Li",
+"Yanbo Huang",
+"Haiyang Yu",
+"Bo Xu",
+"Xiaodong Yang",
+"Dongmei Zhu",
+"Xiaoyan Zhang",
+"Ruyang Zhang",
+"Haikuan Feng",
+"Xiaoqing Zhao",
+"Zhenhai Li",
+"Heli Li",
+"Hao Yang"
+],
+"year": 2017,
+"journal": "Frontiers in Plant Science",
+"cited_by_count": 732,
+"doi": "10.3389/fpls.2017.01111",
+"keywords": [
+"Phenomics",
+"Computer science",
+"Field (mathematics)",
+"Phenotypic trait",
+"Remote sensing",
+"Genomics",
+"Biology",
+"Geography",
+"Genome",
+"Phenotype",
+"Mathematics"
+]
+},
+{
+"rank": 7,
+"title": "Review of the Current State of UAV Regulations",
+"authors": [
+"Claudia Stöcker",
+"Rohan Bennett",
+"Francesco Nex",
+"M. Gerke",
+"J.A. Zevenbergen"
+],
+"year": 2017,
+"journal": "Remote Sensing",
+"cited_by_count": 586,
+"doi": "10.3390/rs9050459",
+"keywords": [
+"Scale (ratio)",
+"Computer science",
+"State (computer science)",
+"Risk analysis (engineering)",
+"Business",
+"Environmental resource management",
+"Environmental planning",
+"Environmental science",
+"Geography"
+]
+},
+{
+"rank": 8,
+"title": "Evolution of Non-Terrestrial Networks From 5G to 6G: A Survey",
+"authors": [
+"Mohammad Mahdi Azari",
+"Sourabh Solanki",
+"Symeon Chatzinotas",
+"Oltjon Kodheli",
+"Hazem Sallouha",
+"Achiel Colpaert",
+"Jesús Fabián Mendoza Montoya",
+"Sofie Pollin",
+"Alireza Haqiqatnejad",
+"Arsham Mostaani",
+"Eva Lagunas",
+"Björn Ottersten"
+],
+"year": 2022,
+"journal": "IEEE Communications Surveys & Tutorials",
+"cited_by_count": 553,
+"doi": "10.1109/comst.2022.3199901",
+"keywords": [
+"Relevance (law)",
+"Field (mathematics)",
+"Computer science",
+"Space (punctuation)",
+"Systems engineering",
+"Engineering",
+"Political science"
+]
+},
+{
+"rank": 9,
+"title": "Last-mile delivery concepts: a survey from an operational research perspective",
+"authors": [
+"Nils Boysen",
+"Stefan Fedtke",
+"Stefan Schwerdfeger"
+],
+"year": 2020,
+"journal": "OR Spectrum",
+"cited_by_count": 545,
+"doi": "10.1007/s00291-020-00607-8",
+"keywords": [
+"Last mile (transportation)",
+"Mile",
+"Computer science",
+"Drone",
+"Perspective (graphical)",
+"Operations research",
+"Planner",
+"Engineering",
+"Geography"
+]
+},
+{
+"rank": 10,
+"title": "A Review on Early Forest Fire Detection Systems Using Optical Remote Sensing",
+"authors": [
+"Panagiotis Barmpoutis",
+"Periklis Papaioannou",
+"Kosmas Dimitropoulos",
+"Nikos Grammalidis"
+],
+"year": 2020,
+"journal": "Sensors",
+"cited_by_count": 493,
+"doi": "10.3390/s20226442",
+"keywords": [
+"Warning system",
+"Remote sensing",
+"Fire detection",
+"Environmental science",
+"Environmental resource management",
+"Strengths and weaknesses",
+"Scale (ratio)",
+"Threatened species",
+"Woodland",
+"Computer science",
+"Geography",
+"Engineering",
+"Architectural engineering",
+"Cartography",
+"Telecommunications",
+"Ecology",
+"Habitat"
+]
+}
+],
+"top10_authors_by_citation": [
+{
+"rank": 1,
+"name": "Jie Xu",
+"citations": 3114,
+"papers": 5
+},
+{
+"rank": 2,
+"name": "Fan Liu",
+"citations": 3046,
+"papers": 4
+},
+{
+"rank": 3,
+"name": "Yuanhao Cui",
+"citations": 2998,
+"papers": 1
+},
+{
+"rank": 4,
+"name": "Christos Masouros",
+"citations": 2998,
+"papers": 1
+},
+{
+"rank": 5,
+"name": "Tony Xiao Han",
+"citations": 2998,
+"papers": 1
+},
+{
+"rank": 6,
+"name": "Yonina C. Eldar",
+"citations": 2998,
+"papers": 1
+},
+{
+"rank": 7,
+"name": "Stefano Buzzi",
+"citations": 2998,
+"papers": 1
+},
+{
+"rank": 8,
+"name": "Mohsen Guizani",
+"citations": 2190,
+"papers": 2
+},
+{
+"rank": 9,
+"name": "Hazim Shakhatreh",
+"citations": 2188,
+"papers": 1
+},
+{
+"rank": 10,
+"name": "Ahmad Sawalmeh",
+"citations": 2188,
+"papers": 1
+}
+],
+"top10_authors_by_paper_count": [
+{
+"rank": 1,
+"name": "Dusit Niyato",
+"papers": 23,
+"citations": 236
+},
+{
+"rank": 2,
+"name": "Jiacheng Wang",
+"papers": 12,
+"citations": 159
+},
+{
+"rank": 3,
+"name": "Geng Sun",
+"papers": 11,
+"citations": 150
+},
+{
+"rank": 4,
+"name": "Dong In Kim",
+"papers": 7,
+"citations": 114
+},
+{
+"rank": 5,
+"name": "Kin Huat Low",
+"papers": 7,
+"citations": 388
+},
+{
+"rank": 6,
+"name": "Bizhao Pang",
+"papers": 6,
+"citations": 336
+},
+{
+"rank": 7,
+"name": "Vishwanath Bulusu",
+"papers": 6,
+"citations": 88
+},
+{
+"rank": 8,
+"name": "Jie Xu",
+"papers": 5,
+"citations": 3114
+},
+{
+"rank": 9,
+"name": "Ruichen Zhang",
+"papers": 5,
+"citations": 48
+},
+{
+"rank": 10,
+"name": "Abbas Jamalipour",
+"papers": 5,
+"citations": 70
+}
+],
+"top30_keywords": [
+{
+"keyword": "Computer security",
+"count": 88
+},
+{
+"keyword": "Aerospace engineering",
+"count": 73
+},
+{
+"keyword": "Economics",
+"count": 68
+},
+{
+"keyword": "China",
+"count": 59
+},
+{
+"keyword": "Transport engineering",
+"count": 56
+},
+{
+"keyword": "Altitude (triangle)",
+"count": 45
+},
+{
+"keyword": "Aviation",
+"count": 44
+},
+{
+"keyword": "Computer network",
+"count": 36
+},
+{
+"keyword": "Air traffic control",
+"count": 35
+},
+{
+"keyword": "Low altitude",
+"count": 34
+},
+{
+"keyword": "Wireless",
+"count": 34
+},
+{
+"keyword": "Real-time computing",
+"count": 34
+},
+{
+"keyword": "Sustainable development",
+"count": 33
+},
+{
+"keyword": "Economic geography",
+"count": 30
+},
+{
+"keyword": "Geology",
+"count": 28
+},
+{
+"keyword": "Software deployment",
+"count": 27
+},
+{
+"keyword": "Process (computing)",
+"count": 26
+},
+{
+"keyword": "Environmental planning",
+"count": 25
+},
+{
+"keyword": "Context (archaeology)",
+"count": 24
+},
+{
+"keyword": "Identification (biology)",
+"count": 24
+},
+{
+"keyword": "Economic growth",
+"count": 23
+},
+{
+"keyword": "Population",
+"count": 21
+},
+{
+"keyword": "Land use",
+"count": 21
+},
+{
+"keyword": "Physical geography",
+"count": 20
+},
+{
+"keyword": "Robot",
+"count": 19
+},
+{
+"keyword": "Service (business)",
+"count": 18
+},
+{
+"keyword": "Sustainability",
+"count": 18
+},
+{
+"keyword": "Agriculture",
+"count": 18
+},
+{
+"keyword": "Path (computing)",
+"count": 17
+},
+{
+"keyword": "Economy",
+"count": 17
+}
+],
+"theme_clusters": [
+{
+"theme": "人工智能/优化方法",
+"count": 688,
+"total_citations": 35859,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+]
+},
+{
+"theme": "低空经济/综述",
+"count": 502,
+"total_citations": 33419,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+]
+},
+{
+"theme": "无人机系统",
+"count": 395,
+"total_citations": 27749,
+"sample_papers": [
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Cooperative ISAC-Empowered Low-Altitude Economy"
+]
+},
+{
+"theme": "城市空中交通(UAM)",
+"count": 354,
+"total_citations": 21417,
+"sample_papers": [
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Cooperative ISAC-Empowered Low-Altitude Economy"
+]
+},
+{
+"theme": "环境噪声/公众接受",
+"count": 338,
+"total_citations": 18906,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+]
+},
+{
+"theme": "ISAC/通信感知一体化",
+"count": 306,
+"total_citations": 26981,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+]
+},
+{
+"theme": "电池能源/动力系统",
+"count": 257,
+"total_citations": 18915,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+]
+},
+{
+"theme": "eVTOL/飞行器设计",
+"count": 248,
+"total_citations": 9233,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"6G Non-Terrestrial Networks Enabled Low-Altitude Economy: Opportunities and Challenges"
+]
+},
+{
+"theme": "空域管理/交通管制",
+"count": 232,
+"total_citations": 5507,
+"sample_papers": [
+"Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+]
+},
+{
+"theme": "安全/隐私/抗干扰",
+"count": 230,
+"total_citations": 18959,
+"sample_papers": [
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Unauthorized UAV Countermeasure for Low-Altitude Economy: Joint Communications and Jamming Based on MIMO Cellular Systems",
+"Generative AI-Enabled Wireless Communications for Robust Low-Altitude Economy Networking"
+]
+},
+{
+"theme": "适航审定/法规",
+"count": 168,
+"total_citations": 7468,
+"sample_papers": [
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach",
+"LAERACE: Taking the policy fast-track towards low-altitude economy"
+]
+},
+{
+"theme": "配送/物流应用",
+"count": 163,
+"total_citations": 9389,
+"sample_papers": [
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Generative AI-Enabled Wireless Communications for Robust Low-Altitude Economy Networking",
+"Trustworthy Intelligent Networks for Low-Altitude Economy"
+]
+},
+{
+"theme": "路径规划/导航定位",
+"count": 162,
+"total_citations": 6712,
+"sample_papers": [
+"Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+"Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+"Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+]
+},
+{
+"theme": "遥感/农业应用",
+"count": 162,
+"total_citations": 17348,
+"sample_papers": [
+"MADQN-Enhanced Computation Offloading and Resource Allocation for 6G Low-Altitude Economy Vehicular Networks",
+"Networked ISAC for Low-Altitude Economy: Transmit Beamforming and UAV Trajectory Design",
+"Random Signal Design for Joint Communication and SAR Imaging Towards Low-Altitude Economy"
+]
+}
+],
+"top20_journals": [
+{
+"journal": "Acta Ecologica Sinica",
+"count": 64
+},
+{
+"journal": "2025 Low-Altitude Economy Forum &amp;amp; International Conference on Low-Altitude Flight Technology and Unmanned Aerial Vehicle Application (LEF &amp;amp; ICLU)",
+"count": 38
+},
+{
+"journal": "IEEE Access",
+"count": 26
+},
+{
+"journal": "Drones",
+"count": 20
+},
+{
+"journal": "Sensors",
+"count": 18
+},
+{
+"journal": "Low-Altitude Economy",
+"count": 18
+},
+{
+"journal": "Remote Sensing",
+"count": 15
+},
+{
+"journal": "Aerospace",
+"count": 13
+},
+{
+"journal": "资源科学",
+"count": 13
+},
+{
+"journal": "社会企业经济发展",
+"count": 13
+},
+{
+"journal": "Sustainability",
+"count": 11
+},
+{
+"journal": "AIAA AVIATION 2023 Forum",
+"count": 10
+},
+{
+"journal": "AIAA AVIATION FORUM AND ASCEND 2024",
+"count": 10
+},
+{
+"journal": "AIAA AVIATION FORUM AND ASCEND 2025",
+"count": 9
+},
+{
+"journal": "社会经济导刊",
+"count": 8
+},
+{
+"journal": "AIAA AVIATION 2022 Forum",
+"count": 8
+},
+{
+"journal": "AIAA AVIATION 2020 FORUM",
+"count": 8
+},
+{
+"journal": "AIAA AVIATION 2021 FORUM",
+"count": 8
+},
+{
+"journal": "IEEE Transactions on Wireless Communications",
+"count": 7
+},
+{
+"journal": "IEEE Internet of Things Journal",
+"count": 7
+}
+],
+"latest_5_papers": [
+{
+"title": "Agentic Satellite-Augmented Low-Altitude Economy and Terrestrial Networks: A Survey on Generative Approaches",
+"authors": [
+"Xiaozheng Gao",
+"Yichen Wang",
+"Bosen Liu",
+"Xiao Zhou",
+"Ruichen Zhang",
+"Jiacheng Wang",
+"Dusit Niyato",
+"Dong In Kim",
+"Abbas Jamalipour",
+"Chau Yuen",
+"Jianping An",
+"Kai Yang"
+],
+"year": 2026,
+"journal": "IEEE Communications Surveys & Tutorials",
+"cited_by_count": 4,
+"doi": "10.1109/comst.2026.3660854",
+"abstract": "The development of satellite-augmented low-altitude economy and terrestrial networks (SLAETNs) demands intelligent and autonomous systems that can operate reliably across heterogeneous, dynamic, and mission-critical environments. To address these challenges, this article surveys the state-of-the-art"
+},
+{
+"title": "A review of noise-aware path planning for urban drone operations",
+"authors": [
+"Yinuo Wang",
+"N. Zhang",
+"Xun Huang"
+],
+"year": 2026,
+"journal": "Control Engineering Practice",
+"cited_by_count": 1,
+"doi": "10.1016/j.conengprac.2025.106750",
+"abstract": ""
+},
+{
+"title": "Research on the Governance Challenges and Institutional Pathways of the Low-Altitude Economy: A Case Study of the Guangdong–Hong Kong–Macao Greater Bay Area",
+"authors": [
+"Yifei Li",
+"XINRUI HUANG"
+],
+"year": 2026,
+"journal": "Research Square",
+"cited_by_count": 0,
+"doi": "10.21203/rs.3.rs-8005441/v1",
+"abstract": ""
+},
+{
+"title": "Key Technologies of Vertical Take-Off and Landing Infrastructure for Urban Air Mobility: A Comprehensive Review",
+"authors": [
+"Chenglong Li",
+"Runming Wang",
+"Z. -H. Zhang",
+"Yuan Zheng",
+"Yang Wang",
+"Rui Yang"
+],
+"year": 2026,
+"journal": "ENGINEERING Information Technology & Electronic Engineering",
+"cited_by_count": 0,
+"doi": "10.1631/eng.itee.2025.0173",
+"abstract": "As the frontier of multidimensional transportation systems, urban air mobility (UAM) is receiving increasing attention from international organizations, governments, and stakeholders in industry and academia owing to its high efficiency, low carbon footprint, and operational flexibility. Vertical ta"
+},
+{
+"title": "低空经济词频",
+"authors": [
+"Li Dingzhao"
+],
+"year": 2026,
+"journal": "Open MIND",
+"cited_by_count": 0,
+"doi": "",
+"abstract": "Use Python and Jieba word segmentation tool to process TXT format annual report text. Combining the Implementation of Innovative Applications in General Aviation Equipment The policy document \"Plan (2024-2030)\" includes the construction of low altitude, airspace, unmanned aerial vehicles eVTOL、 Vert"
+}
+]
+};
+
+// ===== ECharts Dark Theme =====
+const CHART_BG = 'transparent';
+const CHART_TEXT = '#6b8cbe';
+const CHART_AXIS = '#1a2d52';
+const CHART_COLORS = ['#3b82f6', '#22d3ee', '#34d399', '#f59e0b', '#f472b6', '#6366f1', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+
+// ===== Initialize =====
+async function init() {
+  let data = null;
+  try {
+    const resp = await fetch('analysis_data.json').catch(() => null);
+    if (resp && resp.ok) {
+      data = await resp.json();
+    }
+  } catch(e) {}
+  if (!data) {
+    data = EMBEDDED_ANALYSIS_DATA;
+  }
+  if (!data) {
+    document.getElementById('loadingOverlay').querySelector('.loading-text').textContent = '❌ 数据加载失败';
+    return;
+  }
+
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  renderAll(data);
+}
+
+function renderAll(d) {
+  renderStats(d);
+  renderTrendChart(d);
+  renderThemeChart(d);
+  renderTopPapers(d);
+  renderAuthors(d);
+  renderWordCloud(d);
+  renderJournalChart(d);
+  renderThemeGrid(d);
+  renderLatestPapers(d);
+
+  document.getElementById('updateTime').textContent = '更新时间: ' + (d.updated_at || '—');
+  document.getElementById('footerDate').textContent = d.updated_at || '—';
+}
+
+// ===== 1. Stats =====
+function renderStats(d) {
+  const stats = [
+    { icon: '📄', value: fmtNum(d.total_papers), label: '论文总数' },
+    { icon: '📊', value: fmtNum(d.total_citations), label: '总被引次数' },
+    { icon: '👨‍🔬', value: '1,001+', label: '活跃研究者' },
+    { icon: '🏛️', value: d.year_range || '—', label: '覆盖年份' },
+  ];
+  document.getElementById('statsRow').innerHTML = stats.map(s =>
+    `<div class="stat-card"><div class="stat-icon">${s.icon}</div><div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div></div>`
+  ).join('');
+}
+
+// ===== 2. Trend Chart =====
+function renderTrendChart(d) {
+  const chart = echarts.init(document.getElementById('trendChart'));
+  const years = d.year_distribution || [];
+  const labels = years.map(y => y.year);
+  const counts = years.map(y => y.count);
+  let cumulative = 0;
+  const cumData = years.map(y => { cumulative += y.count; return cumulative; });
+
+  chart.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'cross' }, backgroundColor: '#111d38', borderColor: '#1a2d52' },
+    legend: { data: ['年度发文', '累计发文'], textStyle: { color: CHART_TEXT }, bottom: 0 },
+    grid: { left: 50, right: 50, top: 20, bottom: 40 },
+    xAxis: { type: 'category', data: labels, axisLine: { lineStyle: { color: CHART_AXIS } }, axisLabel: { color: CHART_TEXT } },
+    yAxis: [
+      { type: 'value', name: '论文数', nameTextStyle: { color: CHART_TEXT }, axisLine: { show: false }, splitLine: { lineStyle: { color: CHART_AXIS } } },
+      { type: 'value', name: '累计', nameTextStyle: { color: CHART_TEXT }, axisLine: { show: false }, splitLine: { show: false } }
+    ],
+    series: [
+      { name: '年度发文', type: 'bar', data: counts, itemStyle: { color: '#3b82f6', borderRadius: [4,4,0,0] }, barMaxWidth: 30 },
+      { name: '累计发文', type: 'line', yAxisIndex: 1, data: cumData, smooth: true, lineStyle: { color: '#22d3ee', width: 2 }, areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(34,211,238,0.2)'},{offset:1,color:'rgba(34,211,238,0)'}]) }, symbol: 'circle', symbolSize: 6 }
+    ]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+// ===== 3. Theme Pie Chart =====
+function renderThemeChart(d) {
+  const chart = echarts.init(document.getElementById('themeChart'));
+  const themes = d.theme_clusters || [];
+  const data = themes.slice(0, 10).map((t, i) => ({
+    name: t.theme.length > 10 ? t.theme.slice(0, 10) + '…' : t.theme,
+    value: t.count,
+    itemStyle: { color: CHART_COLORS[i % CHART_COLORS.length] }
+  }));
+
+  chart.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}: {c} 篇 ({d}%)', backgroundColor: '#111d38', borderColor: '#1a2d52' },
+    series: [{
+      type: 'pie', radius: ['40%', '70%'], center: ['50%', '50%'],
+      data: data, label: { color: CHART_TEXT, fontSize: 11 },
+      labelLine: { lineStyle: { color: CHART_AXIS } },
+      emphasis: { label: { fontSize: 13, fontWeight: 'bold' }, itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' } }
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+// ===== 4. Top 10 Papers Table =====
+function renderTopPapers(d) {
+  const papers = d.top10_papers || [];
+  const body = document.getElementById('topPapersBody');
+  body.innerHTML = papers.map(p => {
+    const rankClass = p.rank <= 3 ? `rank-${p.rank}` : '';
+    const rankEmoji = p.rank === 1 ? '🥇' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : '';
+    const firstAuthor = p.authors && p.authors.length > 0 ? p.authors[0] : '—';
+    return `<tr>
+      <td class="rank-cell ${rankClass}">${rankEmoji || p.rank}</td>
+      <td style="max-width:400px">${esc(p.title)}</td>
+      <td class="author-cell">${esc(firstAuthor)}</td>
+      <td>${p.year || '—'}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.journal || '')}</td>
+      <td><span class="cite-badge">${fmtNum(p.cited_by_count)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== 5. Authors =====
+function renderAuthors(d) {
+  // By citation
+  const citeAuthors = d.top10_authors_by_citation || [];
+  document.getElementById('authorByCitation').innerHTML = citeAuthors.map((a, i) =>
+    `<div class="author-item"><span class="author-name">${i+1}. ${esc(a.name)}</span><span class="author-stat">${fmtNum(a.citations)} 引 / ${a.papers} 篇</span></div>`
+  ).join('');
+
+  // By count
+  const countAuthors = d.top10_authors_by_paper_count || [];
+  document.getElementById('authorByCount').innerHTML = countAuthors.map((a, i) =>
+    `<div class="author-item"><span class="author-name">${i+1}. ${esc(a.name)}</span><span class="author-stat">${a.papers} 篇 / ${fmtNum(a.citations)} 引</span></div>`
+  ).join('');
+}
+
+// ===== 6. Word Cloud =====
+function renderWordCloud(d) {
+  try {
+    const chart = echarts.init(document.getElementById('wordcloudChart'));
+    const keywords = (d.top30_keywords || []).slice(0, 25);
+    const topCount = keywords.length > 0 ? keywords[0].count : 1;
+    const data = keywords.map((k, i) => ({
+      name: k.keyword, value: Math.max(k.count, 1),
+      textStyle: { color: CHART_COLORS[i % CHART_COLORS.length], fontSize: Math.max(14, 12 + (k.count / topCount) * 28) }
+    }));
+    chart.setOption({
+      title: { show: false },
+      series: [{ type: 'wordCloud', shape: 'circle', left: 'center', top: 'center', width: '90%', height: '90%', sizeRange: [14, 36], rotationRange: [-30, 30], rotationStep: 30, gridSize: 6, drawOutOfBound: false, layoutAnimation: true, textStyle: { fontFamily: '-apple-system, "PingFang SC", sans-serif', fontWeight: '500' }, data: data, emphasis: { textStyle: { color: '#22d3ee', fontWeight: '700' } } }]
+    });
+    window.addEventListener('resize', () => chart.resize());
+  } catch(e) {
+    document.getElementById('wordcloudChart').parentElement.innerHTML = '<div style="text-align:center;padding:80px 0;color:#6b8cbe">⚠️ 词云渲染不可用<br><span style="font-size:12px">(需要echarts-wordcloud插件)</span></div>';
+  }
+}
+
+// ===== 7. Journal Chart =====
+function renderJournalChart(d) {
+  const chart = echarts.init(document.getElementById('journalChart'));
+  const journals = (d.top20_journals || []).slice(0, 15).reverse();
+  const names = journals.map(j => j.journal.length > 25 ? j.journal.slice(0, 24) + '…' : j.journal);
+  const counts = journals.map(j => j.count);
+
+  chart.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, backgroundColor: '#111d38', borderColor: '#1a2d52' },
+    grid: { left: 120, right: 40, top: 10, bottom: 20 },
+    xAxis: { type: 'value', axisLine: { show: false }, splitLine: { lineStyle: { color: CHART_AXIS } }, axisLabel: { color: CHART_TEXT } },
+    yAxis: { type: 'category', data: names, axisLine: { show: false }, axisLabel: { color: CHART_TEXT, fontSize: 11 } },
+    series: [{
+      type: 'bar', data: counts.map((v, i) => ({ value: v, itemStyle: { color: CHART_COLORS[i % CHART_COLORS.length] } })),
+      barMaxWidth: 20, label: { show: true, position: 'right', color: CHART_TEXT, fontSize: 11 }
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+// ===== 8. Theme Grid =====
+function renderThemeGrid(d) {
+  const themes = d.theme_clusters || [];
+  const maxCount = themes.length > 0 ? themes[0].count : 1;
+  const emojis = ['📡','🚁','🏙️','✈️','🗺️','📍','🔋','🔒','📦','🔊','🤖','📚','📋','🌾'];
+
+  document.getElementById('themeGrid').innerHTML = themes.map((t, i) => {
+    const pct = (t.count / maxCount * 100).toFixed(0);
+    return `<div class="theme-card">
+      <div class="theme-emoji">${emojis[i % emojis.length]}</div>
+      <div class="theme-name">${esc(t.theme)}</div>
+      <div class="theme-meta">${t.count} 篇论文 · ${fmtNum(t.total_citations)} 次被引</div>
+      <div class="theme-bar"><div class="theme-bar-fill" style="width:${pct}%;background:${CHART_COLORS[i % CHART_COLORS.length]}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ===== 9. Latest Papers =====
+function renderLatestPapers(d) {
+  const papers = d.latest_5_papers || [];
+  document.getElementById('latestPapers').innerHTML = papers.map(p => {
+    const authors = p.authors && p.authors.length > 0
+      ? (p.authors.slice(0, 3).join(', ') + (p.authors.length > 3 ? ' et al.' : ''))
+      : '—';
+    const doiLink = p.doi ? `DOI: <a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : '';
+    return `<div class="paper-card">
+      <div class="paper-title">${esc(p.title)}</div>
+      <div class="paper-meta">
+        <span>👤 ${esc(authors)}</span>
+        <span>📅 ${p.year || '—'}</span>
+        <span>📰 ${esc(p.journal || '')}</span>
+        <span class="cite">📊 ${fmtNum(p.cited_by_count)} 次被引</span>
+      </div>
+      ${p.abstract ? `<div class="paper-abstract">${esc(p.abstract.slice(0, 200))}${p.abstract.length > 200 ? '…' : ''}</div>` : ''}
+      <div class="paper-doi">${doiLink}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== Utilities =====
+function fmtNum(n) {
+  if (n === null || n === undefined) return '—';
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function esc(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ===== Start =====
+init();
+</script>
+</body>
+</html>
