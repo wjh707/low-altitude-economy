@@ -9,17 +9,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #f0f4f8;
-    color: #333;
+    background: #0a1628;
+    color: #c8d6e5;
     line-height: 1.6;
   }
-  a { color: #1a73e8; text-decoration: none; }
+  a { color: #3b82f6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
   /* Loading overlay */
   #loading-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(240, 244, 248, 0.95);
+    background: rgba(13, 17, 23, 0.95);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     z-index: 9999;
@@ -28,23 +28,24 @@
   #loading-overlay.hidden { opacity: 0; pointer-events: none; }
   .loader {
     width: 48px; height: 48px;
-    border: 4px solid #e0e6ed;
-    border-top-color: #1a73e8;
+    border: 4px solid #1a2d52;
+    border-top-color: #3b82f6;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loader-text { margin-top: 16px; color: #5f6368; font-size: 14px; }
+  .loader-text { margin-top: 16px; color: #6b8cbe; font-size: 14px; }
 
   /* Header */
   .header {
-    background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #111d38 0%, #0a1628 100%);
+    color: #c8d6e5;
     padding: 20px 24px;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    border-bottom: 1px solid #1a2d52;
   }
   .header-inner {
     max-width: 1400px;
@@ -55,19 +56,19 @@
     flex-wrap: wrap;
     gap: 12px;
   }
-  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
-  .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; }
-  .header-right { text-align: right; font-size: 12px; opacity: 0.8; }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; color: #e8edf5; }
+  .header .subtitle { font-size: 13px; opacity: 0.75; margin-top: 2px; color: #6b8cbe; }
+  .header-right { text-align: right; font-size: 12px; opacity: 0.7; color: #6b8cbe; }
   .header-nav { display: flex; gap: 16px; margin-top: 8px; }
   .header-nav a {
-    color: rgba(255,255,255,0.8);
+    color: rgba(200,200,200,0.7);
     padding: 4px 12px;
     border-radius: 4px;
     font-size: 13px;
     transition: all 0.2s;
   }
-  .header-nav a:hover { background: rgba(255,255,255,0.15); text-decoration: none; }
-  .header-nav a.active { background: rgba(255,255,255,0.2); color: #fff; font-weight: 600; }
+  .header-nav a:hover { background: rgba(255,255,255,0.08); text-decoration: none; color: #e8edf5; }
+  .header-nav a.active { background: rgba(88,166,255,0.15); color: #3b82f6; font-weight: 600; }
 
   /* Container */
   .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
@@ -80,19 +81,21 @@
     margin-bottom: 20px;
   }
   .stat-card {
-    background: #fff;
+    background: #111d38;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    border-left: 4px solid #1a73e8;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border-left: 4px solid #3b82f6;
+    border: 1px solid #1a2d52;
+    border-left-width: 4px;
     transition: transform 0.2s;
   }
-  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .stat-card .label { font-size: 13px; color: #5f6368; margin-bottom: 6px; }
-  .stat-card .value { font-size: 28px; font-weight: 700; color: #1a73e8; }
-  .stat-card .sublabel { font-size: 12px; color: #5f6368; margin-top: 4px; }
-  .stat-card:nth-child(1) { border-left-color: #1a73e8; }
-  .stat-card:nth-child(1) .value { color: #1a73e8; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .stat-card .label { font-size: 13px; color: #6b8cbe; margin-bottom: 6px; }
+  .stat-card .value { font-size: 28px; font-weight: 700; color: #3b82f6; }
+  .stat-card .sublabel { font-size: 12px; color: #6b8cbe; margin-top: 4px; }
+  .stat-card:nth-child(1) { border-left-color: #3b82f6; }
+  .stat-card:nth-child(1) .value { color: #3b82f6; }
   .stat-card:nth-child(2) { border-left-color: #34a853; }
   .stat-card:nth-child(2) .value { color: #34a853; }
   .stat-card:nth-child(3) { border-left-color: #fbbc04; }
@@ -108,18 +111,19 @@
     margin-bottom: 20px;
   }
   .chart-box {
-    background: #fff;
+    background: #111d38;
     border-radius: 10px;
     padding: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border: 1px solid #1a2d52;
   }
   .chart-box h3 {
     font-size: 15px;
     font-weight: 600;
-    color: #333;
+    color: #e8edf5;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 2px solid #e8eaed;
+    border-bottom: 2px solid #1a2d52;
   }
   .chart-box .chart { width: 100%; height: 340px; }
   .chart-full {
@@ -129,12 +133,13 @@
 
   /* Error */
   .error-msg {
-    background: #fce8e6;
-    color: #c5221f;
+    background: #3d1f1f;
+    color: #ea4335;
     padding: 14px 20px;
     border-radius: 8px;
     margin: 20px 0;
     font-size: 14px;
+    border: 1px solid #ea433533;
   }
 
   /* Table */
@@ -147,41 +152,42 @@
   }
   .table-controls select {
     padding: 8px 14px;
-    border: 1px solid #dadce0;
+    border: 1px solid #1a2d52;
     border-radius: 6px;
-    background: #fff;
+    background: #0a1628;
     font-size: 13px;
-    color: #333;
+    color: #c8d6e5;
     cursor: pointer;
     outline: none;
   }
-  .table-controls select:focus { border-color: #1a73e8; }
-  .table-controls .filter-label { font-size: 13px; color: #5f6368; align-self: center; }
+  .table-controls select:focus { border-color: #3b82f6; }
+  .table-controls .filter-label { font-size: 13px; color: #6b8cbe; align-self: center; }
   .table-wrap { overflow-x: auto; }
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
-    background: #fff;
+    background: #111d38;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border: 1px solid #1a2d52;
   }
   th {
-    background: #f8f9fa;
-    color: #5f6368;
+    background: #0a1628;
+    color: #6b8cbe;
     font-weight: 600;
     padding: 10px 12px;
     text-align: left;
     white-space: nowrap;
-    border-bottom: 2px solid #e8eaed;
+    border-bottom: 2px solid #1a2d52;
   }
   td {
     padding: 9px 12px;
-    border-bottom: 1px solid #f0f0f0;
-    color: #333;
+    border-bottom: 1px solid #1a2d52;
+    color: #c8d6e5;
   }
-  tr:hover td { background: #f8f9ff; }
+  tr:hover td { background: #162a52; }
   .badge {
     display: inline-block;
     padding: 2px 8px;
@@ -189,22 +195,22 @@
     font-size: 11px;
     font-weight: 500;
   }
-  .badge-national { background: #e8f0fe; color: #1a73e8; }
-  .badge-provincial { background: #e6f4ea; color: #137333; }
-  .badge-city { background: #fef7e0; color: #e37400; }
-  .badge-yanfa { background: #e8f0fe; color: #1a73e8; }
-  .badge-yunying { background: #e6f4ea; color: #137333; }
-  .badge-anquan { background: #fce8e6; color: #c5221f; }
-  .badge-shuju { background: #f3e8fd; color: #7c3aed; }
-  .badge-caokong { background: #fef7e0; color: #e37400; }
-  .badge-zhanlue { background: #e6f4ea; color: #1a73e8; }
+  .badge-national { background: #0c2d6b; color: #3b82f6; }
+  .badge-provincial { background: #0b3d1f; color: #34a853; }
+  .badge-city { background: #3d2e00; color: #fbbc04; }
+  .badge-yanfa { background: #0c2d6b; color: #3b82f6; }
+  .badge-yunying { background: #0b3d1f; color: #34a853; }
+  .badge-anquan { background: #3d1f1f; color: #ea4335; }
+  .badge-shuju { background: #1c1340; color: #9334e6; }
+  .badge-caokong { background: #3d2e00; color: #fbbc04; }
+  .badge-zhanlue { background: #0b3d1f; color: #3b82f6; }
 
   .footer {
     text-align: center;
     padding: 24px;
-    color: #5f6368;
+    color: #6b8cbe;
     font-size: 12px;
-    border-top: 1px solid #e8eaed;
+    border-top: 1px solid #1a2d52;
     margin-top: 40px;
   }
 
@@ -322,8 +328,8 @@
 
 <!-- School Section -->
 <div class="section-title" style="max-width:1400px;margin:0 auto;padding:20px 24px 0">
-  <h2 style="font-size:18px;font-weight:600;color:#1a73e8">🎓 高校低空经济专业布局</h2>
-  <p style="font-size:13px;color:#5f6368;margin-top:4px">全国高校低空经济相关专业开设情况，含本科、研究生及高职</p>
+  <h2 style="font-size:18px;font-weight:600;color:#3b82f6">🎓 高校低空经济专业布局</h2>
+  <p style="font-size:13px;color:#6b8cbe;margin-top:4px">全国高校低空经济相关专业开设情况，含本科、研究生及高职</p>
 </div>
 <div style="max-width:1400px;margin:0 auto;padding:0 24px 20px">
   <div class="stats-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px">
@@ -366,14 +372,14 @@
   </div>
 </div>
 <style>
-  .stat-card.school { border-left-color: #7c3aed; }
-  .stat-card.school .value { color: #7c3aed; }
+  .stat-card.school { border-left-color: #9334e6; }
+  .stat-card.school .value { color: #9334e6; }
 </style>
 
 <!-- School Section -->
 <div class="section-title" style="max-width:1400px;margin:0 auto;padding:20px 24px 0">
-  <h2 style="font-size:18px;font-weight:600;color:#1a73e8">🎓 高校低空经济专业布局</h2>
-  <p style="font-size:13px;color:#5f6368;margin-top:4px">全国高校低空经济相关专业开设情况，含本科、研究生及高职</p>
+  <h2 style="font-size:18px;font-weight:600;color:#3b82f6">🎓 高校低空经济专业布局</h2>
+  <p style="font-size:13px;color:#6b8cbe;margin-top:4px">全国高校低空经济相关专业开设情况，含本科、研究生及高职</p>
 </div>
 <div style="max-width:1400px;margin:0 auto;padding:0 24px 20px">
   <div class="stats-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px">
@@ -520,7 +526,7 @@
         data: vals.map((v, i) => ({
           value: v,
           itemStyle: {
-            color: ['#1a73e8','#34a853','#fbbc04','#ea4335','#7c3aed','#e37400'][i % 6]
+            color: ['#3b82f6','#34a853','#fbbc04','#ea4335','#7c3aed','#e37400'][i % 6]
           }
         })),
         label: { show: true, position: 'right', fontSize: 12, fontWeight: 600 }
@@ -596,7 +602,7 @@
         type: 'bar',
         data: avgs.map((v, i) => ({
           value: v,
-          itemStyle: { color: ['#1a73e8','#34a853','#fbbc04','#ea4335','#7c3aed','#e37400'][i % 6] }
+          itemStyle: { color: ['#3b82f6','#34a853','#fbbc04','#ea4335','#7c3aed','#e37400'][i % 6] }
         })),
         label: { show: true, position: 'top', fontSize: 11, fontWeight: 600, formatter: '{c}万' }
       }]
@@ -696,7 +702,7 @@
     const chart = echarts.init(document.getElementById('chartSchoolLevel'));
     const byLevel = SCHOOL_STATS.by_level || {};
     const items = [
-      { name: '本科', value: byLevel['本科'] || 0, color: '#1a73e8' },
+      { name: '本科', value: byLevel['本科'] || 0, color: '#3b82f6' },
       { name: '研究生', value: byLevel['研究生'] || 0, color: '#34a853' },
       { name: '高职', value: byLevel['高职'] || 0, color: '#fbbc04' }
     ].filter(i => i.value > 0);
@@ -725,7 +731,7 @@
         type: 'bar', data: undergrad.map(function(){return 1}).reverse(),
         barWidth: 18,
         itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[
-          {offset:0,color:'#1a73e8'},{offset:1,color:'#6ab7ff'}
+          {offset:0,color:'#3b82f6'},{offset:1,color:'#6ab7ff'}
         ]), borderRadius: [0,4,4,0] },
         label: { show: true, position: 'right', formatter: function(p){return majors[p.dataIndex];}, fontSize: 10, color: '#333' }
       }]
