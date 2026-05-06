@@ -1,0 +1,903 @@
+{
+  "total_papers": 1001,
+  "total_citations": 43917,
+  "year_range": "1960 - 2026",
+  "updated_at": "2026-05-06",
+  "year_distribution": [
+    {
+      "year": 2016,
+      "count": 19
+    },
+    {
+      "year": 2017,
+      "count": 32
+    },
+    {
+      "year": 2018,
+      "count": 37
+    },
+    {
+      "year": 2019,
+      "count": 56
+    },
+    {
+      "year": 2020,
+      "count": 59
+    },
+    {
+      "year": 2021,
+      "count": 79
+    },
+    {
+      "year": 2022,
+      "count": 81
+    },
+    {
+      "year": 2023,
+      "count": 79
+    },
+    {
+      "year": 2024,
+      "count": 89
+    },
+    {
+      "year": 2025,
+      "count": 285
+    },
+    {
+      "year": 2026,
+      "count": 111
+    }
+  ],
+  "top10_papers": [
+    {
+      "rank": 1,
+      "title": "Integrated Sensing and Communications: Toward Dual-Functional Wireless Networks for 6G and Beyond",
+      "authors": [
+        "Fan Liu",
+        "Yuanhao Cui",
+        "Christos Masouros",
+        "Jie Xu",
+        "Tony Xiao Han",
+        "Yonina C. Eldar",
+        "Stefano Buzzi"
+      ],
+      "year": 2022,
+      "journal": "IEEE Journal on Selected Areas in Communications",
+      "cited_by_count": 2998,
+      "doi": "10.1109/jsac.2022.3156632",
+      "keywords": [
+        "Computer science",
+        "Standardization",
+        "Physical layer",
+        "Telecommunications",
+        "Key (lock)",
+        "Wireless",
+        "Wireless network",
+        "Computer security"
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "Unmanned Aerial Vehicles (UAVs): A Survey on Civil Applications and Key Research Challenges",
+      "authors": [
+        "Hazim Shakhatreh",
+        "Ahmad Sawalmeh",
+        "Ala Al‐Fuqaha",
+        "Zuochao Dou",
+        "Eyad Almaita",
+        "Issa Khalil",
+        "Noor Shamsiah Othman",
+        "Abdallah Khreishah",
+        "Mohsen Guizani"
+      ],
+      "year": 2019,
+      "journal": "IEEE Access",
+      "cited_by_count": 2188,
+      "doi": "10.1109/access.2019.2909530",
+      "keywords": [
+        "Drone",
+        "Computer science",
+        "Key (lock)",
+        "Open research",
+        "Search and rescue",
+        "Internet of Things",
+        "Computer security",
+        "Software deployment",
+        "Wireless",
+        "Telecommunications"
+      ]
+    },
+    {
+      "rank": 3,
+      "title": "Satellite Communications in the New Space Era: A Survey and Future Challenges",
+      "authors": [
+        "Oltjon Kodheli",
+        "Eva Lagunas",
+        "Nicola Maturo",
+        "Shree Krishna Sharma",
+        "Bhavani Shankar",
+        "Jesús Fabián Mendoza Montoya",
+        "Juan Carlos Merlano Duncán",
+        "Danilo Spano",
+        "Symeon Chatzinotas",
+        "Steven Kisseleff",
+        "Jorge Querol",
+        "Lei Lei",
+        "Thang X. Vu",
+        "George Goussetis"
+      ],
+      "year": 2020,
+      "journal": "IEEE Communications Surveys & Tutorials",
+      "cited_by_count": 1290,
+      "doi": "10.1109/comst.2020.3028247",
+      "keywords": [
+        "Constellation",
+        "Telecommunications",
+        "Communications satellite",
+        "Space (punctuation)",
+        "Satellite",
+        "Computer science",
+        "Open research",
+        "Earth observation",
+        "Systems engineering",
+        "Engineering",
+        "World Wide Web",
+        "Aerospace engineering"
+      ]
+    },
+    {
+      "rank": 4,
+      "title": "Optimization approaches for civil applications of unmanned aerial vehicles (UAVs) or aerial drones: A survey",
+      "authors": [
+        "Alena Otto",
+        "Niels Agatz",
+        "James F. Campbell",
+        "Bruce Golden",
+        "Erwin Pesch"
+      ],
+      "year": 2018,
+      "journal": "Networks",
+      "cited_by_count": 899,
+      "doi": "10.1002/net.21818",
+      "keywords": [
+        "Drone",
+        "Aerial survey",
+        "Computer science",
+        "Aerial imagery",
+        "Aeronautics",
+        "Operations research",
+        "Artificial intelligence",
+        "Engineering",
+        "Remote sensing",
+        "Geography"
+      ]
+    },
+    {
+      "rank": 5,
+      "title": "Unmanned aerial vehicles (UAVs): practical aspects, applications, open challenges, security issues, and future trends",
+      "authors": [
+        "Syed Agha Hassnain Mohsan",
+        "Nawaf Qasem Hamood Othman",
+        "Yanlong Li",
+        "Mohammed H. Alsharif",
+        "Muhammad Asghar Khan"
+      ],
+      "year": 2023,
+      "journal": "Intelligent Service Robotics",
+      "cited_by_count": 891,
+      "doi": "10.1007/s11370-022-00452-4",
+      "keywords": [
+        "Drone",
+        "Computer science",
+        "Payload (computing)",
+        "Operability",
+        "Risk analysis (engineering)",
+        "Adversary",
+        "Computer security",
+        "Systems engineering",
+        "Engineering",
+        "Business"
+      ]
+    },
+    {
+      "rank": 6,
+      "title": "Unmanned Aerial Vehicle Remote Sensing for Field-Based Crop Phenotyping: Current Status and Perspectives",
+      "authors": [
+        "Guijun Yang",
+        "Jiangang Liu",
+        "Chunjiang Zhao",
+        "Zhenhong Li",
+        "Yanbo Huang",
+        "Haiyang Yu",
+        "Bo Xu",
+        "Xiaodong Yang",
+        "Dongmei Zhu",
+        "Xiaoyan Zhang",
+        "Ruyang Zhang",
+        "Haikuan Feng",
+        "Xiaoqing Zhao",
+        "Zhenhai Li",
+        "Heli Li",
+        "Hao Yang"
+      ],
+      "year": 2017,
+      "journal": "Frontiers in Plant Science",
+      "cited_by_count": 732,
+      "doi": "10.3389/fpls.2017.01111",
+      "keywords": [
+        "Phenomics",
+        "Computer science",
+        "Field (mathematics)",
+        "Phenotypic trait",
+        "Remote sensing",
+        "Genomics",
+        "Biology",
+        "Geography",
+        "Genome",
+        "Phenotype",
+        "Mathematics"
+      ]
+    },
+    {
+      "rank": 7,
+      "title": "Review of the Current State of UAV Regulations",
+      "authors": [
+        "Claudia Stöcker",
+        "Rohan Bennett",
+        "Francesco Nex",
+        "M. Gerke",
+        "J.A. Zevenbergen"
+      ],
+      "year": 2017,
+      "journal": "Remote Sensing",
+      "cited_by_count": 586,
+      "doi": "10.3390/rs9050459",
+      "keywords": [
+        "Scale (ratio)",
+        "Computer science",
+        "State (computer science)",
+        "Risk analysis (engineering)",
+        "Business",
+        "Environmental resource management",
+        "Environmental planning",
+        "Environmental science",
+        "Geography"
+      ]
+    },
+    {
+      "rank": 8,
+      "title": "Evolution of Non-Terrestrial Networks From 5G to 6G: A Survey",
+      "authors": [
+        "Mohammad Mahdi Azari",
+        "Sourabh Solanki",
+        "Symeon Chatzinotas",
+        "Oltjon Kodheli",
+        "Hazem Sallouha",
+        "Achiel Colpaert",
+        "Jesús Fabián Mendoza Montoya",
+        "Sofie Pollin",
+        "Alireza Haqiqatnejad",
+        "Arsham Mostaani",
+        "Eva Lagunas",
+        "Björn Ottersten"
+      ],
+      "year": 2022,
+      "journal": "IEEE Communications Surveys & Tutorials",
+      "cited_by_count": 553,
+      "doi": "10.1109/comst.2022.3199901",
+      "keywords": [
+        "Relevance (law)",
+        "Field (mathematics)",
+        "Computer science",
+        "Space (punctuation)",
+        "Systems engineering",
+        "Engineering",
+        "Political science"
+      ]
+    },
+    {
+      "rank": 9,
+      "title": "Last-mile delivery concepts: a survey from an operational research perspective",
+      "authors": [
+        "Nils Boysen",
+        "Stefan Fedtke",
+        "Stefan Schwerdfeger"
+      ],
+      "year": 2020,
+      "journal": "OR Spectrum",
+      "cited_by_count": 545,
+      "doi": "10.1007/s00291-020-00607-8",
+      "keywords": [
+        "Last mile (transportation)",
+        "Mile",
+        "Computer science",
+        "Drone",
+        "Perspective (graphical)",
+        "Operations research",
+        "Planner",
+        "Engineering",
+        "Geography"
+      ]
+    },
+    {
+      "rank": 10,
+      "title": "A Review on Early Forest Fire Detection Systems Using Optical Remote Sensing",
+      "authors": [
+        "Panagiotis Barmpoutis",
+        "Periklis Papaioannou",
+        "Kosmas Dimitropoulos",
+        "Nikos Grammalidis"
+      ],
+      "year": 2020,
+      "journal": "Sensors",
+      "cited_by_count": 493,
+      "doi": "10.3390/s20226442",
+      "keywords": [
+        "Warning system",
+        "Remote sensing",
+        "Fire detection",
+        "Environmental science",
+        "Environmental resource management",
+        "Strengths and weaknesses",
+        "Scale (ratio)",
+        "Threatened species",
+        "Woodland",
+        "Computer science",
+        "Geography",
+        "Engineering",
+        "Architectural engineering",
+        "Cartography",
+        "Telecommunications",
+        "Ecology",
+        "Habitat"
+      ]
+    }
+  ],
+  "top10_authors_by_citation": [
+    {
+      "rank": 1,
+      "name": "Jie Xu",
+      "citations": 3114,
+      "papers": 5
+    },
+    {
+      "rank": 2,
+      "name": "Fan Liu",
+      "citations": 3046,
+      "papers": 4
+    },
+    {
+      "rank": 3,
+      "name": "Yuanhao Cui",
+      "citations": 2998,
+      "papers": 1
+    },
+    {
+      "rank": 4,
+      "name": "Christos Masouros",
+      "citations": 2998,
+      "papers": 1
+    },
+    {
+      "rank": 5,
+      "name": "Tony Xiao Han",
+      "citations": 2998,
+      "papers": 1
+    },
+    {
+      "rank": 6,
+      "name": "Yonina C. Eldar",
+      "citations": 2998,
+      "papers": 1
+    },
+    {
+      "rank": 7,
+      "name": "Stefano Buzzi",
+      "citations": 2998,
+      "papers": 1
+    },
+    {
+      "rank": 8,
+      "name": "Mohsen Guizani",
+      "citations": 2190,
+      "papers": 2
+    },
+    {
+      "rank": 9,
+      "name": "Hazim Shakhatreh",
+      "citations": 2188,
+      "papers": 1
+    },
+    {
+      "rank": 10,
+      "name": "Ahmad Sawalmeh",
+      "citations": 2188,
+      "papers": 1
+    }
+  ],
+  "top10_authors_by_paper_count": [
+    {
+      "rank": 1,
+      "name": "Dusit Niyato",
+      "papers": 23,
+      "citations": 236
+    },
+    {
+      "rank": 2,
+      "name": "Jiacheng Wang",
+      "papers": 12,
+      "citations": 159
+    },
+    {
+      "rank": 3,
+      "name": "Geng Sun",
+      "papers": 11,
+      "citations": 150
+    },
+    {
+      "rank": 4,
+      "name": "Dong In Kim",
+      "papers": 7,
+      "citations": 114
+    },
+    {
+      "rank": 5,
+      "name": "Kin Huat Low",
+      "papers": 7,
+      "citations": 388
+    },
+    {
+      "rank": 6,
+      "name": "Bizhao Pang",
+      "papers": 6,
+      "citations": 336
+    },
+    {
+      "rank": 7,
+      "name": "Vishwanath Bulusu",
+      "papers": 6,
+      "citations": 88
+    },
+    {
+      "rank": 8,
+      "name": "Jie Xu",
+      "papers": 5,
+      "citations": 3114
+    },
+    {
+      "rank": 9,
+      "name": "Ruichen Zhang",
+      "papers": 5,
+      "citations": 48
+    },
+    {
+      "rank": 10,
+      "name": "Abbas Jamalipour",
+      "papers": 5,
+      "citations": 70
+    }
+  ],
+  "top30_keywords": [
+    {
+      "keyword": "Computer security",
+      "count": 88
+    },
+    {
+      "keyword": "Aerospace engineering",
+      "count": 73
+    },
+    {
+      "keyword": "Economics",
+      "count": 68
+    },
+    {
+      "keyword": "China",
+      "count": 59
+    },
+    {
+      "keyword": "Transport engineering",
+      "count": 56
+    },
+    {
+      "keyword": "Altitude (triangle)",
+      "count": 45
+    },
+    {
+      "keyword": "Aviation",
+      "count": 44
+    },
+    {
+      "keyword": "Computer network",
+      "count": 36
+    },
+    {
+      "keyword": "Air traffic control",
+      "count": 35
+    },
+    {
+      "keyword": "Low altitude",
+      "count": 34
+    },
+    {
+      "keyword": "Wireless",
+      "count": 34
+    },
+    {
+      "keyword": "Real-time computing",
+      "count": 34
+    },
+    {
+      "keyword": "Sustainable development",
+      "count": 33
+    },
+    {
+      "keyword": "Economic geography",
+      "count": 30
+    },
+    {
+      "keyword": "Geology",
+      "count": 28
+    },
+    {
+      "keyword": "Software deployment",
+      "count": 27
+    },
+    {
+      "keyword": "Process (computing)",
+      "count": 26
+    },
+    {
+      "keyword": "Environmental planning",
+      "count": 25
+    },
+    {
+      "keyword": "Context (archaeology)",
+      "count": 24
+    },
+    {
+      "keyword": "Identification (biology)",
+      "count": 24
+    },
+    {
+      "keyword": "Economic growth",
+      "count": 23
+    },
+    {
+      "keyword": "Population",
+      "count": 21
+    },
+    {
+      "keyword": "Land use",
+      "count": 21
+    },
+    {
+      "keyword": "Physical geography",
+      "count": 20
+    },
+    {
+      "keyword": "Robot",
+      "count": 19
+    },
+    {
+      "keyword": "Service (business)",
+      "count": 18
+    },
+    {
+      "keyword": "Sustainability",
+      "count": 18
+    },
+    {
+      "keyword": "Agriculture",
+      "count": 18
+    },
+    {
+      "keyword": "Path (computing)",
+      "count": 17
+    },
+    {
+      "keyword": "Economy",
+      "count": 17
+    }
+  ],
+  "theme_clusters": [
+    {
+      "theme": "人工智能/优化方法",
+      "count": 688,
+      "total_citations": 35859,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+      ]
+    },
+    {
+      "theme": "低空经济/综述",
+      "count": 502,
+      "total_citations": 33419,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+      ]
+    },
+    {
+      "theme": "无人机系统",
+      "count": 395,
+      "total_citations": 27749,
+      "sample_papers": [
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Cooperative ISAC-Empowered Low-Altitude Economy"
+      ]
+    },
+    {
+      "theme": "城市空中交通(UAM)",
+      "count": 354,
+      "total_citations": 21417,
+      "sample_papers": [
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Cooperative ISAC-Empowered Low-Altitude Economy"
+      ]
+    },
+    {
+      "theme": "环境噪声/公众接受",
+      "count": 338,
+      "total_citations": 18906,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+      ]
+    },
+    {
+      "theme": "ISAC/通信感知一体化",
+      "count": 306,
+      "total_citations": 26981,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+      ]
+    },
+    {
+      "theme": "电池能源/动力系统",
+      "count": 257,
+      "total_citations": 18915,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions"
+      ]
+    },
+    {
+      "theme": "eVTOL/飞行器设计",
+      "count": 248,
+      "total_citations": 9233,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "6G Non-Terrestrial Networks Enabled Low-Altitude Economy: Opportunities and Challenges"
+      ]
+    },
+    {
+      "theme": "空域管理/交通管制",
+      "count": 232,
+      "total_citations": 5507,
+      "sample_papers": [
+        "Integrated Sensing and Communication for Low Altitude Economy: Opportunities and Challenges",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+      ]
+    },
+    {
+      "theme": "安全/隐私/抗干扰",
+      "count": 230,
+      "total_citations": 18959,
+      "sample_papers": [
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Unauthorized UAV Countermeasure for Low-Altitude Economy: Joint Communications and Jamming Based on MIMO Cellular Systems",
+        "Generative AI-Enabled Wireless Communications for Robust Low-Altitude Economy Networking"
+      ]
+    },
+    {
+      "theme": "适航审定/法规",
+      "count": 168,
+      "total_citations": 7468,
+      "sample_papers": [
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach",
+        "LAERACE: Taking the policy fast-track towards low-altitude economy"
+      ]
+    },
+    {
+      "theme": "配送/物流应用",
+      "count": 163,
+      "total_citations": 9389,
+      "sample_papers": [
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Generative AI-Enabled Wireless Communications for Robust Low-Altitude Economy Networking",
+        "Trustworthy Intelligent Networks for Low-Altitude Economy"
+      ]
+    },
+    {
+      "theme": "路径规划/导航定位",
+      "count": 162,
+      "total_citations": 6712,
+      "sample_papers": [
+        "Networked ISAC for Low-Altitude Economy: Coordinated Transmit Beamforming and UAV Trajectory Design",
+        "Toward Realization of Low-Altitude Economy Networks: Core Architecture, Integrated Technologies, and Future Directions",
+        "Integrated Sensing and Communications for Low-Altitude Economy: A Deep Reinforcement Learning Approach"
+      ]
+    },
+    {
+      "theme": "遥感/农业应用",
+      "count": 162,
+      "total_citations": 17348,
+      "sample_papers": [
+        "MADQN-Enhanced Computation Offloading and Resource Allocation for 6G Low-Altitude Economy Vehicular Networks",
+        "Networked ISAC for Low-Altitude Economy: Transmit Beamforming and UAV Trajectory Design",
+        "Random Signal Design for Joint Communication and SAR Imaging Towards Low-Altitude Economy"
+      ]
+    }
+  ],
+  "top20_journals": [
+    {
+      "journal": "Acta Ecologica Sinica",
+      "count": 64
+    },
+    {
+      "journal": "2025 Low-Altitude Economy Forum &amp;amp; International Conference on Low-Altitude Flight Technology and Unmanned Aerial Vehicle Application (LEF &amp;amp; ICLU)",
+      "count": 38
+    },
+    {
+      "journal": "IEEE Access",
+      "count": 26
+    },
+    {
+      "journal": "Drones",
+      "count": 20
+    },
+    {
+      "journal": "Sensors",
+      "count": 18
+    },
+    {
+      "journal": "Low-Altitude Economy",
+      "count": 18
+    },
+    {
+      "journal": "Remote Sensing",
+      "count": 15
+    },
+    {
+      "journal": "Aerospace",
+      "count": 13
+    },
+    {
+      "journal": "资源科学",
+      "count": 13
+    },
+    {
+      "journal": "社会企业经济发展",
+      "count": 13
+    },
+    {
+      "journal": "Sustainability",
+      "count": 11
+    },
+    {
+      "journal": "AIAA AVIATION 2023 Forum",
+      "count": 10
+    },
+    {
+      "journal": "AIAA AVIATION FORUM AND ASCEND 2024",
+      "count": 10
+    },
+    {
+      "journal": "AIAA AVIATION FORUM AND ASCEND 2025",
+      "count": 9
+    },
+    {
+      "journal": "社会经济导刊",
+      "count": 8
+    },
+    {
+      "journal": "AIAA AVIATION 2022 Forum",
+      "count": 8
+    },
+    {
+      "journal": "AIAA AVIATION 2020 FORUM",
+      "count": 8
+    },
+    {
+      "journal": "AIAA AVIATION 2021 FORUM",
+      "count": 8
+    },
+    {
+      "journal": "IEEE Transactions on Wireless Communications",
+      "count": 7
+    },
+    {
+      "journal": "IEEE Internet of Things Journal",
+      "count": 7
+    }
+  ],
+  "latest_5_papers": [
+    {
+      "title": "Agentic Satellite-Augmented Low-Altitude Economy and Terrestrial Networks: A Survey on Generative Approaches",
+      "authors": [
+        "Xiaozheng Gao",
+        "Yichen Wang",
+        "Bosen Liu",
+        "Xiao Zhou",
+        "Ruichen Zhang",
+        "Jiacheng Wang",
+        "Dusit Niyato",
+        "Dong In Kim",
+        "Abbas Jamalipour",
+        "Chau Yuen",
+        "Jianping An",
+        "Kai Yang"
+      ],
+      "year": 2026,
+      "journal": "IEEE Communications Surveys & Tutorials",
+      "cited_by_count": 4,
+      "doi": "10.1109/comst.2026.3660854",
+      "abstract": "The development of satellite-augmented low-altitude economy and terrestrial networks (SLAETNs) demands intelligent and autonomous systems that can operate reliably across heterogeneous, dynamic, and mission-critical environments. To address these challenges, this article surveys the state-of-the-art"
+    },
+    {
+      "title": "A review of noise-aware path planning for urban drone operations",
+      "authors": [
+        "Yinuo Wang",
+        "N. Zhang",
+        "Xun Huang"
+      ],
+      "year": 2026,
+      "journal": "Control Engineering Practice",
+      "cited_by_count": 1,
+      "doi": "10.1016/j.conengprac.2025.106750",
+      "abstract": ""
+    },
+    {
+      "title": "Research on the Governance Challenges and Institutional Pathways of the Low-Altitude Economy: A Case Study of the Guangdong–Hong Kong–Macao Greater Bay Area",
+      "authors": [
+        "Yifei Li",
+        "XINRUI HUANG"
+      ],
+      "year": 2026,
+      "journal": "Research Square",
+      "cited_by_count": 0,
+      "doi": "10.21203/rs.3.rs-8005441/v1",
+      "abstract": ""
+    },
+    {
+      "title": "Key Technologies of Vertical Take-Off and Landing Infrastructure for Urban Air Mobility: A Comprehensive Review",
+      "authors": [
+        "Chenglong Li",
+        "Runming Wang",
+        "Z. -H. Zhang",
+        "Yuan Zheng",
+        "Yang Wang",
+        "Rui Yang"
+      ],
+      "year": 2026,
+      "journal": "ENGINEERING Information Technology & Electronic Engineering",
+      "cited_by_count": 0,
+      "doi": "10.1631/eng.itee.2025.0173",
+      "abstract": "As the frontier of multidimensional transportation systems, urban air mobility (UAM) is receiving increasing attention from international organizations, governments, and stakeholders in industry and academia owing to its high efficiency, low carbon footprint, and operational flexibility. Vertical ta"
+    },
+    {
+      "title": "低空经济词频",
+      "authors": [
+        "Li Dingzhao"
+      ],
+      "year": 2026,
+      "journal": "Open MIND",
+      "cited_by_count": 0,
+      "doi": "",
+      "abstract": "Use Python and Jieba word segmentation tool to process TXT format annual report text. Combining the Implementation of Innovative Applications in General Aviation Equipment The policy document \"Plan (2024-2030)\" includes the construction of low altitude, airspace, unmanned aerial vehicles eVTOL、 Vert"
+    }
+  ]
+}

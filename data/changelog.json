@@ -229,5 +229,47 @@
     "before": 200,
     "after": 200,
     "new_records": 0
+  },
+  {
+    "time": "2026-05-05T09:07:15.622871",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-05T09:07:15.629751",
+    "module": "talent",
+    "before": 200,
+    "after": 200,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-06T09:00:37.378672",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-06T09:00:37.388880",
+    "module": "talent",
+    "before": 200,
+    "after": 200,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-06T09:00:40.071981",
+    "module": "policy",
+    "before": 71,
+    "after": 71,
+    "new_records": 0
+  },
+  {
+    "time": "2026-05-06T09:00:40.079585",
+    "module": "talent",
+    "before": 200,
+    "after": 200,
+    "new_records": 0
   }
 ]
