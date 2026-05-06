@@ -9,17 +9,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #f0f4f8;
-    color: #333;
+    background: #0a1628;
+    color: #c8d6e5;
     line-height: 1.6;
   }
-  a { color: #1a73e8; text-decoration: none; }
+  a { color: #3b82f6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
   /* Loading overlay */
   #loading-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(240, 244, 248, 0.95);
+    background: rgba(13, 17, 23, 0.95);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     z-index: 9999;
@@ -28,23 +28,24 @@
   #loading-overlay.hidden { opacity: 0; pointer-events: none; }
   .loader {
     width: 48px; height: 48px;
-    border: 4px solid #e0e6ed;
-    border-top-color: #1a73e8;
+    border: 4px solid #1a2d52;
+    border-top-color: #3b82f6;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loader-text { margin-top: 16px; color: #5f6368; font-size: 14px; }
+  .loader-text { margin-top: 16px; color: #6b8cbe; font-size: 14px; }
 
   /* Header */
   .header {
-    background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #111d38 0%, #0a1628 100%);
+    color: #c8d6e5;
     padding: 20px 24px;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    border-bottom: 1px solid #1a2d52;
   }
   .header-inner {
     max-width: 1400px;
@@ -55,19 +56,19 @@
     flex-wrap: wrap;
     gap: 12px;
   }
-  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
-  .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 2px; }
-  .header-right { text-align: right; font-size: 12px; opacity: 0.8; }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; color: #e8edf5; }
+  .header .subtitle { font-size: 13px; opacity: 0.7; margin-top: 2px; color: #6b8cbe; }
+  .header-right { text-align: right; font-size: 12px; opacity: 0.7; color: #6b8cbe; }
   .header-nav { display: flex; gap: 16px; margin-top: 8px; }
   .header-nav a {
-    color: rgba(255,255,255,0.8);
+    color: rgba(240,246,252,0.65);
     padding: 4px 12px;
     border-radius: 4px;
     font-size: 13px;
     transition: all 0.2s;
   }
-  .header-nav a:hover { background: rgba(255,255,255,0.15); text-decoration: none; }
-  .header-nav a.active { background: rgba(255,255,255,0.2); color: #fff; font-weight: 600; }
+  .header-nav a:hover { background: rgba(240,246,252,0.1); text-decoration: none; color: #e8edf5; }
+  .header-nav a.active { background: rgba(88,166,255,0.15); color: #3b82f6; font-weight: 600; }
 
   /* Container */
   .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
@@ -80,23 +81,23 @@
     margin-bottom: 20px;
   }
   .stat-card {
-    background: #fff;
+    background: #111d38;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    border-left: 4px solid #1a73e8;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border-left: 4px solid #3b82f6;
     transition: transform 0.2s;
   }
-  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .stat-card .label { font-size: 13px; color: #5f6368; margin-bottom: 6px; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .stat-card .label { font-size: 13px; color: #6b8cbe; margin-bottom: 6px; }
   .stat-card .value { font-size: 28px; font-weight: 700; }
-  .stat-card .sublabel { font-size: 12px; color: #5f6368; margin-top: 4px; }
-  .stat-card.card-blue { border-left-color: #1a73e8; }
-  .stat-card.card-blue .value { color: #1a73e8; }
+  .stat-card .sublabel { font-size: 12px; color: #6b8cbe; margin-top: 4px; }
+  .stat-card.card-blue { border-left-color: #3b82f6; }
+  .stat-card.card-blue .value { color: #3b82f6; }
   .stat-card.card-green { border-left-color: #34a853; }
   .stat-card.card-green .value { color: #34a853; }
-  .stat-card.card-orange { border-left-color: #f9ab00; }
-  .stat-card.card-orange .value { color: #f9ab00; }
+  .stat-card.card-orange { border-left-color: #fbbc04; }
+  .stat-card.card-orange .value { color: #fbbc04; }
   .stat-card.card-purple { border-left-color: #9334e6; }
   .stat-card.card-purple .value { color: #9334e6; }
 
@@ -108,19 +109,19 @@
     margin-bottom: 20px;
   }
   .chain-card {
-    background: #fff;
+    background: #111d38;
     border-radius: 10px;
     padding: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    border-top: 4px solid #1a73e8;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border-top: 4px solid #3b82f6;
     transition: transform 0.2s;
   }
-  .chain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .chain-card .chain-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .chain-card .chain-count { font-size: 24px; font-weight: 700; }
+  .chain-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .chain-card .chain-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #e8edf5; }
+  .chain-card .chain-count { font-size: 24px; font-weight: 700; color: #e8edf5; }
   .chain-card .chain-companies {
     font-size: 12px;
-    color: #5f6368;
+    color: #6b8cbe;
     margin-top: 6px;
     line-height: 1.5;
   }
@@ -133,18 +134,19 @@
     margin-bottom: 20px;
   }
   .chart-box {
-    background: #fff;
+    background: #111d38;
     border-radius: 10px;
     padding: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    border: 1px solid #1a2d52;
   }
   .chart-box h3 {
     font-size: 15px;
     font-weight: 600;
-    color: #333;
+    color: #e8edf5;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 2px solid #e8eaed;
+    border-bottom: 2px solid #1a2d52;
   }
   .chart-box .chart { width: 100%; height: 340px; }
   .chart-full {
@@ -154,12 +156,13 @@
 
   /* Error */
   .error-msg {
-    background: #fce8e6;
-    color: #c5221f;
+    background: rgba(248,81,73,0.15);
+    color: #ea4335;
     padding: 14px 20px;
     border-radius: 8px;
     margin: 20px 0;
     font-size: 14px;
+    border: 1px solid rgba(248,81,73,0.3);
   }
 
   /* Table */
@@ -173,42 +176,42 @@
   }
   .table-controls select, .table-controls input {
     padding: 8px 14px;
-    border: 1px solid #dadce0;
+    border: 1px solid #1a2d52;
     border-radius: 6px;
-    background: #fff;
+    background: #0a1628;
     font-size: 13px;
-    color: #333;
+    color: #c8d6e5;
     cursor: pointer;
     outline: none;
   }
-  .table-controls select:focus, .table-controls input:focus { border-color: #1a73e8; }
-  .table-controls .filter-label { font-size: 13px; color: #5f6368; font-weight: 500; }
+  .table-controls select:focus, .table-controls input:focus { border-color: #3b82f6; }
+  .table-controls .filter-label { font-size: 13px; color: #6b8cbe; font-weight: 500; }
   .table-wrap { overflow-x: auto; }
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
-    background: #fff;
+    background: #111d38;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
   }
   th {
-    background: #f8f9fa;
-    color: #5f6368;
+    background: #0a1628;
+    color: #6b8cbe;
     font-weight: 600;
     padding: 10px 12px;
     text-align: left;
     white-space: nowrap;
-    border-bottom: 2px solid #e8eaed;
+    border-bottom: 2px solid #1a2d52;
   }
   td {
     padding: 9px 12px;
-    border-bottom: 1px solid #f0f0f0;
-    color: #333;
+    border-bottom: 1px solid #1a2d52;
+    color: #c8d6e5;
     vertical-align: top;
   }
-  tr:hover td { background: #f8f9ff; }
+  tr:hover td { background: rgba(88,166,255,0.05); }
   .badge {
     display: inline-block;
     padding: 2px 8px;
@@ -217,13 +220,13 @@
     font-weight: 500;
     white-space: nowrap;
   }
-  .badge-重大项目 { background: #e8f0fe; color: #1a73e8; }
-  .badge-融资 { background: #e6f4ea; color: #137333; }
-  .badge-产品发布 { background: #fef7e0; color: #e37400; }
-  .badge-战略合作 { background: #f3e8fd; color: #7c3aed; }
-  .badge-企业经营 { background: #e6f4ea; color: #1a73e8; }
-  .badge-适航取证 { background: #fce8e6; color: #c5221f; }
-  .badge-政策响应 { background: #e8f0fe; color: #1967d2; }
+  .badge-重大项目 { background: rgba(56,139,253,0.2); color: #3b82f6; }
+  .badge-融资 { background: rgba(63,185,80,0.2); color: #34a853; }
+  .badge-产品发布 { background: rgba(210,153,34,0.2); color: #fbbc04; }
+  .badge-战略合作 { background: rgba(188,140,255,0.2); color: #9334e6; }
+  .badge-企业经营 { background: rgba(63,185,80,0.15); color: #34a853; }
+  .badge-适航取证 { background: rgba(248,81,73,0.2); color: #ea4335; }
+  .badge-政策响应 { background: rgba(56,139,253,0.15); color: #79c0ff; }
 
   .chain-tag {
     display: inline-block;
@@ -236,9 +239,9 @@
   .footer {
     text-align: center;
     padding: 24px;
-    color: #5f6368;
+    color: #6b8cbe;
     font-size: 12px;
-    border-top: 1px solid #e8eaed;
+    border-top: 1px solid #1a2d52;
     margin-top: 40px;
   }
 
@@ -410,7 +413,7 @@
   };
 
   const CHAIN_COLORS = [
-    ['#1a73e8', '#e8f0fe'],
+    ['#3b82f6', '#e8f0fe'],
     ['#34a853', '#e6f4ea'],
     ['#f9ab00', '#fef7e0'],
     ['#ea4335', '#fce8e6'],
@@ -553,8 +556,8 @@
         type: 'line',
         data: counts,
         smooth: true,
-        lineStyle: { color: '#1a73e8', width: 3 },
-        itemStyle: { color: '#1a73e8' },
+        lineStyle: { color: '#3b82f6', width: 3 },
+        itemStyle: { color: '#3b82f6' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0,0,0,1, [
             { offset: 0, color: 'rgba(26,115,232,0.3)' },
@@ -577,7 +580,7 @@
     });
     const catOrder = ['重大项目','融资','产品发布','战略合作','企业经营','适航取证','政策响应'];
     const colorMap = {
-      '重大项目': '#1a73e8',
+      '重大项目': '#3b82f6',
       '融资': '#34a853',
       '产品发布': '#f9ab00',
       '战略合作': '#9334e6',
@@ -633,7 +636,7 @@
           value: v,
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0,0,1,0, [
-              { offset: 0, color: '#1a73e8' },
+              { offset: 0, color: '#3b82f6' },
               { offset: 1, color: '#6ab7ff' }
             ]),
             borderRadius: [0, 4, 4, 0]
@@ -682,7 +685,7 @@
         <td><strong>${escHtml(n.headline)}</strong></td>
         <td>${escHtml(n.company)}</td>
         <td><span class="badge ${getBadge(n.category)}">${escHtml(n.category)}</span></td>
-        <td><span class="chain-tag" style="background:#e8f0fe;color:#1a73e8">${escHtml(n.chain_link)}</span></td>
+        <td><span class="chain-tag" style="background:#e8f0fe;color:#3b82f6">${escHtml(n.chain_link)}</span></td>
         <td>${escHtml(n.city)}</td>
         <td style="max-width:300px;font-size:12px;color:#5f6368">${escHtml(n.summary)}</td>
       </tr>
