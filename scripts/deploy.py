@@ -169,13 +169,11 @@ def main():
         (os.path.join(DASHBOARD_DIR, f), f)
         for f in copied
     ]
-    # 也上传 index.html（可能已修改）
-    index_path = os.path.join(DASHBOARD_DIR, "index.html")
-    if os.path.exists(index_path):
-        file_pairs.append((index_path, "index.html"))
-    talent_path = os.path.join(DASHBOARD_DIR, "talent.html")
-    if os.path.exists(talent_path):
-        file_pairs.append((talent_path, "talent.html"))
+    # 也上传 HTML 文件（可能已修改）
+    for html_file in ["index.html", "talent.html", "companies.html", "research.html"]:
+        html_path = os.path.join(DASHBOARD_DIR, html_file)
+        if os.path.exists(html_path):
+            file_pairs.append((html_path, html_file))
     
     upload_ok = upload_to_github(file_pairs)
     
