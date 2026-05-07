@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能纺织品情报洞察系统 - 技术监测</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="data_summary.js"></script>
+    <script src="data_smart_textile_data.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; }
+        .navbar { background: linear-gradient(135deg, #1565C0, #00897B); padding: 0 30px; display: flex; align-items: center; height: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .navbar .brand { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 1px; margin-right: 40px; white-space: nowrap; }
+        .navbar .nav-links { display: flex; gap: 6px; }
+        .navbar .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: all .2s; }
+        .navbar .nav-links a:hover, .navbar .nav-links a.active { background: rgba(255,255,255,0.18); color: #fff; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .stats-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 20px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid #1565C0; transition: transform .2s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(21,101,192,0.12); }
+        .stat-card .num { font-size: 32px; font-weight: 700; color: #1565C0; }
+        .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+        .stat-card:nth-child(2) { border-top-color: #00897B; }
+        .stat-card:nth-child(2) .num { color: #00897B; }
+        .stat-card:nth-child(3) { border-top-color: #e67e22; }
+        .stat-card:nth-child(3) .num { color: #e67e22; }
+        .stat-card:nth-child(4) { border-top-color: #8e44ad; }
+        .stat-card:nth-child(4) .num { color: #8e44ad; }
+        .stat-card:nth-child(5) { border-top-color: #27ae60; }
+        .stat-card:nth-child(5) .num { color: #27ae60; }
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .chart-box { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .chart-box h3 { font-size: 16px; color: #333; margin-bottom: 12px; padding-left: 10px; border-left: 3px solid #1565C0; }
+        .chart-full { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .chart-full h3 { font-size: 16px; color: #333; margin-bottom: 12px; padding-left: 10px; border-left: 3px solid #00897B; }
+        .list-section { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .list-section h3 { font-size: 16px; margin-bottom: 12px; padding-left: 10px; border-left: 3px solid #1565C0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .list-section h3 select { padding: 4px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+        .list-table { width: 100%; border-collapse: collapse; }
+        .list-table th { background: #f0f4ff; text-align: left; padding: 10px 12px; font-size: 13px; color: #555; border-bottom: 2px solid #e0e8f0; }
+        .list-table td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #f0f0f0; }
+        .list-table tr:hover { background: #f8faff; }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; background: #e3f2fd; color: #1565C0; margin-right: 4px; }
+        .tag.blue { background: #e3f2fd; color: #1565C0; }
+        .tag.green { background: #e0f2f1; color: #00897B; }
+        .tag.orange { background: #fff3e0; color: #e67e22; }
+        .tag.purple { background: #f3e5f5; color: #8e44ad; }
+        .tag.red { background: #ffebee; color: #c62828; }
+        .tag.active { background: #e8f5e9; color: #2e7d32; }
+        .tag.ultra { background: #fce4ec; color: #c2185b; }
+        .tag.passive { background: #f5f5f5; color: #757575; }
+        .loading { text-align: center; padding: 80px; font-size: 18px; color: #999; }
+        .error-msg { text-align: center; padding: 40px; color: #c62828; background: #ffebee; border-radius: 12px; margin: 20px; }
+        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+        .chart-box .chart, .chart-full .chart { width: 100%; height: 320px; }
+        .chart-box .chart { height: 300px; }
+        @media (max-width: 900px) {
+            .stats-row { grid-template-columns: repeat(3,1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .navbar { flex-wrap: wrap; height: auto; padding: 10px 16px; }
+            .navbar .brand { margin-bottom: 6px; }
+            .navbar .nav-links { flex-wrap: wrap; }
+        }
+        @media (max-width: 600px) {
+            .stats-row { grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="brand">🧵 智能纺织品情报洞察系统</div>
+    <div class="nav-links">
+        <a href="index.html" class="active">📊 技术监测</a>
+        <a href="policy.html">🌐 宏观环境与政策</a>
+        <a href="competition.html">🏭 产业与市场</a>
+        <a href="radar.html">🔬 技术创新</a>
+        <a href="standards.html">📋 标准与合规</a>
+    </div>
+</nav>
+<div class="container" id="appContainer">
+    <div class="loading" id="loadingIndicator">加载中...</div>
+</div>
+<div class="footer">数据更新时间：2026-05-07 08:00 | 数据来源：智能纺织品情报系统 · 仅供内部参考</div>
+<script>
+(function(){
+    var container = document.getElementById('appContainer');
+
+    function initPage(){
+        if(typeof window.SMART_TEXTILE_DATA_DATA === 'undefined' || typeof window.DASHBOARD_SUMMARY === 'undefined'){
+            container.innerHTML = '<div class="error-msg">❌ 数据加载失败，请确认 data_smart_textile_data.js 和 data_summary.js 已正确加载。</div>';
+            return;
+        }
+
+        var records = window.SMART_TEXTILE_DATA_DATA.records;
+        var summary = window.DASHBOARD_SUMMARY;
+
+        // Tech name mapping
+        var techNameMap = {
+            'conductive-fiber': '导电纤维',
+            'flexible-sensor': '柔性传感器',
+            'energy-harvesting': '能量采集',
+            'embedded-circuit': '嵌入式电路',
+            'communication': '通信模块',
+            'integration': '纺织-电子集成工艺'
+        };
+        var sceneNameMap = {
+            'healthcare': '医疗健康',
+            'sports-fitness': '运动健身',
+            'military-defense': '军事国防',
+            'smart-home': '智能家居',
+            'fashion-entertainment': '时尚娱乐',
+            'industrial-safety': '工业安全',
+            'wearable-computing': '可穿戴计算'
+        };
+        var eventTypeMap = {
+            'technology_breakthrough': '技术突破',
+            'corporate_cooperation': '企业合作',
+            'policy': '政策',
+            'funding': '资金',
+            'product_launch': '产品发布',
+            'standards': '标准'
+        };
+        var smartLevelMap = {
+            'passive': '被动型',
+            'active': '主动型',
+            'ultra': '超智能型'
+        };
+
+        // Statistics from records
+        var total = records.length;
+        var techSet = new Set(); records.forEach(function(r){ r.tech_tags.forEach(function(t){ techSet.add(t); }); });
+        var techCount = techSet.size;
+        var sceneSet = new Set(); records.forEach(function(r){ r.scene_tags.forEach(function(s){ sceneSet.add(s); }); });
+        var sceneCount = sceneSet.size;
+        var companySet = new Set(); records.forEach(function(r){ companySet.add(r.source); });
+        var companyCount = companySet.size;
+        var now = new Date('2026-05-07');
+        var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        var monthNew = records.filter(function(r){ return new Date(r.date) >= monthStart; }).length;
+
+        // Month aggregation
+        var monthAgg = {};
+        records.forEach(function(r){
+            var m = r.date.substring(0,7);
+            if(!monthAgg[m]) monthAgg[m] = 0;
+            monthAgg[m]++;
+        });
+        var months = Object.keys(monthAgg).sort();
+        var monthValues = months.map(function(m){ return monthAgg[m]; });
+
+        // Event type pie
+        var typeCount = {};
+        records.forEach(function(r){
+            if(!typeCount[r.event_type]) typeCount[r.event_type] = 0;
+            typeCount[r.event_type]++;
+        });
+
+        // Tech × Scene heatmap
+        var techs = Object.keys(techNameMap);
+        var scenes = Object.keys(sceneNameMap);
+        var heatData = [];
+        techs.forEach(function(t, ti){
+            scenes.forEach(function(s, si){
+                var count = records.filter(function(r){
+                    return r.tech_tags.indexOf(t) !== -1 && r.scene_tags.indexOf(s) !== -1;
+                }).length;
+                heatData.push([si, ti, count]);
+            });
+        });
+
+        var allRegions = ['中国','美国','日本','韩国','欧洲','加拿大'];
+        var eventColors = {technology_breakthrough:'#1565C0', corporate_cooperation:'#00897B', policy:'#e67e22', funding:'#8e44ad', product_launch:'#27ae60', standards:'#c62828'};
+        var eventTypeColors = {technology_breakthrough:'blue', corporate_cooperation:'green', policy:'orange', funding:'purple', product_launch:'red', standards:'blue'};
+
+        // Build HTML
+        var html = '';
+        // Stats row
+        html += '<div class="stats-row">';
+        html += '<div class="stat-card"><div class="num">'+total+'</div><div class="label">数据总量</div></div>';
+        html += '<div class="stat-card"><div class="num">'+techCount+'</div><div class="label">技术方向数</div></div>';
+        html += '<div class="stat-card"><div class="num">'+sceneCount+'</div><div class="label">覆盖场景数</div></div>';
+        html += '<div class="stat-card"><div class="num">'+companyCount+'</div><div class="label">覆盖企业数</div></div>';
+        html += '<div class="stat-card"><div class="num">'+monthNew+'</div><div class="label">本月新增</div></div>';
+        html += '</div>';
+
+        // First row charts
+        html += '<div class="chart-row">';
+        html += '<div class="chart-box"><h3>按月情报时间分布</h3><div id="monthChart" class="chart"></div></div>';
+        html += '<div class="chart-box"><h3>事件类型分布</h3><div id="typePie" class="chart"></div></div>';
+        html += '</div>';
+
+        // Second row heatmap
+        html += '<div class="chart-full"><h3>技术×场景交叉热力图</h3><div id="heatChart" class="chart"></div></div>';
+
+        // Event list
+        var eventFilterOptions = '<option value="all">全部类型</option>';
+        Object.keys(eventTypeMap).forEach(function(k){ eventFilterOptions += '<option value="'+k+'">'+eventTypeMap[k]+'</option>'; });
+        var regionFilterOptions = '<option value="all">全部区域</option>';
+        allRegions.forEach(function(r){ regionFilterOptions += '<option value="'+r+'">'+r+'</option>'; });
+
+        html += '<div class="list-section">';
+        html += '<h3>📋 情报列表 <select id="eventFilter" onchange="filterEvents()">'+eventFilterOptions+'</select><select id="regionFilter" onchange="filterEvents()">'+regionFilterOptions+'</select></h3>';
+        html += '<table class="list-table"><thead><tr><th>标题</th><th>日期</th><th>来源</th><th>技术标签</th><th>场景标签</th><th>智能级别</th></tr></thead><tbody id="eventList"></tbody></table>';
+        html += '</div>';
+
+        container.innerHTML = html;
+
+        // Month line chart
+        var monthChart = echarts.init(document.getElementById('monthChart'));
+        monthChart.setOption({
+            tooltip: { trigger:'axis' },
+            grid: { left:'8%', right:'4%', bottom:'15%', top:'8%', containLabel:true },
+            xAxis: { type:'category', data: months, axisLabel: { rotate: 30, fontSize: 10 } },
+            yAxis: { type:'value', name:'情报数量' },
+            series: [{
+                type:'line', data: monthValues, smooth: true,
+                lineStyle: { color: '#1565C0', width: 2 },
+                areaStyle: { color: 'rgba(21,101,192,0.1)' },
+                itemStyle: { color: '#1565C0' },
+                symbol: 'circle', symbolSize: 6
+            }]
+        });
+
+        // Event type pie
+        var pieData = Object.keys(typeCount).map(function(k){ return { name: eventTypeMap[k] || k, value: typeCount[k] }; });
+        var pieColors = ['#1565C0','#00897B','#e67e22','#8e44ad','#27ae60','#c62828'];
+        var typePie = echarts.init(document.getElementById('typePie'));
+        typePie.setOption({
+            tooltip: { trigger:'item', formatter:'{b}: {c} ({d}%)' },
+            series: [{
+                type:'pie', radius:['35%','60%'], center:['50%','50%'],
+                data: pieData,
+                label: { fontSize: 11 },
+                itemStyle: { borderRadius: 6, borderColor:'#fff', borderWidth: 2 },
+                color: pieColors,
+                emphasis: { itemStyle: { shadowBlur:10, shadowColor:'rgba(0,0,0,0.2)' } }
+            }]
+        });
+
+        // Heatmap
+        var heatChart = echarts.init(document.getElementById('heatChart'));
+        heatChart.setOption({
+            tooltip: {
+                position: 'top',
+                formatter: function(p){
+                    return techNameMap[techs[p.data[1]]] + ' × ' + sceneNameMap[scenes[p.data[0]]] + '<br/>数量: ' + p.data[2];
+                }
+            },
+            grid: { left: '16%', right: '4%', bottom: '15%', top: '6%', containLabel: true },
+            xAxis: { type: 'category', data: scenes.map(function(s){ return sceneNameMap[s]; }), axisLabel: { rotate: 20, fontSize: 11 }, splitArea: { show: true } },
+            yAxis: { type: 'category', data: techs.map(function(t){ return techNameMap[t]; }), axisLabel: { fontSize: 11 }, splitArea: { show: true } },
+            visualMap: {
+                min: 0, max: Math.max.apply(null, heatData.map(function(d){ return d[2]; })) || 5,
+                calculable: true, orient: 'horizontal', left: 'center', bottom: 0,
+                inRange: { color: ['#e8f0fe','#90caf9','#42a5f5','#1565C0','#0d47a1'] }
+            },
+            series: [{
+                type: 'heatmap', data: heatData,
+                label: { show: true, fontSize: 11, color: '#333' },
+                emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' } }
+            }]
+        });
+
+        // Resize
+        window.addEventListener('resize', function(){
+            monthChart.resize(); typePie.resize(); heatChart.resize();
+        });
+
+        // Event list filtering
+        window.filterEvents = function(){
+            var typeFilter = document.getElementById('eventFilter').value;
+            var regionFilter = document.getElementById('regionFilter').value;
+            var tbody = document.getElementById('eventList');
+            tbody.innerHTML = '';
+            var filtered = records.filter(function(r){
+                return (typeFilter === 'all' || r.event_type === typeFilter) &&
+                       (regionFilter === 'all' || r.region === regionFilter);
+            });
+            filtered.sort(function(a,b){ return b.date.localeCompare(a.date); });
+            filtered.forEach(function(r){
+                var tr = document.createElement('tr');
+                var typeName = eventTypeMap[r.event_type] || r.event_type;
+                var typeColor = eventTypeColors[r.event_type] || 'blue';
+                var techTags = (r.tech_tags||[]).map(function(t){ return '<span class="tag">'+(techNameMap[t]||t)+'</span>'; }).join('');
+                var sceneTags = (r.scene_tags||[]).map(function(s){ return '<span class="tag green">'+(sceneNameMap[s]||s)+'</span>'; }).join('');
+                var levelLabel = smartLevelMap[r.smart_level] || r.smart_level;
+                var levelClass = r.smart_level || 'passive';
+                tr.innerHTML = '<td><span class="tag '+typeColor+'">'+typeName+'</span> '+r.title+'</td><td>'+r.date+'</td><td>'+r.source+'</td><td>'+techTags+'</td><td>'+sceneTags+'</td><td><span class="tag '+levelClass+'">'+levelLabel+'</span></td>';
+                tbody.appendChild(tr);
+            });
+        };
+        window.filterEvents();
+    }
+
+    // Check if data is already loaded
+    if(typeof window.SMART_TEXTILE_DATA_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
+        initPage();
+    } else {
+        // Wait for data scripts
+        var checkInterval = setInterval(function(){
+            if(typeof window.SMART_TEXTILE_DATA_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
+                clearInterval(checkInterval);
+                initPage();
+            }
+        }, 100);
+        setTimeout(function(){
+            clearInterval(checkInterval);
+            if(document.getElementById('loadingIndicator')){
+                container.innerHTML = '<div class="error-msg">❌ 数据加载超时，请刷新页面重试。</div>';
+            }
+        }, 5000);
+    }
+})();
+</script>
+</body>
+</html>
