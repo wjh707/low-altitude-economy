@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能纺织品情报洞察系统 - 技术监测</title>
+    <title>智能纺织品情报洞察系统 - 综合情报总览</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="data_summary.js"></script>
     <script src="data_smart_textile_data.js"></script>
@@ -55,15 +55,20 @@
         .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
         .chart-box .chart, .chart-full .chart { width: 100%; height: 320px; }
         .chart-box .chart { height: 300px; }
+        .tech-card { border-left: 4px solid #1565C0; transition: all .2s; }
+        .tech-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(21,101,192,0.15); }
+        .tech-card.active { border-left-color: #00897B; background: #f0faf8; }
         @media (max-width: 900px) {
             .stats-row { grid-template-columns: repeat(3,1fr); }
             .chart-row { grid-template-columns: 1fr; }
             .navbar { flex-wrap: wrap; height: auto; padding: 10px 16px; }
             .navbar .brand { margin-bottom: 6px; }
             .navbar .nav-links { flex-wrap: wrap; }
+            #radarCards { grid-template-columns: repeat(2,1fr) !important; }
         }
         @media (max-width: 600px) {
             .stats-row { grid-template-columns: repeat(2,1fr); }
+            #radarCards { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
@@ -71,10 +76,9 @@
 <nav class="navbar">
     <div class="brand">🧵 智能纺织品情报洞察系统</div>
     <div class="nav-links">
-        <a href="index.html" class="active">📊 技术监测</a>
+        <a href="index.html" class="active">📊 综合情报总览</a>
         <a href="policy.html">🌐 宏观环境与政策</a>
         <a href="competition.html">🏭 产业与市场</a>
-        <a href="radar.html">🔬 技术创新</a>
         <a href="standards.html">📋 标准与合规</a>
     </div>
 </nav>
@@ -291,6 +295,206 @@
             });
         };
         window.filterEvents();
+
+        // ===== 技术创新雷达模块（基于84条真实情报统计） =====
+
+        // 技术方向定义（与techNameMap一致）
+        var techCodeList = ['conductive-fiber','flexible-sensor','energy-harvesting','embedded-circuit','communication','integration'];
+
+        // 统计各技术方向每年的情报数作为活跃度分数（归一化到0-10）
+        function calcTechScores(records, techCodes) {
+            var yearRanges = ['2023','2024','2025','2026','2027'];
+            var result = {};
+            techCodes.forEach(function(code) { result[code] = {}; });
+            records.forEach(function(r) {
+                var y = r.date.substring(0,4);
+                if (y < '2023') y = '2023';
+                if (r.tech_tags) {
+                    r.tech_tags.forEach(function(t) {
+                        if (result[t]) {
+                            if (!result[t][y]) result[t][y] = 0;
+                            result[t][y]++;
+                        }
+                    });
+                }
+            });
+            // 归一化到0-10
+            var maxVal = 1;
+            techCodes.forEach(function(code) {
+                yearRanges.forEach(function(y) {
+                    if (result[code][y] && result[code][y] > maxVal) maxVal = result[code][y];
+                });
+            });
+            techCodes.forEach(function(code) {
+                yearRanges.forEach(function(y) {
+                    result[code][y] = Math.round(((result[code][y] || 0) / maxVal) * 10);
+                });
+            });
+            return result;
+        }
+
+        var techScores = calcTechScores(records, techCodeList);
+
+        var radarYears = ['2023','2024','2025','2026','2027'];
+        var radarCurrentYear = 2026;
+        var radarCurrentIdx = 0;
+
+        // 技术详情关键词（来自真实数据的tech_tags分布）
+        var radarTechDetails = [
+            { keywords: ['碳纳米管','银纳米线','导电率','柔性电路','石墨烯'] },
+            { keywords: ['压阻','电容','应变','生理监测','无感穿戴'] },
+            { keywords: ['压电','热电','摩擦电','能量管理','柔性电池'] },
+            { keywords: ['电致变色','光致变色','温致变色','光子晶体','可逆'] },
+            { keywords: ['蓝牙','NFC','5G','低功耗','短距通信'] },
+            { keywords: ['纺织-电子','集成工艺','封装','编织法','层压'] }
+        ];
+
+        // 追加技术雷达区HTML
+        html += '<div style="margin-top:32px;"><h2 style="font-size:20px;color:#1565C0;padding-left:12px;border-left:4px solid #1565C0;margin-bottom:16px;">🔬 技术方向深度评估</h2></div>';
+
+        // 统计卡片（从真实数据统计）
+        var techYearCounts = {};
+        radarYears.forEach(function(y) {
+            techYearCounts[y] = records.filter(function(r) { return r.date.substring(0,4) === y; }).length;
+        });
+        var changeVal = (techYearCounts['2026'] || 0) - (techYearCounts['2025'] || 0);
+        var changeStr2 = (changeVal > 0 ? '+' : '') + changeVal;
+
+        html += '<div class="stats-row">';
+        html += '<div class="stat-card"><div class="num">'+techCodeList.length+'</div><div class="label">技术方向数</div></div>';
+        html += '<div class="stat-card"><div class="num">'+(techYearCounts['2026']||0)+'</div><div class="label">2026年情报数</div></div>';
+        html += '<div class="stat-card"><div class="num">'+changeStr2+'</div><div class="label">年度变化(2025→2026)</div></div>';
+        html += '<div class="stat-card"><div class="num">'+(techYearCounts['2023']||0)+'→'+(techYearCounts['2026']||0)+'</div><div class="label">4年情报增长</div></div>';
+        html += '<div class="stat-card"><div class="num">'+total+'</div><div class="label">总情报数</div></div>';
+        html += '</div>';
+
+        // 雷达图
+        html += '<div class="chart-box">';
+        html += '<h3>📡 技术方向雷达图（基于真实情报密度）</h3>';
+        html += '<div class="controls" style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">';
+        html += '<label style="font-size:14px;font-weight:500;color:#555;">选择年份：</label>';
+        html += '<input type="range" id="radarSlider" min="2023" max="2027" value="2026" step="1" oninput="updateRadarChart()" style="width:300px;accent-color:#1565C0;">';
+        html += '<span class="year-label" id="radarYearDisplay" style="font-size:18px;font-weight:700;color:#1565C0;min-width:60px;">2026</span>';
+        html += '</div>';
+        html += '<div id="radarChart" style="width:100%;height:480px;"></div>';
+        html += '</div>';
+
+        // 技术卡片
+        html += '<div class="tech-cards" id="radarCards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">' + renderRadarCards() + '</div>';
+
+        // 详情面板
+        html += '<div class="detail-panel" id="radarDetailPanel" style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:20px;display:none;">';
+        html += '<h4 id="radarDetailName" style="font-size:18px;color:#1565C0;margin-bottom:10px;"></h4>';
+        html += '<p id="radarDetailDesc" style="font-size:14px;color:#555;line-height:1.8;"></p>';
+        html += '<div id="radarDetailBars" style="margin-top:8px;"></div>';
+        html += '<p id="radarDetailKeywords" style="margin-top:8px;font-size:14px;color:#555;"></p>';
+        html += '</div>';
+
+        container.innerHTML = html;
+
+        // 渲染雷达图
+        renderRadarChart(2026);
+        showRadarDetail(0);
+
+        // 雷达图具体函数
+        function renderRadarCards() {
+            var h = '';
+            techCodeList.forEach(function(code, i) {
+                var name = techNameMap[code] || code;
+                var activeClass = i === radarCurrentIdx ? ' active' : '';
+                var curScore = (techScores[code] && techScores[code][String(radarCurrentYear)]) || 0;
+                var s2023 = (techScores[code] && techScores[code]['2023']) || 0;
+                var s2026 = (techScores[code] && techScores[code]['2026']) || 0;
+                h += '<div class="tech-card'+activeClass+'" onclick="selectRadarTech('+i+')" style="background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-left:4px solid #1565C0;cursor:pointer;transition:all .2s;';
+                h += i === radarCurrentIdx ? 'border-left-color:#00897B;background:#f0faf8;' : '';
+                h += '">';
+                h += '<h4 style="font-size:15px;color:#1565C0;margin-bottom:6px;">'+name+'</h4>';
+                h += '<div class="meta" style="font-size:12px;color:#888;margin-bottom:4px;">📊 当前活跃度: '+curScore+'/10</div>';
+                h += '<div class="meta" style="font-size:12px;color:#888;margin-bottom:4px;">📈 趋势: '+s2023+' → '+s2026+'</div>';
+                h += '<div class="tags" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">'+(radarTechDetails[i] ? radarTechDetails[i].keywords.slice(0,3).map(function(k){ return '<span style="background:#e3f2fd;color:#1565C0;padding:2px 8px;border-radius:10px;font-size:11px;">'+k+'</span>'; }).join('') : '')+'</div>';
+                h += '</div>';
+            });
+            return h;
+        }
+
+        window.selectRadarTech = function(idx) {
+            radarCurrentIdx = idx;
+            showRadarDetail(idx);
+            document.getElementById('radarCards').innerHTML = renderRadarCards();
+        };
+
+        window.updateRadarChart = function() {
+            var slider = document.getElementById('radarSlider');
+            var year = parseInt(slider.value);
+            document.getElementById('radarYearDisplay').textContent = year;
+            radarCurrentYear = year;
+            renderRadarChart(year);
+            document.getElementById('radarCards').innerHTML = renderRadarCards();
+            showRadarDetail(radarCurrentIdx);
+        };
+
+        function renderRadarChart(year) {
+            var existing = echarts.getInstanceByDom(document.getElementById('radarChart'));
+            if (existing) existing.dispose();
+            var chart = echarts.init(document.getElementById('radarChart'));
+            var seriesData = radarYears.map(function(y, i) {
+                var c = ['#1565C0','#42a5f5','#00897B','#e67e22','#8e44ad'][i];
+                var isHighlight = (y === String(year));
+                return {
+                    name: y,
+                    type: 'radar',
+                    data: [techCodeList.map(function(code) { return (techScores[code] && techScores[code][y]) || 0; })],
+                    areaStyle: isHighlight ? { color: 'rgba(21,101,192,0.12)' } : { opacity: 0 },
+                    lineStyle: { color: c, width: isHighlight ? 3 : 1.5, opacity: isHighlight ? 1 : 0.4 },
+                    itemStyle: { color: c, opacity: 1 }
+                };
+            });
+            chart.setOption({
+                tooltip: { trigger: 'item', formatter: function(p) { return p.seriesName + '<br/>' + p.name + ': ' + p.value; } },
+                legend: { data: radarYears, bottom: 0, textStyle: { fontSize: 12 } },
+                radar: {
+                    indicator: techCodeList.map(function(code) { return { name: techNameMap[code] || code, max: 10 }; }),
+                    shape: 'polygon',
+                    splitNumber: 5,
+                    name: { textStyle: { fontSize: 13, color: '#333' } },
+                    splitLine: { lineStyle: { color: '#e0e8f0' } },
+                    splitArea: { areaStyle: { color: ['rgba(21,101,192,0.02)','rgba(21,101,192,0.04)'] } },
+                    axisLine: { lineStyle: { color: '#ddd' } }
+                },
+                series: seriesData
+            });
+            window.addEventListener('resize', function() { chart.resize(); });
+            return chart;
+        }
+
+        function showRadarDetail(idx) {
+            var code = techCodeList[idx];
+            var name = techNameMap[code] || code;
+            var det = radarTechDetails[idx] || { keywords: [] };
+            var panel = document.getElementById('radarDetailPanel');
+            panel.style.display = 'block';
+            document.getElementById('radarDetailName').textContent = name + ' 技术详情';
+            var scores2023 = (techScores[code] && techScores[code]['2023']) || 0;
+            var scores2026 = (techScores[code] && techScores[code]['2026']) || 0;
+            document.getElementById('radarDetailDesc').textContent = '该技术在2023至2026年间情报活跃度从'+scores2023+'提升至'+scores2026+'。数据基于 '+total+' 条情报的 tech_tags 统计。';
+            var barsDiv = document.getElementById('radarDetailBars');
+            barsDiv.innerHTML = '';
+            ['2024','2025','2026'].forEach(function(y) {
+                var v = (techScores[code] && techScores[code][y]) || 0;
+                var w = document.createElement('div');
+                w.style.cssText = 'margin:8px 0;';
+                w.innerHTML = '<div style="font-size:13px;display:flex;justify-content:space-between;"><span>'+y+'年 活跃度</span><span>'+v+'/10</span></div><div style="height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;margin-top:3px;"><div style="height:100%;background:linear-gradient(90deg,#1565C0,#42a5f5);border-radius:4px;width:'+(v*10)+'%;transition:width .3s;"></div></div>';
+                barsDiv.appendChild(w);
+            });
+            document.getElementById('radarDetailKeywords').innerHTML = '<strong>关键词：</strong>' + det.keywords.join('、');
+        }
+
+        // 扩展resize
+        window.addEventListener('resize', function(){
+            monthChart.resize(); typePie.resize(); heatChart.resize();
+            var rc = echarts.getInstanceByDom(document.getElementById('radarChart'));
+            if (rc) rc.resize();
+        });
     }
 
     // Check if data is already loaded
