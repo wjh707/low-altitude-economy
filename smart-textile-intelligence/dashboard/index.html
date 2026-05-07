@@ -87,12 +87,12 @@
     var container = document.getElementById('appContainer');
 
     function initPage(){
-        if(typeof window.SMART_TEXTILE_DATA_DATA === 'undefined' || typeof window.DASHBOARD_SUMMARY === 'undefined'){
+        if(typeof window.SMART_TEXTILE_DATA === 'undefined' || typeof window.DASHBOARD_SUMMARY === 'undefined'){
             container.innerHTML = '<div class="error-msg">❌ 数据加载失败，请确认 data_smart_textile_data.js 和 data_summary.js 已正确加载。</div>';
             return;
         }
 
-        var records = window.SMART_TEXTILE_DATA_DATA.records;
+        var records = window.SMART_TEXTILE_DATA.records;
         var summary = window.DASHBOARD_SUMMARY;
 
         // Tech name mapping
@@ -294,12 +294,12 @@
     }
 
     // Check if data is already loaded
-    if(typeof window.SMART_TEXTILE_DATA_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
+    if(typeof window.SMART_TEXTILE_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
         initPage();
     } else {
         // Wait for data scripts
         var checkInterval = setInterval(function(){
-            if(typeof window.SMART_TEXTILE_DATA_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
+            if(typeof window.SMART_TEXTILE_DATA !== 'undefined' && typeof window.DASHBOARD_SUMMARY !== 'undefined'){
                 clearInterval(checkInterval);
                 initPage();
             }
