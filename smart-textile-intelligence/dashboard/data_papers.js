@@ -25,7 +25,12 @@ window.PAPERS_DATA = {
       "journal": "Materials Horizons",
       "year": 2023,
       "abstract": "The proposed diagnostic clothing incorporates a curcumin/thermoplastic polyurethane composite fiber-based colorimetric pH sensor. It can serve as a diagnostic tool to assess the deterioration of sympt",
-      "doi": "10.1039/d3mh00340j"
+      "doi": "10.1039/d3mh00340j",
+      "affiliations": [
+        "Korea Advanced Institute of Science and Technology",
+        "Korea Institute of Machinery & Materials",
+        "Seoul National University"
+      ]
     },
     {
       "title": "All‐Organic Smart Textile Sensor for Deep‐Learning‐Assisted Multimodal Sensing",
@@ -43,7 +48,12 @@ window.PAPERS_DATA = {
       "journal": "Advanced Functional Materials",
       "year": 2023,
       "abstract": "Abstract Smart textile for sensor is identified as a superior platform with greatly improved convenience and comfort for wearable bioelectronics. However, most reported textile‐based sensors cannot fu",
-      "doi": "10.1002/adfm.202301816"
+      "doi": "10.1002/adfm.202301816",
+      "affiliations": [
+        "Shenzhen University",
+        "Dalian University of Technology",
+        "Dalian University"
+      ]
     },
     {
       "title": "Functional Textiles with Smart Properties: Their Fabrications and Sustainable Applications",
@@ -63,7 +73,15 @@ window.PAPERS_DATA = {
       "journal": "Advanced Functional Materials",
       "year": 2023,
       "abstract": "Abstract Benefiting from inherent lightweight, flexibility, and good adaptability to human body, functional textiles are attracting tremendous attention to cope with wearable issues in sustainable app",
-      "doi": "10.1002/adfm.202301607"
+      "doi": "10.1002/adfm.202301607",
+      "affiliations": [
+        "Hong Kong Polytechnic University",
+        "Guangxi University",
+        "Northwestern University",
+        "Wuyi University",
+        "North Carolina State University",
+        "Wilson College"
+      ]
     },
     {
       "title": "Piezoelectric Effect Polyvinylidene Fluoride (PVDF): From Energy Harvester to Smart Skin and Electronic Textiles",
@@ -79,7 +97,10 @@ window.PAPERS_DATA = {
       "journal": "Advanced Materials Technologies",
       "year": 2023,
       "abstract": "Abstract With the great demand for flexible self‐powered sensors and nanogenerators, polyvinylidene fluoride (PVDF) is widely investigated for outstanding piezoelectric and dielectric constant. In the",
-      "doi": "10.1002/admt.202300021"
+      "doi": "10.1002/admt.202300021",
+      "affiliations": [
+        "University of Shanghai for Science and Technology"
+      ]
     },
     {
       "title": "Smart Bandaid Integrated with Fully Textile OECT for Uric Acid Real-Time Monitoring in Wound Exudate",
@@ -98,7 +119,10 @@ window.PAPERS_DATA = {
       "journal": "ACS Sensors",
       "year": 2023,
       "abstract": "Hard-to-heal wounds (i.e., severe and/or chronic) are typically associated with particular pathologies or afflictions such as diabetes, immunodeficiencies, compression traumas in bedridden people, ski",
-      "doi": "10.1021/acssensors.2c02728"
+      "doi": "10.1021/acssensors.2c02728",
+      "affiliations": [
+        "University of Bologna"
+      ]
     },
     {
       "title": "Smart fibers and textiles for emerging clothe-based wearable electronics: materials, fabrications and applications",
@@ -114,7 +138,12 @@ window.PAPERS_DATA = {
       "journal": "Journal of Materials Chemistry A",
       "year": 2023,
       "abstract": "The emerging smart fibers and textiles have been regarded as ideal building blocks to weave flexible and wearable electronics, which hold great promise in the upcoming artificial intelligence (AI) and",
-      "doi": "10.1039/d3ta02617e"
+      "doi": "10.1039/d3ta02617e",
+      "affiliations": [
+        "Qingdao University",
+        "Yantai Nanshan University",
+        "Shenzhen University Health Science Center"
+      ]
     },
     {
       "title": "Smart textiles for self-powered biomonitoring",
@@ -131,7 +160,10 @@ window.PAPERS_DATA = {
       "journal": "Med-X",
       "year": 2023,
       "abstract": "Abstract Merging electronics with textiles has become an emerging trend since textiles hold magnificent wearing comfort and user-friendliness compared with conventional wearable bioelectronics. Smart ",
-      "doi": "10.1007/s44258-023-00001-3"
+      "doi": "10.1007/s44258-023-00001-3",
+      "affiliations": [
+        "University of California, Los Angeles"
+      ]
     },
     {
       "title": "Advancements and challenges in thermoregulating textiles: Smart clothing for enhanced personal thermal management",
@@ -147,7 +179,13 @@ window.PAPERS_DATA = {
       "journal": "Chemical Engineering Journal",
       "year": 2024,
       "abstract": "This review addresses the burgeoning field of thermoregulating textiles, highlighting their role in enhancing human thermal comfort and reducing building energy consumption. It delves into the develop",
-      "doi": "10.1016/j.cej.2024.151040"
+      "doi": "10.1016/j.cej.2024.151040",
+      "affiliations": [
+        "Henan University of Technology",
+        "Zhengzhou University",
+        "Henan University",
+        "University of South Australia"
+      ]
     },
     {
       "title": "Advances in Smart Photovoltaic Textiles",
@@ -163,7 +201,13 @@ window.PAPERS_DATA = {
       "journal": "ACS Nano",
       "year": 2024,
       "abstract": "Energy harvesting textiles have emerged as a promising solution to sustainably power wearable electronics. Textile-based solar cells (SCs) interconnected with on-body electronics have emerged to meet ",
-      "doi": "10.1021/acsnano.3c10033"
+      "doi": "10.1021/acsnano.3c10033",
+      "affiliations": [
+        "University of the West of England",
+        "University of California, Los Angeles",
+        "University of Bristol",
+        "Nottingham Trent University"
+      ]
     },
     {
       "title": "Army Ant Nest Inspired Adaptive Textile for Smart Thermal Regulation and Healthcare Monitoring",
@@ -191,7 +235,12 @@ window.PAPERS_DATA = {
       "journal": "Advanced Materials",
       "year": 2024,
       "abstract": "A textile material that can dynamically adapt to different environments while serving as an immediate alert system for early detection of life-threatening factors in the surroundings, not only enhance",
-      "doi": "10.1002/adma.202406798"
+      "doi": "10.1002/adma.202406798",
+      "affiliations": [
+        "City University of Hong Kong",
+        "Hong Kong Polytechnic University",
+        "Affiliated Hospital of Southwest Medical University"
+      ]
     },
     {
       "title": "Dual-sensing nano-yarns for real-time pH and temperature monitoring in smart textiles",
@@ -206,7 +255,11 @@ window.PAPERS_DATA = {
       "journal": "Chemical Engineering Journal",
       "year": 2024,
       "abstract": "• High-sensitivity coaxial sensing nanoyarns were synthesized through conjugate spinning and in-situ polymerization. • The pH sensing yarn exhibits outstanding sensitivity (−47.8 mV/pH), rapid time re",
-      "doi": "10.1016/j.cej.2024.157115"
+      "doi": "10.1016/j.cej.2024.157115",
+      "affiliations": [
+        "Zhongyuan University of Technology",
+        "Tiangong University"
+      ]
     },
     {
       "title": "Hierarchical carbon nanotube-decorated polyacrylonitrile smart textiles for wearable biomonitoring",
@@ -222,7 +275,11 @@ window.PAPERS_DATA = {
       "journal": "Wearable electronics.",
       "year": 2024,
       "abstract": "Respiration monitoring enables continuous assessment of physiological status and potential diseases. We reported a polyacrylonitrile/carbon nanotubes/latex composite membrane (PCM) capable of converti",
-      "doi": "10.1016/j.wees.2024.07.002"
+      "doi": "10.1016/j.wees.2024.07.002",
+      "affiliations": [
+        "University of Electronic Science and Technology of China",
+        "Harbin Institute of Technology"
+      ]
     },
     {
       "title": "Review of Fiber-Reinforced Composite Structures with Multifunctional Capabilities through Smart Textiles",
@@ -236,7 +293,10 @@ window.PAPERS_DATA = {
       "journal": "Textiles",
       "year": 2024,
       "abstract": "Multifunctional composites and smart textiles are an important advancement in material science, offering a variety of capabilities that extend well beyond traditional structural functions. These advan",
-      "doi": "10.3390/textiles4030023"
+      "doi": "10.3390/textiles4030023",
+      "affiliations": [
+        "University of Rhode Island"
+      ]
     },
     {
       "title": "Smart Green Cotton Textiles with Hierarchically Responsive Conductive Network for Personal Healthcare and Thermal Management",
@@ -252,7 +312,11 @@ window.PAPERS_DATA = {
       "journal": "ACS Applied Materials & Interfaces",
       "year": 2024,
       "abstract": "Whereas cotton as an abundant natural cellulose has been widely used for sustainable and skin-friendly textiles and clothes, developing cotton fabrics with smart functions that could respond to variou",
-      "doi": "10.1021/acsami.4c13999"
+      "doi": "10.1021/acsami.4c13999",
+      "affiliations": [
+        "Qingdao University",
+        "Bio-Medical Science (South Korea)"
+      ]
     },
     {
       "title": "Use of Electrospinning for Sustainable Production of Nanofibers: A Comparative Assessment of Smart Textiles-Related Applications",
@@ -265,7 +329,10 @@ window.PAPERS_DATA = {
       "journal": "Polymers",
       "year": 2024,
       "abstract": "Textile production is a major component of the global industry, with sales of over USD 450 billion and estimations of an 84% increase in their demand in the next 20 years. In recent decades, protectiv",
-      "doi": "10.3390/polym16040514"
+      "doi": "10.3390/polym16040514",
+      "affiliations": [
+        "National Technical University of Athens"
+      ]
     },
     {
       "title": "A smart acoustic textile for health monitoring",
@@ -277,7 +344,10 @@ window.PAPERS_DATA = {
       "journal": "Nature Electronics",
       "year": 2025,
       "abstract": "Wearable electronics, such as smart textiles, are of potential use in healthcare monitoring, human-machine interfaces and environmental analysis. However, the scalability and reliability of the techno",
-      "doi": "10.1038/s41928-025-01386-2"
+      "doi": "10.1038/s41928-025-01386-2",
+      "affiliations": [
+        "Robotic Technology (United States)"
+      ]
     },
     {
       "title": "All-in-One PANI@PDA/PVDF Smart Textiles for Multifunctional Biomonitoring",
@@ -290,7 +360,12 @@ window.PAPERS_DATA = {
       "journal": "ACS Applied Electronic Materials",
       "year": 2025,
       "abstract": "Smart textiles play a vital role in physiological monitoring, mobile healthcare, and human–machine interface. Multifunctionality remarkably benefits the miniaturization and integration of wearable ele",
-      "doi": "10.1021/acsaelm.4c02132"
+      "doi": "10.1021/acsaelm.4c02132",
+      "affiliations": [
+        "University of Electronic Science and Technology of China",
+        "National Engineering Research Center of Electromagnetic Radiation Control Materials",
+        "State Key Laboratory of Electronic Thin Films and Integrated Devices"
+      ]
     },
     {
       "title": "From MXene to Multimodal‐Responsive Smart, Durable Electromagnetic Interference Shielding Textiles",
@@ -308,7 +383,11 @@ window.PAPERS_DATA = {
       "journal": "Advanced Functional Materials",
       "year": 2025,
       "abstract": "Abstract Achieving wearable, multifunctional e‐textiles with high mechanical properties, exceptional environmental durability, and intelligent, responsive capabilities remains a significant challenge.",
-      "doi": "10.1002/adfm.202424312"
+      "doi": "10.1002/adfm.202424312",
+      "affiliations": [
+        "Shandong University",
+        "University of Basel"
+      ]
     },
     {
       "title": "Implantable and Biodegradable Smart Textiles for Continuous Limb and Gastrointestinal Motility Monitoring",
@@ -323,7 +402,11 @@ window.PAPERS_DATA = {
       "journal": "Small",
       "year": 2025,
       "abstract": "= 0.995) across a wide sensing range (0-50 kPa), with a response time of 88 ms for pressure detection. Through the construction and training of the neural network model, the prepared IBSTs enable effe",
-      "doi": "10.1002/smll.202407773"
+      "doi": "10.1002/smll.202407773",
+      "affiliations": [
+        "University of Electronic Science and Technology of China",
+        "National Engineering Research Center of Electromagnetic Radiation Control Materials"
+      ]
     },
     {
       "title": "Radiative Smart Fibers and Textiles: Thermal Management and Beyond",
@@ -339,7 +422,11 @@ window.PAPERS_DATA = {
       "journal": "ACS Nano",
       "year": 2025,
       "abstract": "From electronic devices to clothing, thermal management plays an important role in maintaining the performance of heat-sensitive everyday items. In achieving this, various fibers and textiles with hea",
-      "doi": "10.1021/acsnano.5c06463"
+      "doi": "10.1021/acsnano.5c06463",
+      "affiliations": [
+        "Nanjing University of Aeronautics and Astronautics",
+        "Nanyang Technological University"
+      ]
     },
     {
       "title": "Smart Textile: Electrohydrodynamic Jet Printing of Ionic Liquid-Functionalized Cu<sub>3</sub>(HHTP)<sub>2</sub> Metal–Organic Frameworks for Gas-Sensing Applications",
@@ -353,7 +440,12 @@ window.PAPERS_DATA = {
       "journal": "ACS Applied Materials & Interfaces",
       "year": 2025,
       "abstract": "sensors demonstrated a 582× increase in conductivity compared to previously reported MOF-based sensors. Additionally, IL functionalization enhanced sensor sensitivity, with a response increasing from ",
-      "doi": "10.1021/acsami.4c20696"
+      "doi": "10.1021/acsami.4c20696",
+      "affiliations": [
+        "Iowa State University",
+        "Dartmouth College",
+        "Dartmouth Hospital"
+      ]
     },
     {
       "title": "Smart Textile: Functionalization and Electrohydrodynamic-Jet Printing of UiO-66-NH<sub>2</sub> Metal–Organic Frameworks for Gas-Sensing Applications",
@@ -365,7 +457,11 @@ window.PAPERS_DATA = {
       "journal": "ACS Applied Materials & Interfaces",
       "year": 2025,
       "abstract": "MOFs were combined with the ionic liquid 1-ethyl-3-methylimidazolium trifluoromethanesulfonate. The resulting MOF-IL ink was precisely printed onto polylactic acid films, creating flexible and durable",
-      "doi": "10.1021/acsami.5c04657"
+      "doi": "10.1021/acsami.5c04657",
+      "affiliations": [
+        "Iowa State University",
+        "United States Army Combat Capabilities Development Command"
+      ]
     },
     {
       "title": "Smart Textiles for Personalized Sports and Healthcare",
@@ -382,7 +478,13 @@ window.PAPERS_DATA = {
       "journal": "Nano-Micro Letters",
       "year": 2025,
       "abstract": "Advances in wearable electronics and information technology drive sports data collection and analysis toward real-time visualization and precision. The growing pursuit of athleticism and healthy life ",
-      "doi": "10.1007/s40820-025-01749-6"
+      "doi": "10.1007/s40820-025-01749-6",
+      "affiliations": [
+        "Donghua University",
+        "Changshu Institute of Technology",
+        "National Research Tomsk State University",
+        "Tomsk Polytechnic University"
+      ]
     },
     {
       "title": "Bio-Inspired Multifunctional Smart Textile Surfaces for Continuous Chronic Wound Monitoring",
@@ -427,7 +529,12 @@ window.PAPERS_DATA = {
       "journal": "Small Structures",
       "year": 2026,
       "abstract": "The integration of smart textiles with energy‐harvesting technologies is driving the development of next‐generation wearable systems. Among the materials explored, liquid metals (LMs) stand out for th",
-      "doi": "10.1002/sstr.202500886"
+      "doi": "10.1002/sstr.202500886",
+      "affiliations": [
+        "RMIT University",
+        "Deakin University",
+        "Erciyes University"
+      ]
     },
     {
       "title": "Integrated Circuits on Fiber Substrates: State-of-the-Art System-on-Fiber Technologies for Smart Textiles and Wearables",
@@ -442,7 +549,12 @@ window.PAPERS_DATA = {
       "journal": "Nano-Micro Letters",
       "year": 2026,
       "abstract": "System-on-fiber technologies have emerged as a promising platform for seamless integration sensing, signal processing, and communication functionalities within textile-compatible fiber architectures. ",
-      "doi": "10.1007/s40820-025-02056-w"
+      "doi": "10.1007/s40820-025-02056-w",
+      "affiliations": [
+        "Jeonbuk National University",
+        "Ajou University",
+        "Gachon University"
+      ]
     },
     {
       "title": "Smart textiles for pollutant gas sensor and capture: Advancement and future perspective",
@@ -453,7 +565,13 @@ window.PAPERS_DATA = {
       "journal": "Journal of Hazardous Materials Advances",
       "year": 2026,
       "abstract": "• Personalized, real-time gas sensing/capture replaces bulky stationary systems. • Analyzes chemiresistive and optical sensing principles and breakthroughs. • Details pollutant removal via MOFs, adsor",
-      "doi": "10.1016/j.hazadv.2026.101038"
+      "doi": "10.1016/j.hazadv.2026.101038",
+      "affiliations": [
+        "Chinese Academy of Sciences",
+        "Xinjiang Technical Institute of Physics & Chemistry",
+        "University of Chinese Academy of Sciences",
+        "Bahir Dar University"
+      ]
     },
     {
       "title": "Textile Innovations for The Development of Eco-Smart and Sustainable Sanitary Care Products",
