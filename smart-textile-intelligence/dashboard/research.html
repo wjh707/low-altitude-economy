@@ -96,6 +96,7 @@
         <div class="chart-box"><h3>热点期刊 TOP 10</h3><div id="journalChart" class="chart"></div></div>
     </div>
     <div class="chart-full"><h3>高产作者 TOP 10</h3><div id="authorChart" class="chart"></div></div>
+    <div class="chart-full"><h3>高产机构 TOP 10</h3><div id="affiliationChart" class="chart"></div></div>
 
     <div class="dash-grid" id="dashGrid">
         <div class="empty-msg" style="grid-column:1/-1;">加载中...</div>
@@ -113,6 +114,7 @@
     var yearChart = null;
     var journalChart = null;
     var authorChart = null;
+    var affChart = null;
 
     function init() {
         var data = window.PAPERS_DATA;
@@ -210,8 +212,28 @@
             series: [{ type: 'bar', data: aVals, barMaxWidth: 18, itemStyle: { color: '#00897B', borderRadius: [0,4,4,0] } }]
         });
 
+        // Affiliation top 10
+        var affMap = {};
+        allRecords.forEach(function(r) {
+            var afs = r.affiliations;
+            if (Array.isArray(afs)) afs.forEach(function(a) { if (a && a.trim().length > 2) affMap[a.trim()] = (affMap[a.trim()] || 0) + 1; });
+            else if (typeof afs === 'string') afs.split(';').forEach(function(a) { if (a.trim().length > 2) affMap[a.trim()] = (affMap[a.trim()] || 0) + 1; });
+        });
+        var afSorted = Object.keys(affMap).sort(function(a,b) { return affMap[b] - affMap[a]; }).slice(0, 10);
+        var afVals = afSorted.map(function(a) { return affMap[a]; });
+
+        if (affChart) affChart.dispose();
+        affChart = echarts.init(document.getElementById('affiliationChart'));
+        affChart.setOption({
+            tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>' + p[0].value + '篇'; } },
+            grid: { left: '22%', right: '8%', bottom: '8%', top: '6%', containLabel: true },
+            yAxis: { type: 'category', data: afSorted, axisLabel: { fontSize: 9 } },
+            xAxis: { type: 'value', name: '篇数', minInterval: 1 },
+            series: [{ type: 'bar', data: afVals, barMaxWidth: 18, itemStyle: { color: '#e67e22', borderRadius: [0,4,4,0] } }]
+        });
+
         window.addEventListener('resize', function() {
-            if (yearChart) yearChart.resize(); if (journalChart) journalChart.resize(); if (authorChart) authorChart.resize();
+            if (yearChart) yearChart.resize(); if (journalChart) journalChart.resize(); if (authorChart) authorChart.resize(); if (affChart) affChart.resize();
         });
     }
 
