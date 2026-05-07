@@ -38,6 +38,7 @@
         .chart-full { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
         .chart-full h3 { font-size: 14px; color: #333; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #1565C0; }
         .chart-full .chart { width: 100%; height: 240px; }
+        .chart-full.tall .chart { height: 280px; }
 
         .author-tag { display: inline-block; background: #f3e5f5; color: #7b1fa2; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin: 2px 3px 2px 0; }
 
@@ -96,7 +97,7 @@
         <div class="chart-box"><h3>热点期刊 TOP 10</h3><div id="journalChart" class="chart"></div></div>
     </div>
     <div class="chart-full"><h3>高产作者 TOP 10</h3><div id="authorChart" class="chart"></div></div>
-    <div class="chart-full"><h3>高产机构 TOP 10</h3><div id="affiliationChart" class="chart"></div></div>
+    <div class="chart-full tall"><h3>高产机构 TOP 10</h3><div id="affiliationChart" class="chart"></div></div>
 
     <div class="dash-grid" id="dashGrid">
         <div class="empty-msg" style="grid-column:1/-1;">加载中...</div>
@@ -226,8 +227,8 @@
         affChart = echarts.init(document.getElementById('affiliationChart'));
         affChart.setOption({
             tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>' + p[0].value + '篇'; } },
-            grid: { left: '22%', right: '8%', bottom: '8%', top: '6%', containLabel: true },
-            yAxis: { type: 'category', data: afSorted, axisLabel: { fontSize: 9 } },
+            grid: { left: '28%', right: '8%', bottom: '8%', top: '6%', containLabel: true },
+            yAxis: { type: 'category', data: afSorted, axisLabel: { fontSize: 9, width: 180, overflow: 'truncate' } },
             xAxis: { type: 'value', name: '篇数', minInterval: 1 },
             series: [{ type: 'bar', data: afVals, barMaxWidth: 18, itemStyle: { color: '#e67e22', borderRadius: [0,4,4,0] } }]
         });
