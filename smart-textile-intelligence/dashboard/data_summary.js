@@ -1,5 +1,5 @@
 window.DASHBOARD_SUMMARY = {
-  "total_events": 39,
+  "total_events": 84,
   "tech_count": 6,
   "scene_count": 7,
   "company_count": 26,
