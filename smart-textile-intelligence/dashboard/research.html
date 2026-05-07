@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科研动态 - 智能纺织品情报系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="data_papers.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,30 +15,61 @@
         .navbar .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: all .2s; }
         .navbar .nav-links a:hover, .navbar .nav-links a.active { background: rgba(255,255,255,0.18); color: #fff; }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
-        .page-title { font-size: 28px; color: #1565C0; margin-bottom: 6px; }
-        .page-subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
         .back-link { display: inline-block; margin-bottom: 16px; color: #1565C0; text-decoration: none; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
-        .list-wrap { display: flex; flex-direction: column; gap: 14px; }
-        .paper-card { background: #fff; border-radius: 12px; padding: 20px 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: box-shadow .2s; border-left: 3px solid #8e44ad; }
-        .paper-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-        .paper-card h3 { font-size: 16px; color: #333; margin-bottom: 8px; line-height: 1.5; }
-        .paper-card .meta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; background: #e3f2fd; color: #1565C0; }
-        .tag.purple { background: #f3e5f5; color: #8e44ad; }
-        .tag.green { background: #e0f2f1; color: #00897B; }
-        .tag.orange { background: #fff3e0; color: #e67e22; }
-        .paper-card .journal-info { font-size: 13px; color: #8e44ad; margin-bottom: 6px; font-weight: 500; }
-        .paper-card .abstract { font-size: 13px; color: #666; line-height: 1.6; }
-        .paper-card .year { font-size: 12px; color: #999; }
+        .page-title { font-size: 28px; color: #8e44ad; margin-bottom: 6px; }
+        .page-subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid #8e44ad; }
+        .stat-card .num { font-size: 26px; font-weight: 700; color: #8e44ad; }
+        .stat-card .label { font-size: 12px; color: #888; margin-top: 2px; }
+        .stat-card:nth-child(2) { border-top-color: #1565C0; }
+        .stat-card:nth-child(2) .num { color: #1565C0; }
+        .stat-card:nth-child(3) { border-top-color: #00897B; }
+        .stat-card:nth-child(3) .num { color: #00897B; }
+        .stat-card:nth-child(4) { border-top-color: #e67e22; }
+        .stat-card:nth-child(4) .num { color: #e67e22; }
+
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .chart-box { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .chart-box h3 { font-size: 14px; color: #333; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #8e44ad; }
+        .chart-box .chart { width: 100%; height: 220px; }
+        .chart-full { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .chart-full h3 { font-size: 14px; color: #333; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #1565C0; }
+        .chart-full .chart { width: 100%; height: 240px; }
+
+        .author-tag { display: inline-block; background: #f3e5f5; color: #7b1fa2; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin: 2px 3px 2px 0; }
+
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .dash-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #8e44ad; transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; }
+        .dash-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .dash-card .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+        .dash-card .card-top h3 { font-size: 15px; color: #333; flex: 1; line-height: 1.5; }
+        .dash-card .card-top .year { font-size: 12px; color: #e67e22; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+        .dash-card .card-body { flex: 1; }
+        .dash-card .card-body .abstract { font-size: 13px; color: #666; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .dash-card .card-footer { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+        .dash-card .card-footer .journal { font-size: 11px; color: #8e44ad; font-weight: 500; width: 100%; margin-bottom: 2px; }
+
+        .pagination { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .pagination button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; color: #333; cursor: pointer; font-size: 13px; transition: all .2s; }
+        .pagination button:hover { border-color: #8e44ad; color: #8e44ad; }
+        .pagination button.active { background: #8e44ad; color: #fff; border-color: #8e44ad; }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+
         .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; border-top: 1px solid #eee; }
         .empty-msg { text-align: center; padding: 60px; color: #999; font-size: 16px; }
         .error-msg { text-align: center; padding: 40px; color: #c62828; background: #ffebee; border-radius: 12px; margin: 20px; }
+
         @media (max-width: 768px) {
             .navbar { flex-wrap: wrap; height: auto; padding: 10px 16px; }
             .navbar .brand { margin-bottom: 6px; font-size: 16px; }
             .navbar .nav-links a { padding: 6px 12px; font-size: 13px; }
             .page-title { font-size: 22px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .dash-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -58,73 +90,208 @@
     <h1 class="page-title">🎓 科研动态</h1>
     <p class="page-subtitle">收录智能纺织品领域学术论文与研究报告，跟踪全球科研最新进展</p>
 
-    <div class="list-wrap" id="listWrap">
-        <div class="empty-msg">加载中...</div>
+    <div class="stats-row" id="statsRow"></div>
+    <div class="chart-row">
+        <div class="chart-box"><h3>年度发文量</h3><div id="yearChart" class="chart"></div></div>
+        <div class="chart-box"><h3>热点期刊 TOP 10</h3><div id="journalChart" class="chart"></div></div>
     </div>
+    <div class="chart-full"><h3>高产作者 TOP 10</h3><div id="authorChart" class="chart"></div></div>
+
+    <div class="dash-grid" id="dashGrid">
+        <div class="empty-msg" style="grid-column:1/-1;">加载中...</div>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
 </div>
 <div class="footer">数据更新时间：<span id="updateDate">--</span> | 智能纺织品情报系统 · 仅供内部参考</div>
+
 <script>
 (function() {
-    function truncate(text, maxLen) {
-        if (!text) return '';
-        return text.length > maxLen ? text.substring(0, maxLen) + '...' : text;
-    }
+    var allRecords = [];
+    var currentPage = 1;
+    var pageSize = 10;
+    var yearChart = null;
+    var journalChart = null;
+    var authorChart = null;
 
     function init() {
         var data = window.PAPERS_DATA;
-        if (!data || !data.records) {
-            document.getElementById('listWrap').innerHTML = '<div class="error-msg">❌ 数据加载失败</div>';
+        // PAPERS_DATA may be {records: [...]} or directly [...] 
+        var records = Array.isArray(data) ? data : (data && data.records ? data.records : []);
+        if (!records || !records.length) {
+            document.getElementById('dashGrid').innerHTML = '<div class="error-msg" style="grid-column:1/-1;">❌ 数据加载失败</div>';
             return;
         }
-
-        // Sort by year descending, then by title
-        var records = data.records.slice().sort(function(a, b) {
-            if ((b.year || 0) !== (a.year || 0)) return (b.year || 0) - (a.year || 0);
-            return (a.title || '').localeCompare(b.title || '');
+        allRecords = records.slice().sort(function(a, b) {
+            return (b.year || 0) - (a.year || 0);
         });
-
-        var listWrap = document.getElementById('listWrap');
-        if (records.length === 0) {
-            listWrap.innerHTML = '<div class="empty-msg">暂无论文数据</div>';
-            document.getElementById('updateDate').textContent = new Date().toISOString().slice(0, 10);
-            return;
-        }
-
-        var html = '';
-        records.forEach(function(r) {
-            var abstractShort = truncate(r.abstract, 80);
-            var authorsStr = '';
-            if (r.authors) {
-                if (Array.isArray(r.authors)) {
-                    authorsStr = r.authors.slice(0, 3).join('; ');
-                    if (r.authors.length > 3) authorsStr += ' 等';
-                } else {
-                    authorsStr = String(r.authors);
-                }
-            }
-
-            html += '<div class="paper-card">';
-            html += '<h3>' + (r.title || '') + '</h3>';
-            html += '<div class="meta-row">';
-            if (r.journal) html += '<span class="tag purple">' + r.journal + '</span>';
-            if (r.year) html += '<span class="tag orange">' + r.year + '年</span>';
-            if (authorsStr) html += '<span class="tag green">' + authorsStr + '</span>';
-            html += '</div>';
-            if (abstractShort) html += '<div class="abstract">' + abstractShort + '</div>';
-            html += '</div>';
-        });
-        listWrap.innerHTML = html;
+        render();
         document.getElementById('updateDate').textContent = new Date().toISOString().slice(0, 10);
     }
 
-    if (typeof window.PAPERS_DATA !== 'undefined') {
-        init();
-    } else {
-        var ci = setInterval(function() {
-            if (typeof window.PAPERS_DATA !== 'undefined') {
-                clearInterval(ci);
-                init();
+    function renderStats() {
+        var total = allRecords.length;
+        var yearSet = new Set(); allRecords.forEach(function(r) { yearSet.add(r.year); });
+        var journalSet = new Set(); allRecords.forEach(function(r) { if (r.journal) journalSet.add(r.journal); });
+        var authorSet = new Set();
+        allRecords.forEach(function(r) {
+            var auths = r.authors;
+            if (Array.isArray(auths)) auths.forEach(function(a) { if (a && a.trim().length > 2) authorSet.add(a.trim()); });
+            else if (typeof auths === 'string') auths.split(';').forEach(function(a) { if (a.trim().length > 2) authorSet.add(a.trim()); });
+        });
+        var recent = allRecords.filter(function(r) { return r.year && r.year >= 2025; }).length;
+
+        document.getElementById('statsRow').innerHTML =
+            '<div class="stat-card"><div class="num">' + total + '</div><div class="label">论文总数</div></div>' +
+            '<div class="stat-card"><div class="num">' + journalSet.size + '</div><div class="label">来源期刊</div></div>' +
+            '<div class="stat-card"><div class="num">' + authorSet.size + '</div><div class="label">覆盖作者</div></div>' +
+            '<div class="stat-card"><div class="num">' + recent + '</div><div class="label">近两年发文</div></div>';
+    }
+
+    function aggregate(arr, field) {
+        var map = {};
+        arr.forEach(function(r) {
+            var v = r[field] || '未知';
+            map[v] = (map[v] || 0) + 1;
+        });
+        return map;
+    }
+
+    function renderCharts() {
+        // Year bar
+        var yearMap = aggregate(allRecords, 'year');
+        var yearNames = Object.keys(yearMap).sort();
+        var yearVals = yearNames.map(function(y) { return yearMap[y]; });
+        if (yearChart) yearChart.dispose();
+        yearChart = echarts.init(document.getElementById('yearChart'));
+        yearChart.setOption({
+            tooltip: { trigger: 'axis' },
+            grid: { left: '10%', right: '6%', bottom: '12%', top: '8%', containLabel: true },
+            xAxis: { type: 'category', data: yearNames },
+            yAxis: { type: 'value', name: '篇数', minInterval: 1 },
+            series: [{
+                type: 'bar', data: yearVals, barMaxWidth: 40,
+                itemStyle: { color: '#8e44ad', borderRadius: [4,4,0,0] },
+                label: { show: true, position: 'top', fontSize: 11, color: '#8e44ad' }
+            }]
+        });
+
+        // Journal top 10
+        var journalMap = aggregate(allRecords, 'journal');
+        var jSorted = Object.keys(journalMap).sort(function(a,b) { return journalMap[b] - journalMap[a]; }).slice(0, 10);
+        var jVals = jSorted.map(function(j) { return journalMap[j]; });
+        if (journalChart) journalChart.dispose();
+        journalChart = echarts.init(document.getElementById('journalChart'));
+        journalChart.setOption({
+            tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>' + p[0].value + '篇'; } },
+            grid: { left: '8%', right: '14%', bottom: '8%', top: '6%', containLabel: true },
+            yAxis: { type: 'category', data: jSorted.map(function(j) { return j.length > 20 ? j.substring(0,20) + '...' : j; }), axisLabel: { fontSize: 9 } },
+            xAxis: { type: 'value', name: '篇数', minInterval: 1 },
+            series: [{ type: 'bar', data: jVals, barMaxWidth: 18, itemStyle: { color: '#1565C0', borderRadius: [0,4,4,0] } }]
+        });
+
+        // Author top 10
+        var authorMap = {};
+        allRecords.forEach(function(r) {
+            var auths = r.authors;
+            if (Array.isArray(auths)) auths.forEach(function(a) { if (a && a.trim().length > 2) authorMap[a.trim()] = (authorMap[a.trim()] || 0) + 1; });
+            else if (typeof auths === 'string') auths.split(';').forEach(function(a) { if (a.trim().length > 2) authorMap[a.trim()] = (authorMap[a.trim()] || 0) + 1; });
+        });
+        var aSorted = Object.keys(authorMap).sort(function(a,b) { return authorMap[b] - authorMap[a]; }).slice(0, 10);
+        var aVals = aSorted.map(function(a) { return authorMap[a]; });
+
+        if (authorChart) authorChart.dispose();
+        authorChart = echarts.init(document.getElementById('authorChart'));
+        authorChart.setOption({
+            tooltip: { trigger: 'axis', formatter: function(p) { return p[0].name + '<br/>' + p[0].value + '篇'; } },
+            grid: { left: '18%', right: '8%', bottom: '8%', top: '6%', containLabel: true },
+            yAxis: { type: 'category', data: aSorted, axisLabel: { fontSize: 10 } },
+            xAxis: { type: 'value', name: '篇数', minInterval: 1 },
+            series: [{ type: 'bar', data: aVals, barMaxWidth: 18, itemStyle: { color: '#00897B', borderRadius: [0,4,4,0] } }]
+        });
+
+        window.addEventListener('resize', function() {
+            if (yearChart) yearChart.resize(); if (journalChart) journalChart.resize(); if (authorChart) authorChart.resize();
+        });
+    }
+
+    function render() {
+        renderStats();
+        renderCharts();
+
+        var totalPages = Math.ceil(allRecords.length / pageSize) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        var start = (currentPage - 1) * pageSize;
+        var pageItems = allRecords.slice(start, start + pageSize);
+
+        var grid = document.getElementById('dashGrid');
+        if (pageItems.length === 0) {
+            grid.innerHTML = '<div class="empty-msg" style="grid-column:1/-1;">暂无数据</div>';
+            renderPagination(totalPages); return;
+        }
+
+        var html = '';
+        pageItems.forEach(function(r) {
+            var authHtml = '';
+            var auths = r.authors;
+            if (Array.isArray(auths)) {
+                authHtml = auths.slice(0, 4).map(function(a) { return a && a.trim().length > 2 ? '<span class="author-tag">' + a.trim() + '</span>' : ''; }).join('');
+                if (auths.length > 4) authHtml += '<span class="author-tag">+另有' + (auths.length - 4) + '位</span>';
+            } else if (typeof auths === 'string') {
+                var parts = auths.split(';').filter(function(a) { return a.trim().length > 2; });
+                authHtml = parts.slice(0, 4).map(function(a) { return '<span class="author-tag">' + a.trim() + '</span>'; }).join('');
+                if (parts.length > 4) authHtml += '<span class="author-tag">+另有' + (parts.length - 4) + '位</span>';
             }
+
+            var abstractShort = r.abstract ? (r.abstract.length > 120 ? r.abstract.substring(0, 120) + '...' : r.abstract) : '';
+
+            html += '<div class="dash-card">';
+            html += '<div class="card-top">';
+            html += '<h3>' + (r.title || '') + '</h3>';
+            html += '<span class="year">' + (r.year || '') + '</span>';
+            html += '</div>';
+            html += '<div class="card-body">';
+            if (abstractShort) html += '<div class="abstract">' + abstractShort + '</div>';
+            html += '</div>';
+            html += '<div class="card-footer">';
+            if (r.journal) html += '<div class="journal">📖 ' + r.journal + '</div>';
+            html += '<div>' + authHtml + '</div>';
+            if (r.doi) html += '<div style="width:100%;margin-top:4px;"><a href="https://doi.org/' + r.doi + '" target="_blank" style="font-size:11px;color:#1565C0;text-decoration:none;">🔗 DOI: ' + r.doi.substring(0,40) + (r.doi.length > 40 ? '...' : '') + '</a></div>';
+            html += '</div>';
+            html += '</div>';
+        });
+        grid.innerHTML = html;
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        var pg = document.getElementById('pagination');
+        if (totalPages <= 1) { pg.innerHTML = ''; return; }
+        var html = '';
+        html += '<button onclick="goPage(1)" ' + (currentPage <= 1 ? 'disabled' : '') + '>«</button>';
+        html += '<button onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>‹</button>';
+        var startP = Math.max(1, currentPage - 2);
+        var endP = Math.min(totalPages, startP + 4);
+        for (var i = startP; i <= endP; i++) {
+            html += '<button onclick="goPage(' + i + ')" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
+        }
+        html += '<button onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>›</button>';
+        html += '<button onclick="goPage(' + totalPages + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>»</button>';
+        pg.innerHTML = html;
+    }
+
+    window.goPage = function(p) {
+        var totalPages = Math.ceil(allRecords.length / pageSize) || 1;
+        if (p < 1 || p > totalPages) return;
+        currentPage = p;
+        window.scrollTo({ top: document.querySelector('.dash-grid').offsetTop - 100, behavior: 'smooth' });
+        render();
+    };
+
+    if (typeof window.PAPERS_DATA !== 'undefined') { init(); }
+    else {
+        var ci = setInterval(function() {
+            if (typeof window.PAPERS_DATA !== 'undefined') { clearInterval(ci); init(); }
         }, 100);
         setTimeout(function() { clearInterval(ci); }, 5000);
     }
