@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>市场动态 - 智能纺织品情报系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script src="data_company_news.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,30 +15,55 @@
         .navbar .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: all .2s; }
         .navbar .nav-links a:hover, .navbar .nav-links a.active { background: rgba(255,255,255,0.18); color: #fff; }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
-        .page-title { font-size: 28px; color: #1565C0; margin-bottom: 6px; }
-        .page-subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
         .back-link { display: inline-block; margin-bottom: 16px; color: #1565C0; text-decoration: none; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
-        .filter-bar { background: #fff; border-radius: 10px; padding: 16px 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .page-title { font-size: 28px; color: #1565C0; margin-bottom: 6px; }
+        .page-subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
+
+        /* Stats row */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid #1565C0; }
+        .stat-card .num { font-size: 26px; font-weight: 700; color: #1565C0; }
+        .stat-card .label { font-size: 12px; color: #888; margin-top: 2px; }
+        .stat-card:nth-child(2) { border-top-color: #00897B; }
+        .stat-card:nth-child(2) .num { color: #00897B; }
+        .stat-card:nth-child(3) { border-top-color: #e67e22; }
+        .stat-card:nth-child(3) .num { color: #e67e22; }
+        .stat-card:nth-child(4) { border-top-color: #8e44ad; }
+        .stat-card:nth-child(4) .num { color: #8e44ad; }
+
+        /* Chart row */
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .chart-box { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .chart-box h3 { font-size: 14px; color: #333; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #1565C0; }
+        .chart-box .chart { width: 100%; height: 220px; }
+
+        /* Filter bar */
+        .filter-bar { background: #fff; border-radius: 10px; padding: 14px 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .filter-bar label { font-size: 13px; color: #666; font-weight: 500; }
         .filter-bar select { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; color: #333; background: #fff; cursor: pointer; }
         .filter-bar select:focus { outline: none; border-color: #1565C0; }
         .filter-bar .count-info { margin-left: auto; font-size: 13px; color: #888; }
-        .list-wrap { display: flex; flex-direction: column; gap: 14px; }
-        .news-card { background: #fff; border-radius: 12px; padding: 20px 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: box-shadow .2s; border-left: 3px solid #1565C0; }
-        .news-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-        .news-card .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
-        .news-card .card-header h3 { font-size: 16px; color: #333; flex: 1; line-height: 1.5; }
-        .news-card .date { font-size: 12px; color: #999; white-space: nowrap; padding-top: 2px; }
-        .news-card .meta-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+
+        /* Cards as dashboard tiles */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .dash-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #1565C0; transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; }
+        .dash-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .dash-card .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+        .dash-card .card-top h3 { font-size: 15px; color: #333; flex: 1; line-height: 1.5; }
+        .dash-card .card-top .date { font-size: 12px; color: #999; white-space: nowrap; flex-shrink: 0; }
+        .dash-card .card-body { flex: 1; }
+        .dash-card .card-body .summary { font-size: 13px; color: #666; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .dash-card .card-footer { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; }
         .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; background: #e3f2fd; color: #1565C0; }
         .tag.green { background: #e0f2f1; color: #00897B; }
         .tag.orange { background: #fff3e0; color: #e67e22; }
         .tag.purple { background: #f3e5f5; color: #8e44ad; }
         .tag.red { background: #ffebee; color: #c62828; }
         .tag.teal { background: #e0f2f1; color: #00695c; }
-        .news-card .summary { font-size: 13px; color: #666; line-height: 1.6; }
-        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+        .tag.url { background: #e8eaf6; color: #3949ab; cursor: pointer; }
+        .tag.url:hover { background: #c5cae9; }
+        .pagination { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
         .pagination button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; color: #333; cursor: pointer; font-size: 13px; transition: all .2s; }
         .pagination button:hover { border-color: #1565C0; color: #1565C0; }
         .pagination button.active { background: #1565C0; color: #fff; border-color: #1565C0; }
@@ -50,8 +76,9 @@
             .navbar .brand { margin-bottom: 6px; font-size: 16px; }
             .navbar .nav-links a { padding: 6px 12px; font-size: 13px; }
             .page-title { font-size: 22px; }
-            .news-card .card-header { flex-direction: column; }
-            .news-card .card-header .date { white-space: normal; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .dash-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -72,6 +99,12 @@
     <h1 class="page-title">🌍 市场动态</h1>
     <p class="page-subtitle">追踪智能纺织品领域企业动态、融资事件、产品发布与产业合作</p>
 
+    <div class="stats-row" id="statsRow"></div>
+    <div class="chart-row">
+        <div class="chart-box"><h3>事件类型分布</h3><div id="typeChart" class="chart"></div></div>
+        <div class="chart-box"><h3>地区分布</h3><div id="regionChart" class="chart"></div></div>
+    </div>
+
     <div class="filter-bar" id="filterBar">
         <label>事件类型：</label>
         <select id="typeFilter" onchange="applyFilter()">
@@ -80,13 +113,14 @@
         <span class="count-info" id="countInfo">共 0 条</span>
     </div>
 
-    <div class="list-wrap" id="listWrap">
-        <div class="empty-msg">加载中...</div>
+    <div class="dash-grid" id="dashGrid">
+        <div class="empty-msg" style="grid-column:1/-1;">加载中...</div>
     </div>
 
     <div class="pagination" id="pagination"></div>
 </div>
 <div class="footer">数据更新时间：<span id="updateDate">--</span> | 智能纺织品情报系统 · 仅供内部参考</div>
+
 <script>
 (function() {
     var eventTypeMap = {
@@ -103,53 +137,124 @@
         'technology_breakthrough': 'red',
         'policy': 'teal'
     };
+    var eventColors = {
+        'corporate_cooperation': '#00897B',
+        'product_launch': '#e67e22',
+        'funding': '#8e44ad',
+        'technology_breakthrough': '#c62828',
+        'policy': '#00695c'
+    };
+    var typeOrder = ['corporate_cooperation', 'product_launch', 'funding', 'technology_breakthrough', 'policy'];
 
     var allRecords = [];
     var currentPage = 1;
-    var pageSize = 20;
+    var pageSize = 10;
+    var typeChart = null;
+    var regionChart = null;
 
     function init() {
         var data = window.COMPANY_NEWS_DATA;
         if (!data || !data.records) {
-            document.getElementById('listWrap').innerHTML = '<div class="error-msg">❌ 数据加载失败</div>';
+            document.getElementById('dashGrid').innerHTML = '<div class="error-msg" style="grid-column:1/-1;">❌ 数据加载失败</div>';
             return;
         }
 
-        // Sort by date descending
         allRecords = data.records.slice().sort(function(a, b) {
             return (b.date || '').localeCompare(a.date || '');
         });
 
         // Populate filter
-        var typeSet = new Set();
-        allRecords.forEach(function(r) { if (r.event_type) typeSet.add(r.event_type); });
         var sel = document.getElementById('typeFilter');
-        var typeArr = Array.from(typeSet).sort();
-        typeArr.forEach(function(t) {
+        typeOrder.forEach(function(t) {
             var opt = document.createElement('option');
             opt.value = t;
             opt.textContent = eventTypeMap[t] || t;
             sel.appendChild(opt);
         });
 
-        window.applyFilter = function() {
-            currentPage = 1;
-            render();
-        };
-
+        window.applyFilter = function() { currentPage = 1; render(); };
         render();
         document.getElementById('updateDate').textContent = new Date().toISOString().slice(0, 10);
     }
 
+    function renderStats(filtered) {
+        var total = allRecords.length;
+        var filteredTotal = filtered.length;
+        var regions = new Set(); filtered.forEach(function(r) { if (r.region) regions.add(r.region); });
+        var companies = new Set(); filtered.forEach(function(r) { if (r.source) companies.add(r.source); });
+        var recent = filtered.filter(function(r) {
+            return r.date && r.date >= '2026-01-01';
+        }).length;
+
+        document.getElementById('statsRow').innerHTML =
+            '<div class="stat-card"><div class="num">' + filteredTotal + '</div><div class="label">当前筛选</div></div>' +
+            '<div class="stat-card"><div class="num">' + regions.size + '</div><div class="label">覆盖地区</div></div>' +
+            '<div class="stat-card"><div class="num">' + companies.size + '</div><div class="label">信息来源</div></div>' +
+            '<div class="stat-card"><div class="num">' + recent + '</div><div class="label">2026年动态</div></div>';
+    }
+
+    function renderCharts(filtered) {
+        // Event type pie
+        var typeCount = {};
+        filtered.forEach(function(r) {
+            var t = r.event_type || 'other';
+            typeCount[t] = (typeCount[t] || 0) + 1;
+        });
+        var pieData = typeOrder.filter(function(t) { return typeCount[t]; }).map(function(t) {
+            return { name: eventTypeMap[t] || t, value: typeCount[t], itemStyle: { color: eventColors[t] || '#999' } };
+        });
+
+        if (typeChart) typeChart.dispose();
+        typeChart = echarts.init(document.getElementById('typeChart'));
+        typeChart.setOption({
+            tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+            series: [{
+                type: 'pie', radius: ['40%', '65%'], center: ['50%', '50%'],
+                data: pieData.length ? pieData : [{ name: '无数据', value: 1, itemStyle: { color: '#eee' } }],
+                label: { fontSize: 11 },
+                itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 },
+                emphasis: { itemStyle: { shadowBlur: 8, shadowColor: 'rgba(0,0,0,0.15)' } }
+            }]
+        });
+
+        // Region bar chart
+        var regionCount = {};
+        filtered.forEach(function(r) {
+            var reg = r.region || '未知';
+            regionCount[reg] = (regionCount[reg] || 0) + 1;
+        });
+        var regNames = Object.keys(regionCount).sort(function(a, b) { return regionCount[b] - regionCount[a]; });
+        var regValues = regNames.map(function(k) { return regionCount[k]; });
+
+        if (regionChart) regionChart.dispose();
+        regionChart = echarts.init(document.getElementById('regionChart'));
+        regionChart.setOption({
+            tooltip: { trigger: 'axis' },
+            grid: { left: '12%', right: '6%', bottom: '10%', top: '6%', containLabel: true },
+            xAxis: { type: 'category', data: regNames, axisLabel: { fontSize: 10, rotate: 20 } },
+            yAxis: { type: 'value', name: '数量' },
+            series: [{
+                type: 'bar', data: regValues,
+                itemStyle: { color: '#1565C0', borderRadius: [4, 4, 0, 0] },
+                barMaxWidth: 36
+            }]
+        });
+
+        window.addEventListener('resize', function() {
+            if (typeChart) typeChart.resize();
+            if (regionChart) regionChart.resize();
+        });
+    }
+
     function render() {
         var typeVal = document.getElementById('typeFilter').value;
-        var filtered = allRecords;
-        if (typeVal !== 'all') {
-            filtered = filtered.filter(function(r) { return r.event_type === typeVal; });
-        }
+        var filtered = typeVal === 'all' ? allRecords : allRecords.filter(function(r) { return r.event_type === typeVal; });
 
         var total = filtered.length;
         document.getElementById('countInfo').textContent = '共 ' + total + ' 条';
+
+        renderStats(filtered);
+        renderCharts(filtered);
 
         var totalPages = Math.ceil(total / pageSize) || 1;
         if (currentPage > totalPages) currentPage = totalPages;
@@ -157,9 +262,9 @@
         var start = (currentPage - 1) * pageSize;
         var pageItems = filtered.slice(start, start + pageSize);
 
-        var listWrap = document.getElementById('listWrap');
+        var grid = document.getElementById('dashGrid');
         if (pageItems.length === 0) {
-            listWrap.innerHTML = '<div class="empty-msg">暂无数据</div>';
+            grid.innerHTML = '<div class="empty-msg" style="grid-column:1/-1;">暂无数据</div>';
             renderPagination(totalPages);
             return;
         }
@@ -168,20 +273,24 @@
         pageItems.forEach(function(r) {
             var typeLabel = eventTypeMap[r.event_type] || r.event_type;
             var colorClass = eventColorMap[r.event_type] || 'blue';
-            html += '<div class="news-card">';
-            html += '<div class="card-header">';
+            var urlHtml = r.url ? '<span class="tag url" onclick="window.open(\'' + r.url + '\',\'_blank\')">🔗 来源</span>' : '';
+            html += '<div class="dash-card">';
+            html += '<div class="card-top">';
             html += '<h3>' + (r.title || '') + '</h3>';
             html += '<span class="date">' + (r.date || '') + '</span>';
             html += '</div>';
-            html += '<div class="meta-row">';
+            html += '<div class="card-body">';
+            if (r.summary) html += '<div class="summary">' + r.summary + '</div>';
+            html += '</div>';
+            html += '<div class="card-footer">';
             html += '<span class="tag ' + colorClass + '">' + typeLabel + '</span>';
             if (r.region) html += '<span class="tag">' + r.region + '</span>';
             if (r.source) html += '<span class="tag">' + r.source + '</span>';
+            html += urlHtml;
             html += '</div>';
-            if (r.summary) html += '<div class="summary">' + r.summary + '</div>';
             html += '</div>';
         });
-        listWrap.innerHTML = html;
+        grid.innerHTML = html;
         renderPagination(totalPages);
     }
 
@@ -190,34 +299,32 @@
         if (totalPages <= 1) { pg.innerHTML = ''; return; }
 
         var html = '';
-        html += '<button onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>‹ 上一页</button>';
+        html += '<button onclick="goPage(1)" ' + (currentPage <= 1 ? 'disabled' : '') + '>«</button>';
+        html += '<button onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>‹</button>';
 
         var startP = Math.max(1, currentPage - 2);
         var endP = Math.min(totalPages, startP + 4);
         for (var i = startP; i <= endP; i++) {
             html += '<button onclick="goPage(' + i + ')" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</button>';
         }
-        html += '<button onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>下一页 ›</button>';
+        html += '<button onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>›</button>';
+        html += '<button onclick="goPage(' + totalPages + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>»</button>';
         pg.innerHTML = html;
     }
 
     window.goPage = function(p) {
-        var total = document.getElementById('typeFilter').value === 'all' ? allRecords.length :
-            allRecords.filter(function(r) { return r.event_type === document.getElementById('typeFilter').value; }).length;
-        var totalPages = Math.ceil(total / pageSize) || 1;
+        var typeVal = document.getElementById('typeFilter').value;
+        var filtered = typeVal === 'all' ? allRecords : allRecords.filter(function(r) { return r.event_type === typeVal; });
+        var totalPages = Math.ceil(filtered.length / pageSize) || 1;
         if (p < 1 || p > totalPages) return;
         currentPage = p;
         render();
     };
 
-    if (typeof window.COMPANY_NEWS_DATA !== 'undefined') {
-        init();
-    } else {
+    if (typeof window.COMPANY_NEWS_DATA !== 'undefined') { init(); }
+    else {
         var ci = setInterval(function() {
-            if (typeof window.COMPANY_NEWS_DATA !== 'undefined') {
-                clearInterval(ci);
-                init();
-            }
+            if (typeof window.COMPANY_NEWS_DATA !== 'undefined') { clearInterval(ci); init(); }
         }, 100);
         setTimeout(function() { clearInterval(ci); }, 5000);
     }
